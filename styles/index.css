@@ -1,0 +1,75 @@
+/* ========== PÁGINA PRINCIPAL (index) ========== */
+
+body.index-body {
+  background-color: #0a0a0a;
+}
+
+/* VEHICLE SECTION */
+.vehicle-section {
+  background-color: #0a0a0a;
+  color: #fff;
+  padding: 80px 10%;
+  display: flex;
+  justify-content: center;
+}
+
+.vehicle-container {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  max-width: 1200px;
+  flex-wrap: wrap;
+}
+
+.vehicle-image img {
+  width: 500px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.vehicle-image img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+}
+
+.vehicle-info {
+  max-width: 550px;
+}
+
+.vehicle-info h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.vehicle-info p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-light);
+  margin-bottom: 25px;
+}
+
+.vehicle-features {
+  list-style: none;
+  margin-bottom: 30px;
+  padding: 0;
+}
+
+.vehicle-features li {
+  margin: 8px 0;
+  padding-left: 25px;
+  position: relative;
+  font-size: 1rem;
+}
+
+.vehicle-features li::before {
+  content: "✔";
+  color: #d4af37;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+

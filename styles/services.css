@@ -1,0 +1,234 @@
+/* ========== PÁGINA SERVICES ========== */
+
+body.services-body {
+  background: linear-gradient(180deg, #000 0%, #0f0f0f 100%);
+}
+
+/* Contenedor que se blurea cuando se abre el modal */
+#siteContent {
+  transition: filter 0.28s ease;
+}
+
+/* Wrapper principal */
+.services-wrapper {
+  max-width: 1200px;
+  margin: -20px auto 80px;
+  padding: 20px;
+}
+
+/* GRID DE SERVICIOS */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.service-card {
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+  text-align: left;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+  border-color: var(--gold);
+}
+
+.service-top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.service-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(245, 210, 106, 0.12), rgba(245, 210, 106, 0.06));
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.service-title {
+  font-size: 1.15rem;
+  color: var(--gold);
+  margin: 0;
+}
+
+.service-desc {
+  color: #cfcfcf;
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+}
+
+.service-footer {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.service-price {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.book-btn {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 6px 18px rgba(245, 210, 106, 0.18);
+}
+
+.book-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(245, 210, 106, 0.26);
+}
+
+/* FOOTER (hereda de main pero más neutro) */
+.services-body footer {
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  color: #bdbdbd;
+}
+
+/* MODAL */
+#reservationModal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(3px);
+}
+
+#reservationModal.show {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-card {
+  position: relative;
+  width: 92%;
+  max-width: 520px;
+  background: linear-gradient(180deg, #121212, #151515);
+  border-radius: 16px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transform: translateY(-18px);
+  animation: slideIn 0.28s ease forwards;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* FORMULARIO MODAL */
+.modal-form label {
+  display: block;
+  font-size: 13px;
+  margin: 8px 0 6px;
+  color: #eee;
+}
+
+.modal-form input,
+.modal-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: #1f1f1f;
+  color: #fff;
+  font-size: 0.98rem;
+}
+
+.modal-form .row {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-form .row > * {
+  flex: 1;
+}
+
+.modal-form button[type="submit"] {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: none;
+  background: var(--gold);
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(245, 210, 106, 0.12);
+}
+
+/* ALERTA FLOTANTE */
+.custom-alert {
+  position: fixed;
+  top: 28px;
+  right: -420px;
+  background: linear-gradient(90deg, #1a1a1a, #242424);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  transition: right 0.45s ease;
+  font-weight: 600;
+}
+
+.custom-alert.show {
+  right: 28px;
+}
+
+.custom-alert.error {
+  background: linear-gradient(90deg, #7a0000, #b30000);
+}
+

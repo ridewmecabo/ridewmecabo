@@ -1,0 +1,115 @@
+/* ========== RESPONSIVE GLOBAL (MÓVIL) ========== */
+
+@media (max-width: 900px) {
+  section {
+    padding: 40px 15px;
+  }
+}
+
+/* HEADER en móvil (index + services) */
+@media (max-width: 768px) {
+  .luxury-header {
+    height: 35vh;
+    background-position: center top;
+  }
+
+  .header-content h1 {
+    font-size: 1.9rem;
+  }
+
+  .header-content p {
+    font-size: 0.95rem;
+  }
+
+  .header-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .luxury-btn {
+    width: 80%;
+    text-align: center;
+  }
+}
+
+/* VEHICLE SECTION (index) */
+@media (max-width: 900px) {
+  .vehicle-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .vehicle-image img {
+    width: 90%;
+    max-width: 380px;
+  }
+
+  .vehicle-info h2 {
+    font-size: 1.8rem;
+  }
+
+  .vehicle-info p {
+    font-size: 1rem;
+  }
+
+  .vehicle-features li {
+    font-size: 0.95rem;
+  }
+}
+
+/* SERVICES GRID (services.html) */
+@media (max-width: 768px) {
+  .services-wrapper {
+    margin-top: 10px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .service-card {
+    padding: 20px;
+  }
+
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
+
+  .service-title {
+    font-size: 1.1rem;
+  }
+
+  .service-price {
+    font-size: 1rem;
+  }
+
+  .modal-card {
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 18px;
+  }
+
+  .modal-form input,
+  .modal-form select {
+    font-size: 0.95rem;
+  }
+
+  .modal-form button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* ADMIN en móvil */
+@media (max-width: 768px) {
+  .admin-page .login-container,
+  .admin-page .admin-container {
+    max-width: 360px;
+    padding: 22px;
+  }
+}
+
