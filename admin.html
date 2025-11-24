@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ride W Me | Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/mobile.css">
+</head>
+<body class="admin-page">
+  <!-- 🔒 Login -->
+  <div class="login-container" id="loginBox">
+    <h2>Admin Access</h2>
+    <p>Enter your password to access reservations</p>
+    <input type="password" id="adminPass" placeholder="Enter password">
+    <button class="btn-admin" onclick="checkLogin()">Login</button>
+    <p id="errorMsg" class="admin-error">Incorrect password ❌</p>
+  </div>
+
+  <!-- 📋 Admin Panel -->
+  <div class="admin-container" id="adminPanel" style="display:none;">
+    <h2>Reservation Dashboard</h2>
+    <div class="reservation-list" id="reservationList"></div>
+    <button class="clear-btn" onclick="clearReservations()">🗑 Clear All Reservations</button>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = "rideadmin2025";
+
+    function checkLogin() {
+      const inputPass = document.getElementById("adminPass").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (inputPass === ADMIN_PASSWORD) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+        loadReservations();
+      } else {
+        errorMsg.style.display = "block";
+      }
+    }
+
+    function loadReservations() {
+      const list = document.getElementById("reservationList");
+      const reservations = JSON.parse(localStorage.getItem("reservations")) || [];
+
+      list.innerHTML = "";
+
+      if (reservations.length === 0) {
+        list.innerHTML = "<p>No reservations found.</p>";
+        return;
+      }
+
+      reservations.forEach((r, i) => {
+        const card = document.createElement("div");
+        card.className = "reservation-card";
+        card.innerHTML = `
+          <p><strong>${i + 1}. ${r.name}</strong> (${r.phone})</p>
+          <p><b>Service:</b> ${r.serviceType}</p>
+          <p><b>Date:</b> ${r.date} — <b>Time:</b> ${r.time}</p>
+          <p><b>Pickup:</b> ${r.pickup}</p>
+          <p><b>Destination:</b> ${r.destination}</p>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function clearReservations() {
+      if (confirm("Are you sure you want to delete all reservations?")) {
+        localStorage.removeItem("reservations");
+        loadReservations();
+      }
+    }
+  </script>
+</body>
+</html>

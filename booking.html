@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking | Ride W Me Cabo</title>
+
+  <!-- Fuentes y estilos globales existentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/services.css">
+  <link rel="stylesheet" href="styles/mobile.css">
+
+  <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
+
+
+  <!-- Flatpickr (calendario pro) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <style>
+    /* Estilos específicos de booking */
+    .booking-wrapper {
+      max-width: 900px;
+      margin: 40px auto 70px;
+      padding: 20px;
+    }
+
+    .booking-card {
+      background: #141414;
+      padding: 28px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+
+    .booking-card h2 {
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 1.9rem;
+    }
+
+    .booking-subtitle {
+      text-align: center;
+      color: #bfbfbf;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+    }
+
+    .service-summary {
+      background: #101010;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .service-summary-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #aaa;
+    }
+
+    #selectedServiceName {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    #selectedServicePrice {
+      font-size: 0.95rem;
+      color: var(--gold);
+    }
+
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .booking-grid-full {
+      grid-column: 1 / -1;
+    }
+
+    .booking-form label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #ddd;
+    }
+
+    .booking-form input,
+    .booking-form select,
+    .booking-form textarea {
+      width: 100%;
+      padding: 11px;
+      border-radius: 10px;
+      border: none;
+      background-color: #1f1f1f;
+      color: #fff;
+      margin-bottom: 14px;
+      font-size: 0.98rem;
+    }
+
+    .booking-form textarea {
+      resize: none;
+      min-height: 90px;
+    }
+
+    .booking-form button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      box-shadow: 0 7px 20px rgba(245,210,106,0.3);
+      transition: 0.25s ease;
+      margin-top: 8px;
+    }
+
+    .booking-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 26px rgba(245,210,106,0.4);
+    }
+
+    .small-note {
+      font-size: 0.8rem;
+      color: #999;
+      margin-top: -8px;
+      margin-bottom: 10px;
+    }
+
+    .unavailable-box {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #101010;
+      border: 1px solid rgba(255,255,255,0.09);
+      font-size: 0.88rem;
+      color: #cfcfcf;
+    }
+
+    .unavailable-box strong {
+      color: var(--gold);
+    }
+
+    .unavailable-list {
+      margin-top: 6px;
+      max-height: 110px;
+      overflow-y: auto;
+      font-size: 0.86rem;
+    }
+
+    @media (max-width: 768px) {
+      .booking-card {
+        padding: 20px;
+      }
+      .booking-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="services-body">
+
+  <!-- HEADER -->
+  <header class="rw-header">
+    <div class="rw-header-overlay"></div>
+
+    <!-- Contenedor del logo -->
+    <div class="rw-header-logo-box">
+        <img src="Images/ridewmelogo.png" alt="Ride W Me Logo" class="rw-header-logo">
+    </div>
+
+    <!-- Título -->
+    <h1 class="rw-header-title">¡RIDE W ME!</h1>
+    <p class="rw-header-subtitle">Transportation Services</p>
+
+    <!-- Botones -->
+    <nav class="rw-header-buttons">
+        <a href="index.html" class="luxury-btn secondary">Home</a>
+        <a href="services.html" class="luxury-btn secondary">Services</a>
+        <a href="booking.html" class="luxury-btn primary">Book Now</a>
+        <a href="contact.html" class="luxury-btn secondary">Contact Us</a>
+    </nav>
+</header>
+
+
+  <!-- CONTENIDO -->
+  <div class="booking-wrapper">
+    <div class="booking-card">
+      <h2>Book Your Ride</h2>
+      <p class="booking-subtitle">Choose your service, select your dates and send your reservation by email and WhatsApp.</p>
+
+      <!-- Resumen de servicio -->
+      <div class="service-summary">
+        <div class="service-summary-title">Selected service</div>
+        <div id="selectedServiceName">None selected</div>
+        <div id="selectedServicePrice">—</div>
+      </div>
+
+      <form id="bookingForm" class="booking-form">
+        <div class="booking-grid">
+
+          <!-- Nombre -->
+          <div>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" required placeholder="Your full name">
+          </div>
+
+          <!-- Teléfono -->
+          <div>
+            <label for="phone">Phone / WhatsApp</label>
+            <input type="tel" id="phone" required placeholder="+52 624...">
+          </div>
+
+          <!-- Email -->
+<div>
+  <label for="email">Email</label>
+  <input type="email" id="email" required placeholder="example@gmail.com">
+</div>
+
+
+          <!-- Tipo de servicio -->
+          <div>
+            <label for="serviceType">Service Type</label>
+            <select id="serviceType" required>
+              <option value="">Select service</option>
+              <option value="Airport Transfer">Airport Transfer</option>
+              <option value="One Way">One Way</option>
+              <option value="Round Trip">Round Trip</option>
+              <option value="Open Service (per hour)">Open Service (per hour)</option>
+            </select>
+          </div>
+
+          <!-- Pasajeros -->
+          <div>
+            <label for="passengers">Passengers</label>
+            <select id="passengers" required>
+              <option value="">Choose</option>
+              <option value="1-2">1–2</option>
+              <option value="3-4">3–4</option>
+              <option value="5-6">5–6</option>
+            </select>
+          </div>
+
+          <!-- Pickup rápido -->
+          <div class="booking-grid-full">
+            <label for="pickupPreset">Pickup Location</label>
+            <select id="pickupPreset">
+              <option value="">Select a popular location</option>
+              <option value="Acre Restaurant">Acre Restaurant</option>
+              <option value="Cabo del Sol">Cabo del Sol</option>
+              <option value="Cabo San Lucas Marina">Cabo San Lucas Marina</option>
+              <option value="Cabo San Lucas Downtown">Cabo San Lucas Downtown</option>
+              <option value="Edith's">Edith's</option>
+              <option value="El Farallon">El Farallon</option>
+              <option value="Flora Farms">Flora Farms</option>
+              <option value="Jazz on the Rocks at Sunset Point">Jazz on the Rocks at Sunset Point</option>
+              <option value="Los Cabos International Airport (SJD)">Los Cabos International Airport (SJD)</option>
+              <option value="Medano Beach">Medano Beach</option>
+              <option value="Montage Los Cabos">Montage Los Cabos</option>
+              <option value="San José del Cabo Downtown">San José del Cabo Downtown</option>
+              <option value="Sunset Monalisa">Sunset Monalisa</option>
+              <option value="Custom">Other / Custom Location</option>
+            </select>
+            <input type="text" id="pickupCustom" placeholder="Custom pickup address" style="display:none; margin-top:6px;">
+            <div class="small-note">Select a known place or choose “Custom” to write your own location.</div>
+          </div>
+
+          <!-- Destination -->
+          <div class="booking-grid-full">
+            <label for="destinationPreset">Destination</label>
+            <select id="destinationPreset">
+              <option value="">Select a popular location</option>
+              <option value="Acre Restaurant">Acre Restaurant</option>
+              <option value="Cabo del Sol">Cabo del Sol</option>
+              <option value="Cabo San Lucas Marina">Cabo San Lucas Marina</option>
+              <option value="Cabo San Lucas Downtown">Cabo San Lucas Downtown</option>
+              <option value="Edith's">Edith's</option>
+              <option value="El Farallon">El Farallon</option>
+              <option value="Flora Farms">Flora Farms</option>
+              <option value="Jazz on the Rocks at Sunset Point">Jazz on the Rocks at Sunset Point</option>
+              <option value="Los Cabos International Airport (SJD)">Los Cabos International Airport (SJD)</option>
+              <option value="Medano Beach">Medano Beach</option>
+              <option value="Montage Los Cabos">Montage Los Cabos</option>
+              <option value="San José del Cabo Downtown">San José del Cabo Downtown</option>
+              <option value="Sunset Monalisa">Sunset Monalisa</option>
+              <option value="Custom">Other / Custom Destination</option>
+            </select>
+            <input type="text" id="destinationCustom" placeholder="Custom destination" style="display:none; margin-top:6px;">
+          </div>
+
+          <!-- Fecha ida -->
+          <div>
+            <label for="date">Date (Departure)</label>
+            <input type="text" id="date" placeholder="Select date" readonly required>
+          </div>
+
+          <!-- Hora ida -->
+          <div>
+            <label for="time">Time (Departure)</label>
+            <input type="time" id="time" required>
+          </div>
+
+          <!-- Fecha regreso (solo Round Trip) -->
+          <div id="returnDateWrapper" style="display:none;">
+            <label for="returnDate">Return Date</label>
+            <input type="text" id="returnDate" placeholder="Select return date">
+          </div>
+
+          <!-- Hora regreso -->
+          <div id="returnTimeWrapper" style="display:none;">
+            <label for="returnTime">Return Time</label>
+            <input type="time" id="returnTime">
+          </div>
+
+          <!-- Horas de servicio (Open Service) -->
+          <div id="hoursWrapper" style="display:none;">
+            <label for="hours">Service Hours (Open Service)</label>
+            <select id="hours">
+              <option value="">Select hours</option>
+              <option value="2">2 hours</option>
+              <option value="3">3 hours</option>
+              <option value="4">4 hours</option>
+              <option value="5">5 hours</option>
+              <option value="6">6+ hours</option>
+            </select>
+          </div>
+
+          <!-- Notas -->
+          <div class="booking-grid-full">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" placeholder="Flight number, special requests, hotel room, etc."></textarea>
+          </div>
+
+        </div>
+
+        <button type="submit">Confirm & Send Reservation</button>
+
+        <div class="unavailable-box">
+          <strong>Unavailable / booked dates:</strong>
+          <div id="unavailableList" class="unavailable-list">
+            Loading dates...
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
+  </footer>
+
+  <!-- Librerías -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <script>
+    // ⚙️ CONFIG
+    const WHATSAPP_NUMBER = "526241181978"; // 🔁 Cambia por tu número real SIN +, ej: 526241234567
+
+    emailjs.init("Ed5Qh2Qk81A6fHcRR"); // tu public key
+
+    // Mapa de precios por servicio
+    const SERVICE_PRICES = {
+      "Airport Transfer": "$80 USD",
+      "One Way": "$100 USD",
+      "Round Trip": "$160 USD",
+      "Open Service (per hour)": "$50 USD / hr"
+    };
+
+    const bookingForm = document.getElementById("bookingForm");
+    const serviceTypeEl = document.getElementById("serviceType");
+    const pickupPreset = document.getElementById("pickupPreset");
+    const pickupCustom = document.getElementById("pickupCustom");
+    const destinationPreset = document.getElementById("destinationPreset");
+    const destinationCustom = document.getElementById("destinationCustom");
+    const returnDateWrapper = document.getElementById("returnDateWrapper");
+    const returnTimeWrapper = document.getElementById("returnTimeWrapper");
+    const hoursWrapper = document.getElementById("hoursWrapper");
+    const unavailableListEl = document.getElementById("unavailableList");
+    const selectedServiceNameEl = document.getElementById("selectedServiceName");
+    const selectedServicePriceEl = document.getElementById("selectedServicePrice");
+
+    // Obtener fechas ocupadas desde localStorage
+    function getDisabledDates() {
+      const saved = JSON.parse(localStorage.getItem("reservations")) || [];
+      const dates = new Set();
+      saved.forEach(r => {
+        if (r.date) dates.add(r.date);
+        if (r.returnDate) dates.add(r.returnDate);
+      });
+      return Array.from(dates);
+    }
+
+    const disabledDates = getDisabledDates();
+
+    // Mostrar lista de fechas ocupadas
+    function renderUnavailableList() {
+      if (disabledDates.length === 0) {
+        unavailableListEl.textContent = "All dates currently available.";
+        return;
+      }
+      unavailableListEl.innerHTML = "";
+      disabledDates.forEach(d => {
+        const p = document.createElement("div");
+        p.textContent = d;
+        unavailableListEl.appendChild(p);
+      });
+    }
+    renderUnavailableList();
+
+    // Flatpickr para fecha de salida y regreso
+    const datePicker = flatpickr("#date", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      disable: disabledDates
+    });
+
+    const returnDatePicker = flatpickr("#returnDate", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      disable: disabledDates
+    });
+
+    function updateServiceUI() {
+      const sv = serviceTypeEl.value;
+
+      // Actualizar resumen de servicio + precio
+      if (sv) {
+        selectedServiceNameEl.textContent = sv;
+        selectedServicePriceEl.textContent = SERVICE_PRICES[sv] || "Price on request";
+      } else {
+        selectedServiceNameEl.textContent = "None selected";
+        selectedServicePriceEl.textContent = "—";
+      }
+
+      // Lógica de campos según servicio
+      if (sv === "Round Trip") {
+        returnDateWrapper.style.display = "block";
+        returnTimeWrapper.style.display = "block";
+        hoursWrapper.style.display = "none";
+      } else if (sv === "Open Service (per hour)") {
+        hoursWrapper.style.display = "block";
+        returnDateWrapper.style.display = "none";
+        returnTimeWrapper.style.display = "none";
+      } else {
+        returnDateWrapper.style.display = "none";
+        returnTimeWrapper.style.display = "none";
+        hoursWrapper.style.display = "none";
+      }
+    }
+
+    // Cambio de tipo de servicio
+    serviceTypeEl.addEventListener("change", updateServiceUI);
+
+    // Pickup custom
+    pickupPreset.addEventListener("change", () => {
+      if (pickupPreset.value === "Custom") {
+        pickupCustom.style.display = "block";
+        pickupCustom.required = true;
+      } else {
+        pickupCustom.style.display = "none";
+        pickupCustom.required = false;
+      }
+    });
+
+    // Destination custom
+    destinationPreset.addEventListener("change", () => {
+      if (destinationPreset.value === "Custom") {
+        destinationCustom.style.display = "block";
+        destinationCustom.required = true;
+      } else {
+        destinationCustom.style.display = "none";
+        destinationCustom.required = false;
+      }
+    });
+
+    // Preseleccionar servicio desde ?service= en la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedService = urlParams.get("service");
+    if (selectedService) {
+      serviceTypeEl.value = selectedService;
+      updateServiceUI();
+    } else {
+      updateServiceUI();
+    }
+
+    // Alert bonito reutilizando CSS .custom-alert (services.css)
+    function showAlert(message, isError = false) {
+      const existing = document.querySelector(".custom-alert");
+      if (existing) {
+        existing.classList.remove("error", "show");
+        existing.textContent = message;
+        if (isError) existing.classList.add("error");
+        setTimeout(() => existing.classList.add("show"), 50);
+        setTimeout(() => {
+          existing.classList.remove("show");
+          setTimeout(() => existing.remove(), 400);
+        }, 4000);
+        return;
+      }
+
+      const a = document.createElement("div");
+      a.className = "custom-alert" + (isError ? " error" : "");
+      a.textContent = message;
+      document.body.appendChild(a);
+
+      setTimeout(() => a.classList.add("show"), 50);
+      setTimeout(() => {
+        a.classList.remove("show");
+        setTimeout(() => a.remove(), 400);
+      }, 4000);
+    }
+
+    // Envío del formulario
+    bookingForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const serviceType = serviceTypeEl.value;
+      const passengers = document.getElementById("passengers").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const returnDate = document.getElementById("returnDate").value;
+      const returnTime = document.getElementById("returnTime").value;
+      const hours = document.getElementById("hours").value;
+      const notes = document.getElementById("notes").value.trim();
+
+      const pickup = pickupPreset.value === "Custom"
+        ? pickupCustom.value.trim()
+        : pickupPreset.value;
+
+      const destination = destinationPreset.value === "Custom"
+        ? destinationCustom.value.trim()
+        : destinationPreset.value;
+
+      if (!name || !phone || !serviceType || !date || !time || !pickup || !destination) {
+        showAlert("Please complete all required fields.", true);
+        return;
+      }
+
+      if (serviceType === "Round Trip" && (!returnDate || !returnTime)) {
+        showAlert("Please select both return date and time for Round Trip.", true);
+        return;
+      }
+
+      // Objeto estándar de reserva (compatible con admin.html)
+      const reservation = {
+  name,
+  phone,
+  email: document.getElementById("email").value.trim(), // ← AÑADIDO
+  serviceType,
+  passengers,
+  date,
+  time,
+  pickup,
+  destination,
+  returnDate: serviceType === "Round Trip" ? returnDate : "",
+  returnTime: serviceType === "Round Trip" ? returnTime : "",
+  hours: serviceType === "Open Service (per hour)" ? hours : "",
+  notes
+};
+
+
+      // Guardar en localStorage
+      let saved = JSON.parse(localStorage.getItem("reservations")) || [];
+      saved.push(reservation);
+      localStorage.setItem("reservations", JSON.stringify(saved));
+
+      // Enviar por EmailJS
+      emailjs.send("service_8zcytcr", "template_7tkwggo", reservation)
+        .then(() => {
+          // Enviar por WhatsApp
+          sendWhatsApp(reservation);
+          showAlert("✅ Reservation sent successfully!");
+          bookingForm.reset();
+          updateServiceUI();
+        })
+        .catch((err) => {
+          console.error("Email send error:", err);
+          showAlert("❌ Error sending your reservation. Try again.", true);
+        });
+    });
+
+    function sendWhatsApp(r) {
+      let msg = `New Reservation - Ride W Me Cabo%0A%0A` +
+        `Name: ${r.name}%0A` +
+        `Phone: ${r.phone}%0A` +
+        `Service: ${r.serviceType}%0A` +
+        `Passengers: ${r.passengers}%0A` +
+        `Pickup: ${r.pickup}%0A` +
+        `Destination: ${r.destination}%0A` +
+        `Date: ${r.date} at ${r.time}%0A`;
+
+      if (r.returnDate && r.returnTime) {
+        msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
+      }
+      if (r.hours) {
+        msg += `Hours: ${r.hours}%0A`;
+      }
+      if (r.notes) {
+        msg += `%0ANotes: ${r.notes}%0A`;
+      }
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+      window.open(url, "_blank");
+    }
+  </script>
+</body>
+</html>

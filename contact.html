@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Ride W Me Cabo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/services.css">
+  <link rel="stylesheet" href="styles/mobile.css">
+
+  <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
+
+
+  <style>
+    .contact-wrapper {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .contact-card {
+      background: #141414;
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+
+    .contact-card h3 {
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .contact-card p {
+      color: #bbb;
+      margin: 4px 0;
+    }
+
+    .contact-card a {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* Contact Form */
+    .contact-form {
+      margin-top: 40px;
+      background: #141414;
+      padding: 35px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    }
+
+    .contact-form h2 {
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+    }
+
+    .contact-form label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background-color: #1f1f1f;
+      color: white;
+      margin-bottom: 18px;
+      font-size: 1rem;
+    }
+
+    .contact-form textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    .contact-form button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 5px 20px rgba(245,210,106,0.25);
+      transition: 0.3s;
+    }
+
+    .contact-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 25px rgba(245,210,106,0.35);
+    }
+
+    .contact-success {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #16a34a;
+      color: white;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Map style */
+    .map-container {
+      margin-top: 40px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="rw-header">
+    <div class="rw-header-overlay"></div>
+
+    <!-- Contenedor del logo -->
+    <div class="rw-header-logo-box">
+        <img src="Images/ridewmelogo.png" alt="Ride W Me Logo" class="rw-header-logo">
+    </div>
+
+    <!-- Título -->
+    <h1 class="rw-header-title">¡RIDE W ME!</h1>
+    <p class="rw-header-subtitle">Transportation Services</p>
+
+    <!-- Botones -->
+    <nav class="rw-header-buttons">
+        <a href="index.html" class="luxury-btn secondary">Home</a>
+        <a href="services.html" class="luxury-btn secondary">Services</a>
+        <a href="booking.html" class="luxury-btn primary">Book Now</a>
+        <a href="contact.html" class="luxury-btn secondary">Contact Us</a>
+    </nav>
+</header>
+
+
+  <!-- CONTENT -->
+  <div class="contact-wrapper">
+
+    <!-- CARDS -->
+    <div class="contact-grid">
+
+      <div class="contact-card">
+        <h3>📱 WhatsApp</h3>
+        <p>Fastest way to contact us</p>
+        <a href="https://wa.me/526242426741" target="_blank">Chat Now</a>
+      </div>
+
+      <div class="contact-card">
+        <h3>📞 Phone</h3>
+        <p>Call us anytime</p>
+        <a href="tel:+526241234567">+52 624 242 6741</a>
+      </div>
+
+      <div class="contact-card">
+        <h3>📧 Email</h3>
+        <p>We respond within minutes</p>
+        <a href="mailto:ridewmecabo@gmail.com">ridewmecabo@gmail.com</a>
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="contact-form">
+      <h2>Send Us a Message</h2>
+
+      <form id="contactForm">
+
+        <label>Your Name</label>
+        <input type="text" id="cname" required>
+
+        <label>Your Email</label>
+        <input type="email" id="cemail" required>
+
+        <label>Your Message</label>
+        <textarea id="cmessage" required></textarea>
+
+        <button type="submit">Send Message</button>
+
+        <div id="contactSuccess" class="contact-success">🎉 Your message has been sent!</div>
+
+      </form>
+    </div>
+
+    <!-- MAP -->
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps?q=Los+Cabos+Baja+California+Sur&output=embed"
+        width="100%" 
+        height="350" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+    </div>
+
+  </div>
+
+  <footer>
+    © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
+  </footer>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <script>
+    emailjs.init("Ed5Qh2Qk81A6fHcRR");
+
+    const form = document.getElementById("contactForm");
+    const successMsg = document.getElementById("contactSuccess");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const data = {
+        cname: document.getElementById("cname").value,
+        cemail: document.getElementById("cemail").value,
+        cmessage: document.getElementById("cmessage").value
+      };
+
+      emailjs.send("service_8zcytcr", "template_7tkwggo", data)
+        .then(() => {
+          successMsg.style.display = "block";
+          form.reset();
+          setTimeout(() => successMsg.style.display = "none", 3000);
+        })
+        .catch(() => {
+          alert("❌ Error sending your message. Try again.");
+        });
+    });
+  </script>
+
+</body>
+</html>

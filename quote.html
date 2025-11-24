@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get a Quote | Ride W Me Cabo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/services.css">
+  <link rel="stylesheet" href="styles/mobile.css">
+
+  <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
+
+
+  <style>
+    /* Estilos específicos de esta página (solo lo necesario) */
+    .quote-wrapper {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .quote-card {
+      background: #141414;
+      padding: 30px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    }
+
+    .quote-card h2 {
+      color: var(--gold);
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+    }
+
+    .quote-form label {
+      display: block;
+      margin-bottom: 6px;
+      color: #ddd;
+      font-size: 0.95rem;
+    }
+
+    .quote-form input,
+    .quote-form select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background-color: #1f1f1f;
+      color: white;
+      margin-bottom: 18px;
+      font-size: 1rem;
+    }
+
+    .quote-form button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(245,210,106,0.25);
+      transition: 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .quote-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(245,210,106,0.35);
+    }
+
+    .quote-alert {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #16a34a;
+      color: white;
+      text-align: center;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="rw-header">
+    <div class="rw-header-overlay"></div>
+
+    <!-- Contenedor del logo -->
+    <div class="rw-header-logo-box">
+        <img src="Images/ridewmelogo.png" alt="Ride W Me Logo" class="rw-header-logo">
+    </div>
+
+    <!-- Título -->
+    <h1 class="rw-header-title">¡RIDE W ME!</h1>
+    <p class="rw-header-subtitle">Transportation Services</p>
+
+    <!-- Botones -->
+    <nav class="rw-header-buttons">
+        <a href="index.html" class="luxury-btn secondary">Home</a>
+        <a href="services.html" class="luxury-btn secondary">Services</a>
+        <a href="booking.html" class="luxury-btn primary">Book Now</a>
+        <a href="contact.html" class="luxury-btn secondary">Contact Us</a>
+    </nav>
+</header>
+
+
+  <!-- CONTENT -->
+  <div class="quote-wrapper">
+    <div class="quote-card">
+      <h2>Request Your Transportation Quote</h2>
+
+      <form id="quoteForm" class="quote-form">
+
+        <label>Full Name</label>
+        <input type="text" id="name" placeholder="Your full name" required>
+
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="+52 624..." required>
+
+        <label>Service Needed</label>
+        <select id="service" required>
+          <option value="">Select service</option>
+          <option value="Airport Transfer">Airport Transfer</option>
+          <option value="One Way">One Way</option>
+          <option value="Round Trip">Round Trip</option>
+          <option value="Open Service (per hour)">Open Service (per hour)</option>
+        </select>
+
+        <label>Passengers</label>
+        <select id="passengers" required>
+          <option value="">Choose</option>
+          <option value="1-2">1–2 passengers</option>
+          <option value="3-4">3–4 passengers</option>
+          <option value="5-6">5–6 passengers</option>
+        </select>
+
+        <label>Pickup Location</label>
+        <input type="text" id="pickup" placeholder="Pickup address" required>
+
+        <label>Destination</label>
+        <input type="text" id="destination" placeholder="Destination" required>
+
+        <label>Date & Time</label>
+        <input type="datetime-local" id="datetime" required>
+
+        <button type="submit">Submit Quote Request</button>
+
+        <div id="quoteAlert" class="quote-alert">🎉 Your quote request has been sent!</div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
+  </footer>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <script>
+    emailjs.init("Ed5Qh2Qk81A6fHcRR");
+
+    const quoteForm = document.getElementById("quoteForm");
+    const quoteAlert = document.getElementById("quoteAlert");
+
+    quoteForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const quoteData = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        service: document.getElementById("service").value,
+        passengers: document.getElementById("passengers").value,
+        pickup: document.getElementById("pickup").value,
+        destination: document.getElementById("destination").value,
+        datetime: document.getElementById("datetime").value
+      };
+
+      emailjs
+        .send("service_8zcytcr", "template_7tkwggo", quoteData)
+        .then(() => {
+          quoteAlert.style.display = "block";
+          quoteForm.reset();
+          setTimeout(() => (quoteAlert.style.display = "none"), 3000);
+        })
+        .catch(() => {
+          alert("❌ Error sending your request. Try again.");
+        });
+    });
+  </script>
+
+</body>
+</html>
