@@ -241,7 +241,8 @@
         cmessage: document.getElementById("cmessage").value
       };
 
-      emailjs.send("service_8zcytcr", "template_7tkwggo", data)
+     emailjs.send("service_8zcytcr", "template_contact", data)
+
         .then(() => {
           successMsg.style.display = "block";
           form.reset();
