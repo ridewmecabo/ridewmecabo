@@ -3,118 +3,130 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ride W Me — Services</title>
+  <title>Services | Ride W Me Cabo</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/services.css">
   <link rel="stylesheet" href="styles/mobile.css">
-
   <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
-
 </head>
-
 <body class="services-body">
 
-  <!-- HEADER -->
-  <header class="rw-header">
-    <div class="rw-header-overlay"></div>
+  <!-- HEADER (más bajo) -->
+  <header class="new-header inner-header">
+    <div class="header-overlay"></div>
+    <img src="Images/expedition.png" alt="Luxury SUV" class="header-expedition">
 
-    <!-- Contenedor del logo -->
-    <div class="rw-header-logo-box">
-        <img src="Images/ridewmelogo.png" alt="Ride W Me Logo" class="rw-header-logo">
+    <div class="header-top">
+      <div class="logo-text">¡RIDE W ME!</div>
+      <div class="menu-icon" id="openMenu">☰</div>
     </div>
 
-    <!-- Título -->
-    <h1 class="rw-header-title">¡RIDE W ME!</h1>
-    <p class="rw-header-subtitle">Transportation Services</p>
+    <div class="header-content">
+      <h1>Our Services</h1>
+      <p>Airport, dinners, villas and private events in Los Cabos.</p>
+    </div>
+  </header>
 
-    <!-- Botones -->
-    <nav class="rw-header-buttons">
-        <a href="index.html" class="luxury-btn secondary">Home</a>
-        <a href="services.html" class="luxury-btn secondary">Services</a>
-        <a href="booking.html" class="luxury-btn primary">Book Now</a>
-        <a href="contact.html" class="luxury-btn secondary">Contact Us</a>
+  <!-- SIDE MENU -->
+  <div id="sideMenu" class="side-menu">
+    <div class="close-btn" id="closeMenu">×</div>
+    <nav class="side-menu-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="booking.html">Book Now</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="admin.html">Admin Panel</a>
     </nav>
-</header>
-
+  </div>
+  <div id="menuBackdrop" class="menu-backdrop"></div>
 
   <!-- CONTENT -->
-  <div id="siteContent">
-    <main class="services-wrapper">
-      <section class="services-grid" aria-label="Services">
+  <main class="services-wrapper">
+    <section class="section">
+      <h2 class="section-title">Choose Your Service</h2>
+      <p class="section-subtitle">Click on any service to book and send your reservation online.</p>
 
-        <!-- Airport Transfer -->
-        <article class="service-card" aria-labelledby="s-airport">
-          <div class="service-top">
-            <div class="service-icon">🛫</div>
-            <div>
-              <h3 id="s-airport" class="service-title">Airport to Zone 1 (Puerto Los Cabos - Palmilla)</h3>
-              <p class="service-desc">Private and comfortable ride to or from Los Cabos Airport.</p>
-            </div>
-          </div>
-
+      <div class="services-grid">
+        <!-- Airport -->
+        <article class="service-card">
+          <h3>Airport Transfer</h3>
+          <p>Private and comfortable ride to or from Los Cabos International Airport (SJD).</p>
           <div class="service-footer">
-            <div class="service-price">$80 USD</div>
-            <a href="booking.html?service=Airport%20Transfer" class="book-btn">Book Now</a>
+            <span class="service-price">$80 USD</span>
+            <div class="btn-row">
+              <a href="booking.html?service=Airport%20Transfer" class="mini-btn">Book Now</a>
+              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
+            </div>
           </div>
         </article>
 
         <!-- One Way -->
-        <article class="service-card" aria-labelledby="s-oneway">
-          <div class="service-top">
-            <div class="service-icon">➡️</div>
-            <div>
-              <h3 id="s-oneway" class="service-title">One Way Transfer</h3>
-              <p class="service-desc">Exclusive one-way trip to your destination in Los Cabos.</p>
-            </div>
-          </div>
-
+        <article class="service-card">
+          <h3>One Way Transfer</h3>
+          <p>Point-to-point private ride between hotels, villas, marina and restaurants.</p>
           <div class="service-footer">
-            <div class="service-price">$100 USD</div>
-            <a href="booking.html?service=One%20Way" class="book-btn">Book Now</a>
+            <span class="service-price">$100 USD</span>
+            <div class="btn-row">
+              <a href="booking.html?service=One%20Way" class="mini-btn">Book Now</a>
+              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
+            </div>
           </div>
         </article>
 
         <!-- Round Trip -->
-        <article class="service-card" aria-labelledby="s-round">
-          <div class="service-top">
-            <div class="service-icon">🔁</div>
-            <div>
-              <h3 id="s-round" class="service-title">Round Trip</h3>
-              <p class="service-desc">Round trip service with luxury comfort and reliability.</p>
-            </div>
-          </div>
-
+        <article class="service-card">
+          <h3>Round Trip</h3>
+          <p>Pickup, waiting time and return ride in complete comfort.</p>
           <div class="service-footer">
-            <div class="service-price">$160 USD</div>
-            <a href="booking.html?service=Round%20Trip" class="book-btn">Book Now</a>
+            <span class="service-price">$160 USD</span>
+            <div class="btn-row">
+              <a href="booking.html?service=Round%20Trip" class="mini-btn">Book Now</a>
+              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
+            </div>
           </div>
         </article>
 
         <!-- Open Service -->
-        <article class="service-card" aria-labelledby="s-open">
-          <div class="service-top">
-            <div class="service-icon">🕒</div>
-            <div>
-              <h3 id="s-open" class="service-title">Open Service (per hour)</h3>
-              <p class="service-desc">Flexible hourly service for personalized experiences.</p>
+        <article class="service-card">
+          <h3>Open Service (per hour)</h3>
+          <p>Flexible transportation by the hour for events, dinners or custom itineraries.</p>
+          <div class="service-footer">
+            <span class="service-price">$50 USD / hr</span>
+            <div class="btn-row">
+              <a href="booking.html?service=Open%20Service%20(per%20hour)" class="mini-btn">Book Now</a>
+              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
             </div>
           </div>
-
-          <div class="service-footer">
-            <div class="service-price">$50 USD / hr</div>
-            <a href="booking.html?service=Open%20Service%20(per%20hour)" class="book-btn">Book Now</a>
-          </div>
         </article>
+      </div>
+    </section>
+  </main>
 
-      </section>
-    </main>
+  <footer class="site-footer">
+    © 2025 Ride W Me Cabo — Premium Transportation in Los Cabos
+  </footer>
 
-    <footer>
-      © 2025 Ride W Me Transportation Services — All rights reserved.
-    </footer>
-  </div>
+  <!-- MENU SCRIPT -->
+  <script>
+    const openBtn = document.getElementById("openMenu");
+    const closeBtn = document.getElementById("closeMenu");
+    const menu = document.getElementById("sideMenu");
+    const backdrop = document.getElementById("menuBackdrop");
 
+    if (openBtn && closeBtn && menu && backdrop) {
+      openBtn.onclick = () => {
+        menu.classList.add("open");
+        backdrop.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
+      closeBtn.onclick = () => {
+        menu.classList.remove("open");
+        backdrop.classList.remove("show");
+        document.body.style.overflow = "auto";
+      };
+      backdrop.onclick = closeBtn.onclick;
+    }
+  </script>
 </body>
 </html>
