@@ -5,63 +5,170 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ride W Me Cabo | Private Transportation</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/index.css">
   <link rel="stylesheet" href="styles/mobile.css">
-
   <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
-
 </head>
-<body class="index-body">
+<body>
 
-  <header class="rw-header">
-    <div class="rw-header-overlay"></div>
+  <!-- ========== HEADER HOME ========== -->
+  <header class="new-header home-header">
+    <div class="header-overlay"></div>
+    <img src="Images/expedition.png" alt="Luxury SUV" class="header-expedition">
 
-    <!-- Contenedor del logo -->
-    <div class="rw-header-logo-box">
-        <img src="Images/ridewmelogo.png" alt="Ride W Me Logo" class="rw-header-logo">
+    <div class="header-top">
+      <div class="logo-text">¡RIDE W ME!</div>
+      <div class="menu-icon" id="openMenu">☰</div>
     </div>
 
-    <!-- Título -->
-    <h1 class="rw-header-title">¡RIDE W ME!</h1>
-    <p class="rw-header-subtitle">Transportation Services</p>
+    <div class="header-content">
+      <h1>¡RIDE W ME!</h1>
+      <p>Luxury Transportation Services</p>
+      <p class="subline">Premium Airport & Private Rides in Los Cabos</p>
 
-    <!-- Botones -->
-    <nav class="rw-header-buttons">
-        <a href="index.html" class="luxury-btn secondary">Home</a>
-        <a href="services.html" class="luxury-btn secondary">Services</a>
-        <a href="booking.html" class="luxury-btn primary">Book Now</a>
-        <a href="contact.html" class="luxury-btn secondary">Contact Us</a>
+      <div class="hero-buttons">
+        <a href="booking.html" class="hero-btn primary">Book Now</a>
+        <a href="services.html" class="hero-btn ghost">View Services</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== SIDE MENU GLOBAL ========== -->
+  <div id="sideMenu" class="side-menu">
+    <div class="close-btn" id="closeMenu">×</div>
+    <nav class="side-menu-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="booking.html">Book Now</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="admin.html">Admin Panel</a>
     </nav>
-</header>
+  </div>
+  <div id="menuBackdrop" class="menu-backdrop"></div>
 
+  <!-- ========== MAIN CONTENT ========== -->
+  <main>
 
+    <!-- Why Ride W Me -->
+    <section class="section">
+      <h2 class="section-title">Why Ride W Me Cabo?</h2>
+      <p class="section-subtitle">Private, safe and reliable transportation for airport, hotels, villas and restaurants in Los Cabos.</p>
 
-  <section class="vehicle-section" id="vehicle">
-    <div class="vehicle-container">
-      <div class="vehicle-image">
-        <img src="Images/expedition1.png" alt="Ford Expedition 2023">
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Professional Driver</h3>
+          <p>Bilingual, experienced and focused on your comfort and safety.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Luxury SUV</h3>
+          <p>Spacious Ford Expedition, leather interior and cold A/C for up to 6 passengers.</p>
+        </div>
+        <div class="feature-card">
+          <h3>On-Time Service</h3>
+          <p>Flight tracking and punctual pickups for airport arrivals and departures.</p>
+        </div>
       </div>
-      <div class="vehicle-info">
-        <h2>Ford Expedition Platinum</h2>
-        <p>Experience unmatched comfort and sophistication with our <strong>luxury SUV</strong>. Perfect for airport transfers, private tours, and VIP transportation across Los Cabos. Ride W Me Cabo ensures a first-class journey, every time.</p>
-        
-        <ul class="vehicle-features">
-          <li>Leather interior & tri-zone A/C</li>
-          <li>Up to 7 passengers with luggage</li>
-          <li>Cold bottled water & amenities</li>
-          <li>Professional bilingual driver</li>
-        </ul>
+    </section>
 
-        <a href="services.html" class="luxury-btn primary">Explore Services</a>
+    <!-- Services preview -->
+    <section class="section">
+      <h2 class="section-title">Popular Services</h2>
+
+      <div class="services-grid home-grid">
+        <article class="service-card">
+          <h3>Airport Transfer</h3>
+          <p>Private ride to or from Los Cabos International Airport (SJD).</p>
+          <div class="service-footer">
+            <span class="service-price">$80 USD</span>
+            <a href="booking.html?service=Airport%20Transfer" class="mini-btn">Book</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <h3>One Way Transfer</h3>
+          <p>Point-to-point transportation between hotels, villas and restaurants.</p>
+          <div class="service-footer">
+            <span class="service-price">$100 USD</span>
+            <a href="booking.html?service=One%20Way" class="mini-btn">Book</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <h3>Round Trip</h3>
+          <p>Pickup, waiting time and safe return to your accommodation.</p>
+          <div class="service-footer">
+            <span class="service-price">$160 USD</span>
+            <a href="booking.html?service=Round%20Trip" class="mini-btn">Book</a>
+          </div>
+        </article>
       </div>
-    </div>
-  </section>
 
-  <footer>
-    © 2025 Ride W Me Cabo | Designed for luxury travel in Los Cabos
+      <div class="centered-link">
+        <a href="services.html" class="text-link">See all services →</a>
+      </div>
+    </section>
+
+    <!-- Vehicle section -->
+    <section class="section dark-section">
+      <div class="vehicle-layout">
+        <div class="vehicle-text">
+          <h2 class="section-title">Ford Expedition Platinum</h2>
+          <p class="section-subtitle">
+            Travel with space, comfort and style. Perfect for airport transfers, dinners, golf days and private tours around Los Cabos.
+          </p>
+          <ul class="vehicle-list">
+            <li>Up to 6 passengers with luggage</li>
+            <li>Leather interior & tri-zone A/C</li>
+            <li>Cold bottled water & amenities</li>
+            <li>Phone chargers on board</li>
+          </ul>
+          <a href="booking.html" class="hero-btn primary small">Reserve Your Ride</a>
+        </div>
+        <div class="vehicle-img-box">
+          <img src="Images/expedition.png" alt="Ford Expedition" class="vehicle-img">
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick contact -->
+    <section class="section">
+      <h2 class="section-title">Need a ride soon?</h2>
+      <p class="section-subtitle">You can book online or contact us directly on WhatsApp for last-minute rides.</p>
+
+      <div class="contact-quick-grid">
+        <a class="contact-pill" href="https://wa.me/526242426741" target="_blank">📱 WhatsApp</a>
+        <a class="contact-pill" href="tel:+526242426741">📞 Call Now</a>
+        <a class="contact-pill" href="mailto:ridewmecabo@gmail.com">📧 Email</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
   </footer>
 
+  <!-- ===== MENU SCRIPT (igual en todas las páginas) ===== -->
+  <script>
+    const openBtn = document.getElementById("openMenu");
+    const closeBtn = document.getElementById("closeMenu");
+    const menu = document.getElementById("sideMenu");
+    const backdrop = document.getElementById("menuBackdrop");
+
+    if (openBtn && closeBtn && menu && backdrop) {
+      openBtn.onclick = () => {
+        menu.classList.add("open");
+        backdrop.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
+      closeBtn.onclick = () => {
+        menu.classList.remove("open");
+        backdrop.classList.remove("show");
+        document.body.style.overflow = "auto";
+      };
+      backdrop.onclick = closeBtn.onclick;
+    }
+  </script>
 </body>
 </html>
