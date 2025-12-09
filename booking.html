@@ -1,176 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Your Ride | Ride W Me Cabo</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/booking.css">
   <link rel="stylesheet" href="styles/mobile.css">
 
   <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
 </head>
+
 <body class="booking-body">
 
-  <!-- HEADER — MISMO DISEÑO QUE TODAS LAS PÁGINAS -->
-  <header class="rw-header">
-    <div class="rw-header-overlay"></div>
-    
-    <div class="rw-header-logo-box">
-      <img src="Images/ridewmelogo.png" alt="Ride W Me Logo" class="rw-header-logo">
-    </div>
+<!-- ============================================================
+     HEADER (IGUAL AL DE INDEX, SERVICES, CONTACT)
+============================================================ -->
+<header class="new-header inner-header">
 
-    <h1 class="rw-header-title">¡RIDE W ME!</h1>
-    <p class="rw-header-subtitle">Transportation Services</p>
+  <!-- Imagen Expedition -->
+  <img src="Images/expedition.png" alt="Expedition" class="header-expedition">
 
-    <nav class="rw-header-buttons">
-      <a href="index.html" class="luxury-btn secondary">Home</a>
-      <a href="services.html" class="luxury-btn secondary">Services</a>
-      <a href="booking.html" class="luxury-btn primary">Book Now</a>
-      <a href="contact.html" class="luxury-btn secondary">Contact</a>
-    </nav>
-  </header>
+  <!-- Overlay -->
+  <div class="header-overlay"></div>
 
-  <!-- CONTENIDO -->
-  <div class="booking-wrapper">
-    <div class="booking-card">
-      <h2 class="booking-title">Book Your Ride</h2>
-      <p class="booking-subtitle">Fast, simple and personalized — reserve your private ride now.</p>
-
-      <!-- Resumen de servicio -->
-      <div class="service-summary">
-        <span class="summary-label">Selected Service</span>
-        <span id="selectedServiceName">None selected</span>
-        <span id="selectedServicePrice">—</span>
-      </div>
-
-      <!-- FORMULARIO -->
-      <form id="bookingForm" class="booking-form">
-
-        <div class="booking-grid">
-
-          <!-- Nombre -->
-          <div>
-            <label for="name">Full Name</label>
-            <input type="text" id="name" required placeholder="Your full name">
-          </div>
-
-          <!-- Teléfono -->
-          <div>
-            <label for="phone">Phone / WhatsApp</label>
-            <input type="tel" id="phone" required placeholder="+52 624...">
-          </div>
-
-          <!-- Email -->
-          <div class="booking-grid-full">
-            <label for="email">Email (for confirmation)</label>
-            <input type="email" id="email" required placeholder="example@email.com">
-          </div>
-
-          <!-- Tipo de servicio -->
-          <div>
-            <label for="serviceType">Service Type</label>
-            <select id="serviceType" required>
-              <option value="">Select service</option>
-              <option value="Airport Transfer">Airport Transfer</option>
-              <option value="One Way">One Way</option>
-              <option value="Round Trip">Round Trip</option>
-              <option value="Open Service (per hour)">Open Service (per hour)</option>
-            </select>
-          </div>
-
-          <!-- Pasajeros -->
-          <div>
-            <label for="passengers">Passengers</label>
-            <select id="passengers" required>
-              <option value="">Choose</option>
-              <option value="1-2">1–2</option>
-              <option value="3-4">3–4</option>
-              <option value="5-6">5–6</option>
-            </select>
-          </div>
-
-          <!-- Pickup -->
-          <div class="booking-grid-full">
-            <label for="pickupPreset">Pickup Location</label>
-            <input list="pickupList" id="pickupPreset" placeholder="Type a location...">
-            <datalist id="pickupList"></datalist>
-
-            <div class="small-note">Popular hotels, restaurants, clubs & areas included.</div>
-          </div>
-
-          <!-- Destination -->
-          <div class="booking-grid-full">
-            <label for="destinationPreset">Destination</label>
-            <input list="destinationList" id="destinationPreset" placeholder="Type a destination...">
-            <datalist id="destinationList"></datalist>
-          </div>
-
-          <!-- Fecha ida -->
-          <div>
-            <label for="date">Date (Departure)</label>
-            <input type="date" id="date" required>
-          </div>
-
-          <!-- Hora ida -->
-          <div>
-            <label for="time">Time (Departure)</label>
-            <input type="time" id="time" required>
-          </div>
-
-          <!-- Fecha regreso / Round Trip -->
-          <div id="returnDateWrapper" style="display:none;">
-            <label for="returnDate">Return Date</label>
-            <input type="date" id="returnDate">
-          </div>
-
-          <!-- Hora regreso -->
-          <div id="returnTimeWrapper" style="display:none;">
-            <label for="returnTime">Return Time</label>
-            <input type="time" id="returnTime">
-          </div>
-
-          <!-- Open Service Hours -->
-          <div id="hoursWrapper" style="display:none;">
-            <label for="hours">Service Hours</label>
-            <select id="hours">
-              <option value="">Select hours</option>
-              <option value="2">2 hours</option>
-              <option value="3">3 hours</option>
-              <option value="4">4 hours</option>
-              <option value="5">5 hours</option>
-              <option value="6">6+ hours</option>
-            </select>
-          </div>
-
-          <!-- Notes -->
-          <div class="booking-grid-full">
-            <label for="notes">Notes (optional)</label>
-            <textarea id="notes" placeholder="Flight number, special requests, room number, etc."></textarea>
-          </div>
-        </div>
-
-        <button type="submit" class="booking-submit">Confirm & Send Reservation</button>
-
-        <!-- Fechas no disponibles -->
-        <div class="unavailable-box">
-          <strong>Unavailable / booked dates:</strong>
-          <div id="unavailableList" class="unavailable-list">Loading…</div>
-        </div>
-
-      </form>
-    </div>
+  <!-- Navbar superior -->
+  <div class="header-top">
+    <div class="logo-text">RIDE W ME</div>
+    <div class="menu-icon" onclick="openMenu()">☰</div>
   </div>
 
-  <footer>
-    © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
-  </footer>
+  <!-- Texto principal -->
+  <div class="header-content">
+    <h1>Book Your Ride</h1>
+    <p>Luxury transportation tailored to your travel needs</p>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script src="scripts/booking.js"></script>
+</header>
+
+<!-- SIDE MENU -->
+<div id="sideMenu" class="side-menu">
+  <div class="close-btn" onclick="closeMenu()">×</div>
+
+  <div class="side-menu-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="booking.html">Book Now</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin.html">Admin</a>
+  </div>
+</div>
+
+<div id="menuBackdrop" class="menu-backdrop" onclick="closeMenu()"></div>
+
+<script>
+  function openMenu() {
+    document.getElementById("sideMenu").classList.add("open");
+    document.getElementById("menuBackdrop").classList.add("show");
+  }
+  function closeMenu() {
+    document.getElementById("sideMenu").classList.remove("open");
+    document.getElementById("menuBackdrop").classList.remove("show");
+  }
+</script>
+
+
+<!-- ============================================================
+     BOOKING FORM
+============================================================ -->
+<div class="booking-wrapper">
+  <div class="booking-card">
+
+    <h2>Book Your Ride</h2>
+    <p class="booking-subtitle">Fast, simple and secure — reserve your private transport now.</p>
+
+    <!-- RESUMEN DEL SERVICIO -->
+    <div class="service-summary">
+      <span class="service-summary-title">Selected Service</span>
+      <span id="selectedServiceName">None selected</span>
+      <span id="selectedServicePrice">—</span>
+    </div>
+
+    <!-- FORM -->
+    <form id="bookingForm" class="booking-form">
+
+      <div class="booking-grid">
+
+        <!-- Name -->
+        <div>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required placeholder="Your full name">
+        </div>
+
+        <!-- Phone -->
+        <div>
+          <label for="phone">Phone / WhatsApp</label>
+          <input type="tel" id="phone" required placeholder="+52 624...">
+        </div>
+
+        <!-- Email -->
+        <div class="booking-grid-full">
+          <label for="email">Email</label>
+          <input type="email" id="email" required placeholder="example@email.com">
+        </div>
+
+        <!-- Service Type -->
+        <div>
+          <label for="serviceType">Service Type</label>
+          <select id="serviceType" required>
+            <option value="">Select service</option>
+            <option value="Airport Transfer">Airport Transfer</option>
+            <option value="One Way">One Way</option>
+            <option value="Round Trip">Round Trip</option>
+            <option value="Open Service (per hour)">Open Service (per hour)</option>
+          </select>
+        </div>
+
+        <!-- Passengers -->
+        <div>
+          <label for="passengers">Passengers</label>
+          <select id="passengers" required>
+            <option value="">Choose</option>
+            <option value="1-2">1–2</option>
+            <option value="3-4">3–4</option>
+            <option value="5-6">5–6</option>
+          </select>
+        </div>
+
+        <!-- Pickup -->
+        <div class="booking-grid-full">
+          <label for="pickupPreset">Pickup Location</label>
+          <input list="pickupList" id="pickupPreset" placeholder="Type a location...">
+          <datalist id="pickupList"></datalist>
+        </div>
+
+        <!-- Destination -->
+        <div class="booking-grid-full">
+          <label for="destinationPreset">Destination</label>
+          <input list="destinationList" id="destinationPreset" placeholder="Type a destination...">
+          <datalist id="destinationList"></datalist>
+        </div>
+
+        <!-- Date -->
+        <div>
+          <label for="date">Date (Departure)</label>
+          <input type="date" id="date" required>
+        </div>
+
+        <!-- Time -->
+        <div>
+          <label for="time">Time (Departure)</label>
+          <input type="time" id="time" required>
+        </div>
+
+        <!-- Round trip date -->
+        <div id="returnDateWrapper" style="display:none;">
+          <label for="returnDate">Return Date</label>
+          <input type="date" id="returnDate">
+        </div>
+
+        <!-- Round trip time -->
+        <div id="returnTimeWrapper" style="display:none;">
+          <label for="returnTime">Return Time</label>
+          <input type="time" id="returnTime">
+        </div>
+
+        <!-- Open Service Hours -->
+        <div id="hoursWrapper" style="display:none;">
+          <label for="hours">Service Hours</label>
+          <select id="hours">
+            <option value="">Choose hours</option>
+            <option value="2">2 hours</option>
+            <option value="3">3 hours</option>
+            <option value="4">4 hours</option>
+            <option value="5">5 hours</option>
+            <option value="6">6+ hours</option>
+          </select>
+        </div>
+
+        <!-- Notes -->
+        <div class="booking-grid-full">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" placeholder="Flight number, special requests, etc."></textarea>
+        </div>
+
+      </div>
+
+      <button type="submit">Confirm & Send Reservation</button>
+
+      <div class="unavailable-box">
+        <strong>Unavailable Dates:</strong>
+        <div id="unavailableList" class="unavailable-list">Loading…</div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+<footer class="site-footer">
+  © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
+</footer>
+
+
+
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="scripts/booking.js"></script>
 
 </body>
 </html>
