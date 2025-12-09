@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0b0b0b;
+  color: white;
+}
+
+/* ================= LOGIN ================= */
+.login-container {
+  background: #141414;
+  padding: 30px;
+  width: 90%;
+  max-width: 380px;
+  margin: 80px auto;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0,255,150,0.25);
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: #222;
+  border: none;
+  color: white;
+  border-radius: 10px;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background: #00c16e;
+  border: none;
+  border-radius: 10px;
+  color: black;
+  margin-top: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.error-msg {
+  color: #ff5757;
+  display: none;
+}
+
+/* ================= PANEL ================= */
+.admin-container {
+  display: none;
+  padding: 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.admin-header {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-logo {
+  width: 65px;
+}
+
+/* ========== DASHBOARD ========== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+  gap: 12px;
+}
+
+.stat-card {
+  background: #141414;
+  padding: 18px;
+  text-align: center;
+  border-radius: 12px;
+  border-left: 4px solid #00c16e;
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* ========== FILTERS ========== */
+.filters {
+  margin-top: 30px;
+  background: #141414;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.filter-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-grid input,
+.filter-grid button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+}
+
+.filter-grid button {
+  background: #00c16e;
+  color: black;
+}
+
+/* ========== ACTIONS ========== */
+.top-actions {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.top-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  background: #0077ff;
+  border: none;
+  cursor: pointer;
+}
+
+.top-actions .danger {
+  background: #b30000;
+}
+
+/* ========== RESERVATIONS ========== */
+.reservation-list {
+  margin-top: 20px;
+}
+
+.reservation-card {
+  background: #1c1c1c;
+  margin-bottom: 12px;
+  padding: 18px;
+  border-radius: 12px;
+  border-left: 4px solid #00c16e;
+}
+
+.reservation-card button {
+  margin-top: 10px;
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #ff3333;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: #00c16e !important;
+  margin-right: 8px;
+}
