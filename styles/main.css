@@ -682,3 +682,28 @@ body {
   box-shadow: 0 5px 20px rgba(0,0,0,0.5);
   border: 1px solid rgba(255,255,255,0.1);
 }
+.autocomplete-dropdown {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.1);
+  position: absolute;
+  width: 100%;
+  z-index: 50;
+  border-radius: 10px;
+  margin-top: -5px;
+  display: none;
+  max-height: 180px;
+  overflow-y: auto;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+.autocomplete-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: white;
+}
+
+.autocomplete-item:hover {
+  background: #1a1a1a;
+}
+
