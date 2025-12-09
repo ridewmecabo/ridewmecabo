@@ -5,247 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | Ride W Me Cabo</title>
 
-  <!-- EXCEL LIBRARY -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="admin.css">
+
+  <!-- JS LIBRARIES -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #0b0b0b;
-      color: white;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* LOGIN BOX */
-    .login-container {
-      background: #141414;
-      padding: 30px;
-      width: 90%;
-      max-width: 380px;
-      border-radius: 14px;
-      box-shadow: 0 0 20px rgba(0,255,150,0.2);
-      animation: fadeIn .4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h2 { margin-bottom: 15px; color: #00c16e; text-align: center; }
-
-    input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      background: #222;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #00c16e;
-      border: none;
-      border-radius: 10px;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover { background: #00e37a; }
-
-    /* ADMIN PANEL */
-    .admin-container {
-      display: none;
-      background: #141414;
-      padding: 25px;
-      width: 95%;
-      max-width: 900px;
-      border-radius: 14px;
-      box-shadow: 0 0 25px rgba(0,255,150,0.18);
-      animation: fadeIn .4s ease;
-    }
-
-    .top-actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .top-actions button {
-      flex: 1;
-      font-size: 0.9rem;
-    }
-
-    .clear-btn { background: #a30000 !important; color: white !important; }
-    .clear-btn:hover { background: #cc0000 !important; }
-
-    .excel-btn { background: #0077ff !important; color: white !important; }
-    .excel-btn:hover { background: #1591ff !important; }
-
-    /* RESERVATION LIST */
-    .reservation-list {
-      margin-top: 20px;
-      max-height: 65vh;
-      overflow-y: auto;
-    }
-
-    .reservation-card {
-      background: #1e1e1e;
-      padding: 15px;
-      border-radius: 10px;
-      border-left: 4px solid #00c16e;
-      margin-bottom: 12px;
-      box-shadow: 0 0 10px rgba(0,255,150,0.1);
-    }
-
-    .reservation-card p { margin: 4px 0; }
-
-    .delete-one-btn {
-      background: #cc0000;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 6px;
-      font-size: 0.8rem;
-    }
-
-    .delete-one-btn:hover { background: #ff0000; }
-
-    #errorMsg { color: #ff4b4b; text-align: center; margin-top: 10px; display: none; }
-  </style>
 </head>
-
 <body>
 
-<!-- LOGIN BOX -->
-<div class="login-container" id="loginBox">
+<!-- ========================= LOGIN ========================= -->
+<div id="loginBox" class="login-container">
   <h2>Admin Access</h2>
-  <p style="text-align:center;color:#bbb;">Enter password to view reservations</p>
+  <p class="muted">Enter password to access dashboard</p>
+
   <input type="password" id="adminPass" placeholder="Admin Password">
   <button onclick="checkLogin()">Login</button>
-  <p id="errorMsg">Incorrect password ❌</p>
+
+  <p id="errorMsg" class="error-msg">Incorrect password ❌</p>
 </div>
 
-<!-- ADMIN PANEL -->
-<div class="admin-container" id="adminPanel">
+<!-- ========================= ADMIN PANEL ========================= -->
+<div id="adminPanel" class="admin-container">
 
-  <h2>Reservation Dashboard</h2>
+  <header class="admin-header">
+    <img src="Images/ridewmelogo.png" class="admin-logo">
+    <h1>Ride W Me Cabo — Reservations Dashboard</h1>
+  </header>
 
-  <div class="top-actions">
-    <button class="excel-btn" onclick="exportToExcel()">📄 Export to Excel</button>
-    <button class="clear-btn" onclick="clearAllReservations()">🗑 Delete All</button>
-  </div>
+  <!-- ====== DASHBOARD ====== -->
+  <section class="dashboard">
+    <h2>📊 Statistics Overview</h2>
 
-  <div class="reservation-list" id="reservationList"></div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3 id="totalReservations">0</h3>
+        <p>Total Reservations</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="todayReservations">0</h3>
+        <p>Today</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="airportCount">0</h3>
+        <p>Airport Transfers</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="roundTripCount">0</h3>
+        <p>Round Trips</p>
+      </div>
+    </div>
+
+    <canvas id="chartServices" height="120"></canvas>
+  </section>
+
+  <!-- ===== FILTERS ===== -->
+  <section class="filters">
+    <h2>🔎 Filters</h2>
+
+    <div class="filter-grid">
+      <input type="date" id="filterDate">
+      <input type="text" id="searchInput" placeholder="Search by name or phone…">
+      <button onclick="clearFilters()">Clear Filters</button>
+    </div>
+  </section>
+
+  <!-- ===== ACTION BUTTONS ===== -->
+  <section class="top-actions">
+
+    <button onclick="exportToExcel()">📄 Export Excel</button>
+
+    <button onclick="exportPDF()">📘 Download PDF</button>
+
+    <button onclick="deleteAll()" class="danger">🗑 Delete All</button>
+    
+  </section>
+
+  <!-- ===== RESERVATION LIST ===== -->
+  <section class="reservation-list" id="reservationList">
+  </section>
+
 </div>
 
-<script>
-/* =============================
-   SIMPLE PASSWORD LOGIN
-============================= */
-const ADMIN_PASSWORD = "rideadmin2025";
-
-function checkLogin() {
-  const pass = document.getElementById("adminPass").value;
-  if (pass === ADMIN_PASSWORD) {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("adminPanel").style.display = "block";
-    loadReservations();
-  } else {
-    document.getElementById("errorMsg").style.display = "block";
-  }
-}
-
-/* =============================
-   LOAD RESERVATIONS
-============================= */
-function loadReservations() {
-  const list = document.getElementById("reservationList");
-  const reservations = JSON.parse(localStorage.getItem("reservations")) || [];
-
-  list.innerHTML = "";
-
-  if (reservations.length === 0) {
-    list.innerHTML = "<p>No reservations found.</p>";
-    return;
-  }
-
-  reservations.forEach((r, index) => {
-    const div = document.createElement("div");
-    div.className = "reservation-card";
-
-    div.innerHTML = `
-      <p><strong>${r.name}</strong></p>
-      <p>📞 ${r.phone}</p>
-      <p>📧 ${r.email}</p>
-      <p>🚗 ${r.serviceType} — ${r.passengers} passengers</p>
-      <p>📅 ${r.date} at ${r.time}</p>
-      <p>📍 Pickup: ${r.pickup}</p>
-      <p>🎯 Destination: ${r.destination}</p>
-      ${r.returnDate ? `<p>🔄 Return: ${r.returnDate} at ${r.returnTime}</p>` : ""}
-      ${r.hours ? `<p>⏱ Hours: ${r.hours}</p>` : ""}
-      ${r.notes ? `<p>📝 Notes: ${r.notes}</p>` : ""}
-
-      <button class="delete-one-btn" onclick="deleteReservation(${index})">Delete</button>
-    `;
-
-    list.appendChild(div);
-  });
-}
-
-/* =============================
-   DELETE ONLY ONE RESERVATION
-============================= */
-function deleteReservation(index) {
-  let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
-  reservations.splice(index, 1);
-  localStorage.setItem("reservations", JSON.stringify(reservations));
-  loadReservations();
-}
-
-/* =============================
-   DELETE ALL RESERVATIONS
-============================= */
-function clearAllReservations() {
-  if (!confirm("Delete ALL reservations?")) return;
-  localStorage.removeItem("reservations");
-  loadReservations();
-}
-
-/* =============================
-   EXPORT TO EXCEL
-============================= */
-function exportToExcel() {
-  let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
-
-  if (reservations.length === 0) {
-    alert("No reservations to export.");
-    return;
-  }
-
-  const sheet = XLSX.utils.json_to_sheet(reservations);
-  const book = XLSX.utils.book_new();
-
-  XLSX.utils.book_append_sheet(book, sheet, "Reservations");
-
-  XLSX.writeFile(book, "RideWMe_Reservations.xlsx");
-
-  alert("📄 Excel file downloaded!");
-}
-
-</script>
+<!-- JS -->
+<script src="admin.js"></script>
 
 </body>
 </html>
