@@ -1,95 +1,9 @@
-/* =====================================================
-   booking.js — Logic for Ride W Me Cabo Booking System
-   ===================================================== */
+// =======================
+// RIDE W ME - BOOKING JS
+// =======================
 
-emailjs.init("Ed5Qh2Qk81A6fHcRR"); // Tu PUBLIC KEY
-
-// Número de WhatsApp
-const WHATSAPP_NUMBER = "526242426741";
-
-// Elementos
-const serviceTypeEl = document.getElementById("serviceType");
-const passengersEl = document.getElementById("passengers");
-const pickupPreset = document.getElementById("pickupPreset");
-const destinationPreset = document.getElementById("destinationPreset");
-const returnDateWrapper = document.getElementById("returnDateWrapper");
-const returnTimeWrapper = document.getElementById("returnTimeWrapper");
-const hoursWrapper = document.getElementById("hoursWrapper");
-const unavailableListEl = document.getElementById("unavailableList");
-
-const selectedServiceNameEl = document.getElementById("selectedServiceName");
-const selectedServicePriceEl = document.getElementById("selectedServicePrice");
-
-// Lista de destinos (hoteles, restaurantes, clubs, áreas)
-const DESTINOS = [
-  "Los Cabos International Airport (SJD)",
-  "Cabo San Lucas Marina",
-  "San José del Cabo Downtown",
-  "Cabo San Lucas Downtown",
-  "Medano Beach",
-  "The Cape, a Thompson Hotel",
-  "Solaz Luxury Resort",
-  "Montage Los Cabos",
-  "Waldorf Astoria Pedregal",
-  "Grand Velas Los Cabos",
-  "La Marina Inn",
-  "Chileno Bay Resort",
-  "Esperanza Auberge Resorts",
-  "RIU Palace",
-  "RIU Santa Fe",
-  "RIU Baja California",
-  "Hard Rock Hotel Los Cabos",
-  "Nobu Hotel",
-  "Pueblo Bonito Sunset",
-  "Pueblo Bonito Rose",
-  "Acre Restaurant",
-  "Flora Farms",
-  "Sunset Monalisa",
-  "Jazz on the Rocks",
-  "El Farallon",
-  "Edith’s",
-  "Cabo del Sol",
-  "Diamante",
-  "Viceroy Los Cabos",
-  "Secrets Puerto Los Cabos",
-  "Hyatt Ziva",
-  "Hilton Los Cabos",
-  "One&Only Palmilla",
-  "El Merkado",
-  "Fresko Cerro Colorado",
-  "Walmart",
-  "Costco",
-  "San José Art District",
-  "Hotel Tesoro",
-  "Hotel Marina Fiesta",
-  "Cabo Adventures",
-  "Santa Maria Bay",
-  "Las Ventanas al Paraíso",
-  "Cerritos Beach",
-  "Todos Santos Downtown"
-];
-
-// Cargar destinos para autocompletado
-function cargarDestinos() {
-  const pickupList = document.getElementById("pickupList");
-  const destinationList = document.getElementById("destinationList");
-
-  DESTINOS.forEach(d => {
-    let op1 = document.createElement("option");
-    op1.value = d;
-    pickupList.appendChild(op1);
-
-    let op2 = document.createElement("option");
-    op2.value = d;
-    destinationList.appendChild(op2);
-  });
-}
-
-cargarDestinos();
-
-/* =====================================================
-   PRECIOS por servicio
-===================================================== */
+// CONFIG
+const WHATSAPP_NUMBER = "526242426741"; // sin +, ya con lada
 const SERVICE_PRICES = {
   "Airport Transfer": "$80 USD",
   "One Way": "$100 USD",
@@ -97,20 +11,113 @@ const SERVICE_PRICES = {
   "Open Service (per hour)": "$50 USD / hr"
 };
 
-/* =====================================================
-   Actualizar interfaz según servicio seleccionado
-===================================================== */
+// Inicializar EmailJS
+(function () {
+  emailjs.init("Ed5Qh2Qk81A6fHcRR"); // tu public key
+})();
+
+// =======================
+// POPULAR LOCATIONS
+// =======================
+const POPULAR_LOCATIONS = [
+  "Los Cabos International Airport (SJD)",
+  "Cabo San Lucas Marina",
+  "Cabo San Lucas Downtown",
+  "San José del Cabo Downtown",
+  "Medano Beach",
+  "Sunset Monalisa",
+  "Flora Farms",
+  "Acre Restaurant",
+  "Edith's",
+  "El Farallon",
+  "Jazz on the Rocks at Sunset Point",
+  "Montage Los Cabos",
+  "Cabo del Sol",
+  "The Cape, a Thompson Hotel",
+  "Chileno Bay",
+  "Palmilla",
+  "Puerto Paraíso Mall",
+  "Luxury Avenue Mall",
+  "Waldorf Astoria Pedregal",
+  "Grand Velas Los Cabos",
+  "Four Seasons Costa Palmas"
+];
+
+function fillDatalist(id) {
+  const dl = document.getElementById(id);
+  if (!dl) return;
+  dl.innerHTML = "";
+  POPULAR_LOCATIONS.forEach(loc => {
+    const opt = document.createElement("option");
+    opt.value = loc;
+    dl.appendChild(opt);
+  });
+}
+
+fillDatalist("pickupList");
+fillDatalist("destinationList");
+
+// =======================
+// ELEMENTOS FORM
+// =======================
+const bookingForm = document.getElementById("bookingForm");
+const serviceTypeEl = document.getElementById("serviceType");
+const selectedServiceNameEl = document.getElementById("selectedServiceName");
+const selectedServicePriceEl = document.getElementById("selectedServicePrice");
+
+const returnDateWrapper = document.getElementById("returnDateWrapper");
+const returnTimeWrapper = document.getElementById("returnTimeWrapper");
+const hoursWrapper = document.getElementById("hoursWrapper");
+
+const unavailableListEl = document.getElementById("unavailableList");
+
+// =======================
+// FECHAS OCUPADAS (localStorage)
+// =======================
+function getDisabledDates() {
+  const saved = JSON.parse(localStorage.getItem("reservations")) || [];
+  const dates = new Set();
+  saved.forEach(r => {
+    if (r.date) dates.add(r.date);
+    if (r.returnDate) dates.add(r.returnDate);
+  });
+  return Array.from(dates);
+}
+
+const disabledDates = getDisabledDates();
+
+function renderUnavailableList() {
+  if (!unavailableListEl) return;
+  if (disabledDates.length === 0) {
+    unavailableListEl.textContent = "All dates currently available.";
+    return;
+  }
+  unavailableListEl.innerHTML = "";
+  disabledDates.forEach(d => {
+    const p = document.createElement("div");
+    p.textContent = d;
+    unavailableListEl.appendChild(p);
+  });
+}
+
+renderUnavailableList();
+
+// =======================
+// UI SEGÚN TIPO DE SERVICIO
+// =======================
 function updateServiceUI() {
   const sv = serviceTypeEl.value;
 
-  if (!sv) {
-    selectedServiceNameEl.textContent = "None selected";
-    selectedServicePriceEl.textContent = "—";
-  } else {
+  // Texto y precio
+  if (sv) {
     selectedServiceNameEl.textContent = sv;
     selectedServicePriceEl.textContent = SERVICE_PRICES[sv] || "Price on request";
+  } else {
+    selectedServiceNameEl.textContent = "None selected";
+    selectedServicePriceEl.textContent = "—";
   }
 
+  // Mostrar / ocultar campos
   if (sv === "Round Trip") {
     returnDateWrapper.style.display = "block";
     returnTimeWrapper.style.display = "block";
@@ -128,108 +135,120 @@ function updateServiceUI() {
 
 serviceTypeEl.addEventListener("change", updateServiceUI);
 
-/* =====================================================
-   Fechas no disponibles (localStorage)
-===================================================== */
-function getDisabledDates() {
-  const saved = JSON.parse(localStorage.getItem("reservations")) || [];
-  const dates = new Set();
-  saved.forEach(r => {
-    if (r.date) dates.add(r.date);
-    if (r.returnDate) dates.add(r.returnDate);
-  });
-  return Array.from(dates);
-}
-
-function renderUnavailableList() {
-  const list = getDisabledDates();
-  unavailableListEl.innerHTML = "";
-  if (list.length === 0) {
-    unavailableListEl.textContent = "All dates available.";
-    return;
-  }
-  list.forEach(d => {
-    let div = document.createElement("div");
-    div.textContent = d;
-    unavailableListEl.appendChild(div);
-  });
-}
-
-renderUnavailableList();
-
-/* =====================================================
-   Preseleccionar servicio desde ?service=
-===================================================== */
+// Preseleccionar servicio desde la URL (?service=Round%20Trip)
 const urlParams = new URLSearchParams(window.location.search);
 const selectedService = urlParams.get("service");
 if (selectedService) {
   serviceTypeEl.value = selectedService;
-  updateServiceUI();
 }
+updateServiceUI();
 
-/* =====================================================
-   ENVIAR FORMULARIO
-===================================================== */
-document.getElementById("bookingForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const reservation = {
-    name: document.getElementById("name").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    serviceType: serviceTypeEl.value,
-    passengers: passengersEl.value,
-    date: document.getElementById("date").value,
-    time: document.getElementById("time").value,
-    pickup: pickupPreset.value.trim(),
-    destination: destinationPreset.value.trim(),
-    returnDate: document.getElementById("returnDate").value,
-    returnTime: document.getElementById("returnTime").value,
-    hours: document.getElementById("hours").value,
-    notes: document.getElementById("notes").value.trim()
-  };
-
-  // Validación
-  if (!reservation.name || !reservation.phone || !reservation.email || !reservation.serviceType || !reservation.date || !reservation.time) {
-    alert("Please complete required fields.");
+// =======================
+// ALERTA BONITA (reusa .custom-alert del main.css)
+// =======================
+function showAlert(message, isError = false) {
+  const existing = document.querySelector(".custom-alert");
+  if (existing) {
+    existing.classList.remove("error", "show");
+    existing.textContent = message;
+    if (isError) existing.classList.add("error");
+    setTimeout(() => existing.classList.add("show"), 50);
+    setTimeout(() => {
+      existing.classList.remove("show");
+      setTimeout(() => existing.remove(), 400);
+    }, 4000);
     return;
   }
 
-  // Guardar fecha ocupada
+  const a = document.createElement("div");
+  a.className = "custom-alert" + (isError ? " error" : "");
+  a.textContent = message;
+  document.body.appendChild(a);
+
+  setTimeout(() => a.classList.add("show"), 50);
+  setTimeout(() => {
+    a.classList.remove("show");
+    setTimeout(() => a.remove(), 400);
+  }, 4000);
+}
+
+// =======================
+// SUBMIT DEL FORMULARIO
+// =======================
+bookingForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const serviceType = serviceTypeEl.value;
+  const passengers = document.getElementById("passengers").value;
+
+  const pickup = document.getElementById("pickupPreset").value.trim();
+  const destination = document.getElementById("destinationPreset").value.trim();
+
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const returnDate = document.getElementById("returnDate").value;
+  const returnTime = document.getElementById("returnTime").value;
+  const hours = document.getElementById("hours").value;
+  const notes = document.getElementById("notes").value.trim();
+
+  if (!name || !phone || !email || !serviceType || !date || !time || !pickup || !destination) {
+    showAlert("Please complete all required fields.", true);
+    return;
+  }
+
+  if (serviceType === "Round Trip" && (!returnDate || !returnTime)) {
+    showAlert("Please select both return date and time for Round Trip.", true);
+    return;
+  }
+
+  const reservation = {
+    name,
+    phone,
+    email,
+    serviceType,
+    passengers,
+    date,
+    time,
+    pickup,
+    destination,
+    returnDate: serviceType === "Round Trip" ? returnDate : "",
+    returnTime: serviceType === "Round Trip" ? returnTime : "",
+    hours: serviceType === "Open Service (per hour)" ? hours : "",
+    notes
+  };
+
+  // Guardar en localStorage para admin & fechas ocupadas
   let saved = JSON.parse(localStorage.getItem("reservations")) || [];
   saved.push(reservation);
   localStorage.setItem("reservations", JSON.stringify(saved));
 
-  renderUnavailableList();
-
-  // Enviar correo (a ti)
-  emailjs.send("service_8zcytcr", "template_7tkwggo", reservation)
+  // =======================
+  // ENVÍO POR EMAILJS
+  // =======================
+  emailjs
+    .send("service_8zcytcr", "template_7tkwggo", {
+      ...reservation,
+      to_email: "ridewmecabo@gmail.com" // 👉 este va al campo {{to_email}} del template
+    })
     .then(() => {
-      // Auto-reply al cliente
-      emailjs.send("service_8zcytcr", "template_autoreply", {
-        to_email: reservation.email,
-        name: reservation.name,
-        service: reservation.serviceType,
-        date: reservation.date,
-        time: reservation.time
-      });
-
-      // Enviar WhatsApp
+      // WhatsApp
       sendWhatsApp(reservation);
-
-      alert("Reservation sent successfully!");
-      document.getElementById("bookingForm").reset();
+      showAlert("✅ Reservation sent successfully!");
+      bookingForm.reset();
       updateServiceUI();
     })
-    .catch(err => {
-      console.error(err);
-      alert("Error sending reservation. Try again.");
+    .catch((err) => {
+      console.error("Email send error:", err);
+      showAlert("❌ Error sending your reservation. Try again.", true);
     });
 });
 
-/* =====================================================
-   WhatsApp Message
-===================================================== */
+// =======================
+// WHATSAPP
+// =======================
 function sendWhatsApp(r) {
   let msg =
     `New Reservation - Ride W Me Cabo%0A%0A` +
@@ -242,9 +261,16 @@ function sendWhatsApp(r) {
     `Destination: ${r.destination}%0A` +
     `Date: ${r.date} at ${r.time}%0A`;
 
-  if (r.returnDate) msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
-  if (r.hours) msg += `Hours: ${r.hours}%0A`;
-  if (r.notes) msg += `%0ANotes: ${r.notes}%0A`;
+  if (r.returnDate && r.returnTime) {
+    msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
+  }
+  if (r.hours) {
+    msg += `Hours: ${r.hours}%0A`;
+  }
+  if (r.notes) {
+    msg += `%0ANotes: ${r.notes}%0A`;
+  }
 
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  window.open(url, "_blank");
 }
