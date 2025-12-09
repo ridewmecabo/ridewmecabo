@@ -45,7 +45,7 @@ body {
 .new-header {
   position: relative;
   width: 100%;
-  height: 85vh;  /* ← versión original */
+  height: 85vh;
   background: #000;
   display: flex;
   flex-direction: column;
@@ -64,7 +64,6 @@ body {
   z-index: 1;
 }
 
-/* Expedition original */
 .header-expedition {
   position: absolute;
   bottom: -20px;
@@ -111,7 +110,7 @@ body {
   position: relative;
   text-align: center;
   color: white;
-  margin-bottom: 110px; /* ← versión original */
+  margin-bottom: 110px;
   z-index: 5;
 }
 
@@ -235,6 +234,453 @@ body {
 
 .menu-backdrop.show {
   display: block;
+}
+
+/* FEATURES HOME */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 18px;
+}
+
+.feature-card {
+  background: #111;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.6);
+}
+
+.feature-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+/* SERVICES GRID */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 22px;
+}
+
+.service-card {
+  background: #141414;
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.service-card h3 {
+  margin-top: 0;
+}
+
+.service-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  gap: 10px;
+}
+
+.service-price {
+  color: var(--green-soft);
+  font-weight: 700;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mini-btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  background: var(--green-soft);
+  color: #000;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.mini-btn:hover {
+  background: #00e37a;
+}
+
+.mini-btn.outline {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.5);
+  color: var(--muted);
+  cursor: default;
+}
+
+.centered-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.text-link {
+  color: var(--green-soft);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* VEHICLE SECTION */
+.dark-section {
+  background: radial-gradient(circle at top, #111 0, #000 50%);
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.vehicle-layout {
+  display: grid;
+  grid-template-columns: minmax(0,1.2fr) minmax(0,1fr);
+  gap: 30px;
+  align-items: center;
+}
+
+.vehicle-text .section-title {
+  text-align: left;
+}
+
+.vehicle-text .section-subtitle {
+  text-align: left;
+  margin-left: 0;
+}
+
+.vehicle-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 15px 0 20px;
+}
+
+.vehicle-list li {
+  margin: 6px 0;
+  position: relative;
+  padding-left: 20px;
+}
+
+.vehicle-list li::before {
+  content: "•";
+  color: var(--green-soft);
+  position: absolute;
+  left: 0;
+}
+
+.vehicle-img-box {
+  text-align: center;
+}
+
+.vehicle-img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+}
+
+/* QUICK CONTACT */
+.contact-quick-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.contact-pill {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+/* FOOTER */
+.site-footer {
+  text-align: center;
+  padding: 28px 16px;
+  color: #888;
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* BOOKING FORM */
+.booking-wrapper {
+  max-width: 900px;
+  margin: 40px auto 70px;
+  padding: 0 20px;
+}
+
+.booking-card {
+  background: #141414;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+.booking-card h2 {
+  color: var(--green-soft);
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 1.9rem;
+}
+
+.booking-subtitle {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 18px;
+}
+
+.service-summary {
+  background: #101010;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.service-summary-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #aaa;
+}
+
+#selectedServiceName {
+  font-weight: 600;
+}
+
+#selectedServicePrice {
+  color: var(--green-soft);
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.booking-grid-full {
+  grid-column: 1 / -1;
+}
+
+.booking-form label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  color: #ddd;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  border: none;
+  background-color: #1f1f1f;
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.booking-form textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+.booking-form button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: #000;
+  border: none;
+  font-weight: 700;
+  font-size: 1.02rem;
+  cursor: pointer;
+  box-shadow: 0 7px 20px rgba(0, 193, 110, 0.35);
+  transition: 0.25s;
+  margin-top: 8px;
+}
+
+.booking-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(0, 193, 110, 0.45);
+}
+
+.paypal-soon {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.unavailable-box {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #101010;
+  border: 1px solid rgba(255,255,255,0.09);
+  font-size: 0.88rem;
+  color: #cfcfcf;
+}
+
+.unavailable-list {
+  margin-top: 6px;
+  max-height: 110px;
+  overflow-y: auto;
+  font-size: 0.86rem;
+}
+
+/* CUSTOM ALERT (booking) */
+.custom-alert {
+  position: fixed;
+  top: 28px;
+  right: -420px;
+  background: linear-gradient(90deg,#1a1a1a,#242424);
+  color:#fff;
+  padding:14px 20px;
+  border-radius:12px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.7);
+  z-index:10000;
+  transition:right .45s ease;
+  font-weight:600;
+  font-size:0.9rem;
+}
+.custom-alert.show { right: 28px; }
+.custom-alert.error {
+  background: linear-gradient(90deg,#7a0000,#b30000);
+}
+
+/* CONTACT PAGE */
+.contact-wrapper {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px 50px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 25px;
+}
+
+.contact-card {
+  background: #141414;
+  padding: 24px;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.6);
+  text-align: center;
+}
+
+.contact-card h3 {
+  color: var(--green-soft);
+  margin-bottom: 6px;
+}
+
+.contact-card p {
+  color: #bbb;
+  margin: 4px 0;
+}
+
+.contact-card a {
+  color: var(--green-soft);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Contact form */
+.contact-form {
+  margin-top: 40px;
+  background: #141414;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+.contact-form h2 {
+  color: var(--green-soft);
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  color: #ddd;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background-color: #1f1f1f;
+  color: white;
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.contact-form textarea {
+  height: 120px;
+  resize: none;
+}
+
+.contact-form button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  background: var(--green-soft);
+  color: #000;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1.05rem;
+  box-shadow: 0 5px 20px rgba(0, 193, 110, 0.3);
+  transition: 0.3s;
+}
+
+.contact-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 25px rgba(0, 193, 110, 0.4);
+}
+
+.contact-success {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #16a34a;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+}
+
+.map-container {
+  margin-top: 40px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .autocomplete-dropdown {
