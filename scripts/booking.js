@@ -3,7 +3,7 @@
 // =======================
 
 // CONFIG
-const WHATSAPP_NUMBER = "526242426741"; // sin +, ya con lada
+const WHATSAPP_NUMBER = "526242426741"; 
 const SERVICE_PRICES = {
   "Airport Transfer": "$80 USD",
   "One Way": "$100 USD",
@@ -11,9 +11,9 @@ const SERVICE_PRICES = {
   "Open Service (per hour)": "$50 USD / hr"
 };
 
-// Inicializar EmailJS
+// EmailJS
 (function () {
-  emailjs.init("Ed5Qh2Qk81A6fHcRR"); // tu public key
+  emailjs.init("Ed5Qh2Qk81A6fHcRR");
 })();
 
 // =======================
@@ -43,6 +43,7 @@ const POPULAR_LOCATIONS = [
   "Four Seasons Costa Palmas"
 ];
 
+// Fill datalists for autocomplete
 function fillDatalist(id) {
   const dl = document.getElementById(id);
   if (!dl) return;
@@ -58,7 +59,7 @@ fillDatalist("pickupList");
 fillDatalist("destinationList");
 
 // =======================
-// ELEMENTOS FORM
+// ELEMENTS
 // =======================
 const bookingForm = document.getElementById("bookingForm");
 const serviceTypeEl = document.getElementById("serviceType");
@@ -71,44 +72,58 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 
 const unavailableListEl = document.getElementById("unavailableList");
 
-// =======================
-// FECHAS OCUPADAS (localStorage)
-// =======================
+// ===========================
+// DISABLED DATES RESTORE
+// ===========================
 function getDisabledDates() {
   const saved = JSON.parse(localStorage.getItem("reservations")) || [];
   const dates = new Set();
+
   saved.forEach(r => {
     if (r.date) dates.add(r.date);
     if (r.returnDate) dates.add(r.returnDate);
   });
+
   return Array.from(dates);
 }
 
-const disabledDates = getDisabledDates();
+let disabledDates = getDisabledDates();
 
 function renderUnavailableList() {
-  if (!unavailableListEl) return;
   if (disabledDates.length === 0) {
     unavailableListEl.textContent = "All dates currently available.";
     return;
   }
+
   unavailableListEl.innerHTML = "";
   disabledDates.forEach(d => {
-    const p = document.createElement("div");
-    p.textContent = d;
-    unavailableListEl.appendChild(p);
+    const item = document.createElement("div");
+    item.textContent = d;
+    unavailableListEl.appendChild(item);
   });
 }
 
 renderUnavailableList();
 
+// Init datepickers
+let datePicker = flatpickr("#date", {
+  dateFormat: "Y-m-d",
+  minDate: "today",
+  disable: disabledDates
+});
+
+let returnDatePicker = flatpickr("#returnDate", {
+  dateFormat: "Y-m-d",
+  minDate: "today",
+  disable: disabledDates
+});
+
 // =======================
-// UI SEGÚN TIPO DE SERVICIO
+// SERVICE UI LOGIC
 // =======================
 function updateServiceUI() {
   const sv = serviceTypeEl.value;
 
-  // Texto y precio
   if (sv) {
     selectedServiceNameEl.textContent = sv;
     selectedServicePriceEl.textContent = SERVICE_PRICES[sv] || "Price on request";
@@ -117,7 +132,6 @@ function updateServiceUI() {
     selectedServicePriceEl.textContent = "—";
   }
 
-  // Mostrar / ocultar campos
   if (sv === "Round Trip") {
     returnDateWrapper.style.display = "block";
     returnTimeWrapper.style.display = "block";
@@ -135,7 +149,7 @@ function updateServiceUI() {
 
 serviceTypeEl.addEventListener("change", updateServiceUI);
 
-// Preseleccionar servicio desde la URL (?service=Round%20Trip)
+// Preload service from ?service=
 const urlParams = new URLSearchParams(window.location.search);
 const selectedService = urlParams.get("service");
 if (selectedService) {
@@ -144,7 +158,7 @@ if (selectedService) {
 updateServiceUI();
 
 // =======================
-// ALERTA BONITA (reusa .custom-alert del main.css)
+// ALERT SYSTEM
 // =======================
 function showAlert(message, isError = false) {
   const existing = document.querySelector(".custom-alert");
@@ -152,7 +166,7 @@ function showAlert(message, isError = false) {
     existing.classList.remove("error", "show");
     existing.textContent = message;
     if (isError) existing.classList.add("error");
-    setTimeout(() => existing.classList.add("show"), 50);
+    setTimeout(() => existing.classList.add("show"), 60);
     setTimeout(() => {
       existing.classList.remove("show");
       setTimeout(() => existing.remove(), 400);
@@ -160,89 +174,79 @@ function showAlert(message, isError = false) {
     return;
   }
 
-  const a = document.createElement("div");
-  a.className = "custom-alert" + (isError ? " error" : "");
-  a.textContent = message;
-  document.body.appendChild(a);
+  const alert = document.createElement("div");
+  alert.className = "custom-alert" + (isError ? " error" : "");
+  alert.textContent = message;
+  document.body.appendChild(alert);
 
-  setTimeout(() => a.classList.add("show"), 50);
+  setTimeout(() => alert.classList.add("show"), 50);
   setTimeout(() => {
-    a.classList.remove("show");
-    setTimeout(() => a.remove(), 400);
+    alert.classList.remove("show");
+    setTimeout(() => alert.remove(), 400);
   }, 4000);
 }
 
 // =======================
-// SUBMIT DEL FORMULARIO
+// FORM SUBMIT
 // =======================
 bookingForm.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const serviceType = serviceTypeEl.value;
-  const passengers = document.getElementById("passengers").value;
+  const reservation = {
+    name: document.getElementById("name").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    serviceType: serviceTypeEl.value,
+    passengers: document.getElementById("passengers").value,
+    pickup: document.getElementById("pickupPreset").value.trim(),
+    destination: document.getElementById("destinationPreset").value.trim(),
+    date: document.getElementById("date").value,
+    time: document.getElementById("time").value,
+    returnDate: document.getElementById("returnDate").value,
+    returnTime: document.getElementById("returnTime").value,
+    hours: document.getElementById("hours").value,
+    notes: document.getElementById("notes").value.trim()
+  };
 
-  const pickup = document.getElementById("pickupPreset").value.trim();
-  const destination = document.getElementById("destinationPreset").value.trim();
-
-  const date = document.getElementById("date").value;
-  const time = document.getElementById("time").value;
-  const returnDate = document.getElementById("returnDate").value;
-  const returnTime = document.getElementById("returnTime").value;
-  const hours = document.getElementById("hours").value;
-  const notes = document.getElementById("notes").value.trim();
-
-  if (!name || !phone || !email || !serviceType || !date || !time || !pickup || !destination) {
+  if (!reservation.name || !reservation.phone || !reservation.email ||
+      !reservation.serviceType || !reservation.date || !reservation.time ||
+      !reservation.pickup || !reservation.destination) {
     showAlert("Please complete all required fields.", true);
     return;
   }
 
-  if (serviceType === "Round Trip" && (!returnDate || !returnTime)) {
-    showAlert("Please select both return date and time for Round Trip.", true);
+  if (reservation.serviceType === "Round Trip" &&
+      (!reservation.returnDate || !reservation.returnTime)) {
+    showAlert("Please select both return date and time.", true);
     return;
   }
 
-  const reservation = {
-    name,
-    phone,
-    email,
-    serviceType,
-    passengers,
-    date,
-    time,
-    pickup,
-    destination,
-    returnDate: serviceType === "Round Trip" ? returnDate : "",
-    returnTime: serviceType === "Round Trip" ? returnTime : "",
-    hours: serviceType === "Open Service (per hour)" ? hours : "",
-    notes
-  };
-
-  // Guardar en localStorage para admin & fechas ocupadas
+  // Save reservation
   let saved = JSON.parse(localStorage.getItem("reservations")) || [];
   saved.push(reservation);
   localStorage.setItem("reservations", JSON.stringify(saved));
 
-  // =======================
-  // ENVÍO POR EMAILJS
-  // =======================
+  // Update disabled dates instantly
+  disabledDates = getDisabledDates();
+  datePicker.set("disable", disabledDates);
+  returnDatePicker.set("disable", disabledDates);
+  renderUnavailableList();
+
+  // Send to EmailJS
   emailjs
     .send("service_8zcytcr", "template_7tkwggo", {
       ...reservation,
-      to_email: "ridewmecabo@gmail.com" // 👉 este va al campo {{to_email}} del template
+      to_email: "ridewmecabo@gmail.com"
     })
     .then(() => {
-      // WhatsApp
       sendWhatsApp(reservation);
-      showAlert("✅ Reservation sent successfully!");
+      showAlert("✅ Reservation sent!");
       bookingForm.reset();
       updateServiceUI();
     })
-    .catch((err) => {
-      console.error("Email send error:", err);
-      showAlert("❌ Error sending your reservation. Try again.", true);
+    .catch(err => {
+      console.error("EmailJS error:", err);
+      showAlert("❌ Error sending reservation.", true);
     });
 });
 
@@ -264,13 +268,8 @@ function sendWhatsApp(r) {
   if (r.returnDate && r.returnTime) {
     msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
   }
-  if (r.hours) {
-    msg += `Hours: ${r.hours}%0A`;
-  }
-  if (r.notes) {
-    msg += `%0ANotes: ${r.notes}%0A`;
-  }
+  if (r.hours) msg += `Hours: ${r.hours}%0A`;
+  if (r.notes) msg += `%0ANotes: ${r.notes}%0A`;
 
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-  window.open(url, "_blank");
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
 }
