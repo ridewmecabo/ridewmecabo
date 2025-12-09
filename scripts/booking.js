@@ -12,83 +12,150 @@ const serviceTypeEl = document.getElementById("serviceType");
 const passengersEl = document.getElementById("passengers");
 const pickupPreset = document.getElementById("pickupPreset");
 const destinationPreset = document.getElementById("destinationPreset");
+
 const returnDateWrapper = document.getElementById("returnDateWrapper");
 const returnTimeWrapper = document.getElementById("returnTimeWrapper");
 const hoursWrapper = document.getElementById("hoursWrapper");
-const unavailableListEl = document.getElementById("unavailableList");
 
+const unavailableListEl = document.getElementById("unavailableList");
 const selectedServiceNameEl = document.getElementById("selectedServiceName");
 const selectedServicePriceEl = document.getElementById("selectedServicePrice");
 
-// Lista de destinos (hoteles, restaurantes, clubs, áreas)
+/* =====================================================
+   TODAS LAS LOCACIONES — HOTELS, RESTAURANTS, CLUBS, ETC.
+===================================================== */
 const DESTINOS = [
-  "Los Cabos International Airport (SJD)",
-  "Cabo San Lucas Marina",
-  "San José del Cabo Downtown",
-  "Cabo San Lucas Downtown",
-  "Medano Beach",
-  "The Cape, a Thompson Hotel",
-  "Solaz Luxury Resort",
-  "Montage Los Cabos",
-  "Waldorf Astoria Pedregal",
-  "Grand Velas Los Cabos",
-  "La Marina Inn",
-  "Chileno Bay Resort",
-  "Esperanza Auberge Resorts",
-  "RIU Palace",
-  "RIU Santa Fe",
-  "RIU Baja California",
+  // 📌 HOTELS / RESORTS
+  "Nobu Hotel Los Cabos",
   "Hard Rock Hotel Los Cabos",
-  "Nobu Hotel",
-  "Pueblo Bonito Sunset",
-  "Pueblo Bonito Rose",
-  "Acre Restaurant",
-  "Flora Farms",
-  "Sunset Monalisa",
-  "Jazz on the Rocks",
-  "El Farallon",
-  "Edith’s",
-  "Cabo del Sol",
-  "Diamante",
-  "Viceroy Los Cabos",
+  "Waldorf Astoria Pedregal",
+  "Garza Blanca Resort",
+  "Grand Velas Los Cabos",
+  "Esperanza Auberge",
+  "One&Only Palmilla",
+  "Montage Los Cabos",
+  "The Cape, a Thompson Hotel",
+  "Riu Palace",
+  "Riu Santa Fe",
+  "Breathless Cabo San Lucas",
   "Secrets Puerto Los Cabos",
   "Hyatt Ziva",
+  "Le Blanc Spa Resort",
+  "Pueblo Bonito Sunset",
+  "Pueblo Bonito Rose",
+  "Pueblo Bonito Blanco",
+  "Solaz Resort",
   "Hilton Los Cabos",
-  "One&Only Palmilla",
-  "El Merkado",
-  "Fresko Cerro Colorado",
-  "Walmart",
-  "Costco",
-  "San José Art District",
-  "Hotel Tesoro",
-  "Hotel Marina Fiesta",
-  "Cabo Adventures",
-  "Santa Maria Bay",
+  "Marquis Los Cabos",
+  "Grand Fiesta Americana",
+  "Dreams Los Cabos",
+  "Barcelo Gran Faro",
+  "Marina Fiesta Resort",
+  "Cabo Azul Resort",
+  "Sheraton Grand Los Cabos",
+  "CostaBaja Resort (La Paz)",
+  "Chileno Bay Resort",
   "Las Ventanas al Paraíso",
-  "Cerritos Beach",
-  "Todos Santos Downtown"
+  "Vidanta Los Cabos",
+
+  // 🍽 RESTAURANTES
+  "Edith’s",
+  "The Office on the Beach",
+  "Sunset Monalisa",
+  "Lorenzillo’s",
+  "Rosa Negra",
+  "Funky Geisha",
+  "Taboo Cabo",
+  "Mamazzita Cabo",
+  "Animalón",
+  "El Farallon",
+  "Acre Restaurant",
+  "Flora Farms",
+  "Jazmin’s Restaurant",
+  "Tacos Gardenias",
+  "La Lupita Tacos",
+  "Carbón Cabrón",
+
+  // 🎉 BEACH CLUBS
+  "Mango Deck",
+  "SUR Beach House",
+  "OMNIA Los Cabos",
+  "Blue Marlin Ibiza",
+  "Veleros Beach Club",
+
+  // 🎯 ZONAS / LANDMARKS
+  "Cabo San Lucas Downtown",
+  "San José del Cabo Downtown",
+  "El Arco",
+  "Marina Cabo San Lucas",
+  "Puerto Paraíso Mall",
+  "Luxury Avenue",
+  "Medano Beach",
+  "La Marina SJC",
+  "Cabo del Sol Golf",
+  "Palmilla Golf",
+  "Diamante Golf",
+  "Costco CSL",
+  "Fresko CSL",
+  "Walmart San Lucas",
+  "Home Depot CSL",
+  "Puerto Los Cabos Marina",
+  "Zacatitos",
+  "East Cape",
+
+  // ✈️ Airport
+  "Los Cabos International Airport (SJD)",
+  "FBO Private Terminal (SJD Private Jets)",
+  "FBO Private CSL, Cabo San Lucas",
+
+  // 🏠 Otros
+  "Airbnb (Custom)",
+  "Private Villa (Custom)",
+  "H+ Hospital",
+  "Cabo Adventures"
 ];
 
-// Cargar destinos para autocompletado
-function cargarDestinos() {
-  const pickupList = document.getElementById("pickupList");
-  const destinationList = document.getElementById("destinationList");
+/* =====================================================
+   AUTOCOMPLETADO — SUGERENCIAS TIPO UBER (LOCAL)
+===================================================== */
+function setupAutocomplete(input, dropdown) {
+  input.addEventListener("input", function () {
+    const query = this.value.trim().toLowerCase();
+    dropdown.innerHTML = "";
 
-  DESTINOS.forEach(d => {
-    let op1 = document.createElement("option");
-    op1.value = d;
-    pickupList.appendChild(op1);
+    if (!query) return;
 
-    let op2 = document.createElement("option");
-    op2.value = d;
-    destinationList.appendChild(op2);
+    const results = DESTINOS.filter(loc =>
+      loc.toLowerCase().includes(query)
+    ).slice(0, 8);
+
+    results.forEach(loc => {
+      const div = document.createElement("div");
+      div.className = "autocomplete-item";
+      div.textContent = loc;
+
+      div.onclick = () => {
+        input.value = loc;
+        dropdown.innerHTML = "";
+      };
+
+      dropdown.appendChild(div);
+    });
+  });
+
+  // Ocultar cuando se hace clic fuera
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target) && !input.contains(e.target)) {
+      dropdown.innerHTML = "";
+    }
   });
 }
 
-cargarDestinos();
+setupAutocomplete(pickupPreset, document.getElementById("pickupDropdown"));
+setupAutocomplete(destinationPreset, document.getElementById("destinationDropdown"));
 
 /* =====================================================
-   PRECIOS por servicio
+   PRECIOS
 ===================================================== */
 const SERVICE_PRICES = {
   "Airport Transfer": "$80 USD",
@@ -98,7 +165,7 @@ const SERVICE_PRICES = {
 };
 
 /* =====================================================
-   Actualizar interfaz según servicio seleccionado
+   UI según tipo de servicio
 ===================================================== */
 function updateServiceUI() {
   const sv = serviceTypeEl.value;
@@ -111,43 +178,25 @@ function updateServiceUI() {
     selectedServicePriceEl.textContent = SERVICE_PRICES[sv] || "Price on request";
   }
 
-  if (sv === "Round Trip") {
-    returnDateWrapper.style.display = "block";
-    returnTimeWrapper.style.display = "block";
-    hoursWrapper.style.display = "none";
-  } else if (sv === "Open Service (per hour)") {
-    hoursWrapper.style.display = "block";
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
-  } else {
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
-    hoursWrapper.style.display = "none";
-  }
+  returnDateWrapper.style.display = sv === "Round Trip" ? "block" : "none";
+  returnTimeWrapper.style.display = sv === "Round Trip" ? "block" : "none";
+  hoursWrapper.style.display = sv === "Open Service (per hour)" ? "block" : "none";
 }
 
 serviceTypeEl.addEventListener("change", updateServiceUI);
 
 /* =====================================================
-   Fechas no disponibles (localStorage)
+   Fechas ocupadas (localStorage)
 ===================================================== */
 function getDisabledDates() {
   const saved = JSON.parse(localStorage.getItem("reservations")) || [];
-  const dates = new Set();
-  saved.forEach(r => {
-    if (r.date) dates.add(r.date);
-    if (r.returnDate) dates.add(r.returnDate);
-  });
-  return Array.from(dates);
+  return saved.flatMap(r => [r.date, r.returnDate]).filter(Boolean);
 }
 
 function renderUnavailableList() {
   const list = getDisabledDates();
-  unavailableListEl.innerHTML = "";
-  if (list.length === 0) {
-    unavailableListEl.textContent = "All dates available.";
-    return;
-  }
+  unavailableListEl.innerHTML = list.length ? "" : "All dates available.";
+
   list.forEach(d => {
     let div = document.createElement("div");
     div.textContent = d;
@@ -164,11 +213,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const selectedService = urlParams.get("service");
 if (selectedService) {
   serviceTypeEl.value = selectedService;
-  updateServiceUI();
 }
+updateServiceUI();
 
 /* =====================================================
-   ENVIAR FORMULARIO
+   Enviar Formulario
 ===================================================== */
 document.getElementById("bookingForm").addEventListener("submit", function (e) {
   e.preventDefault();
@@ -189,23 +238,22 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
     notes: document.getElementById("notes").value.trim()
   };
 
-  // Validación
-  if (!reservation.name || !reservation.phone || !reservation.email || !reservation.serviceType || !reservation.date || !reservation.time) {
-    alert("Please complete required fields.");
+  if (!reservation.name || !reservation.phone || !reservation.email || !reservation.serviceType) {
+    alert("Please complete all required fields.");
     return;
   }
 
-  // Guardar fecha ocupada
+  // Guardar fechas ocupadas
   let saved = JSON.parse(localStorage.getItem("reservations")) || [];
   saved.push(reservation);
   localStorage.setItem("reservations", JSON.stringify(saved));
 
   renderUnavailableList();
 
-  // Enviar correo (a ti)
+  // Email principal
   emailjs.send("service_8zcytcr", "template_7tkwggo", reservation)
     .then(() => {
-      // Auto-reply al cliente
+      // Auto-reply
       emailjs.send("service_8zcytcr", "template_autoreply", {
         to_email: reservation.email,
         name: reservation.name,
@@ -214,7 +262,6 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
         time: reservation.time
       });
 
-      // Enviar WhatsApp
       sendWhatsApp(reservation);
 
       alert("Reservation sent successfully!");
@@ -228,7 +275,7 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
 });
 
 /* =====================================================
-   WhatsApp Message
+   WhatsApp
 ===================================================== */
 function sendWhatsApp(r) {
   let msg =
