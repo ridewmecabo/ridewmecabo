@@ -1,215 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Your Ride | Ride W Me Cabo</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/mobile.css">
-
-  <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 
-<body class="booking-body">
+<body class="services-body">
 
-<!-- ============================================================
-     HEADER (IGUAL AL DE INDEX, SERVICES, CONTACT)
-============================================================ -->
-<header class="new-header inner-header">
+  <!-- HEADER -->
+  <header class="new-header inner-header">
+    <div class="header-overlay"></div>
 
-  <!-- Imagen Expedition -->
-  <img src="Images/expedition.png" alt="Expedition" class="header-expedition">
-
-  <!-- Overlay -->
-  <div class="header-overlay"></div>
-
-  <!-- Navbar superior -->
-  <div class="header-top">
-    <div class="logo-text">RIDE W ME</div>
-    <div class="menu-icon" onclick="openMenu()">☰</div>
-  </div>
-
-  <!-- Texto principal -->
-  <div class="header-content">
-    <h1>Book Your Ride</h1>
-    <p>Luxury transportation tailored to your travel needs</p>
-  </div>
-
-</header>
-
-<!-- SIDE MENU -->
-<div id="sideMenu" class="side-menu">
-  <div class="close-btn" onclick="closeMenu()">×</div>
-
-  <div class="side-menu-links">
-    <a href="index.html">Home</a>
-    <a href="services.html">Services</a>
-    <a href="booking.html">Book Now</a>
-    <a href="contact.html">Contact</a>
-    <a href="admin.html">Admin</a>
-  </div>
-</div>
-
-<div id="menuBackdrop" class="menu-backdrop" onclick="closeMenu()"></div>
-
-<script>
-  function openMenu() {
-    document.getElementById("sideMenu").classList.add("open");
-    document.getElementById("menuBackdrop").classList.add("show");
-  }
-  function closeMenu() {
-    document.getElementById("sideMenu").classList.remove("open");
-    document.getElementById("menuBackdrop").classList.remove("show");
-  }
-</script>
-
-
-<!-- ============================================================
-     BOOKING FORM
-============================================================ -->
-<div class="booking-wrapper">
-  <div class="booking-card">
-
-    <h2>Book Your Ride</h2>
-    <p class="booking-subtitle">Fast, simple and secure — reserve your private transport now.</p>
-
-    <!-- RESUMEN DEL SERVICIO -->
-    <div class="service-summary">
-      <span class="service-summary-title">Selected Service</span>
-      <span id="selectedServiceName">None selected</span>
-      <span id="selectedServicePrice">—</span>
+    <div class="header-top">
+      <div class="logo-text">RIDE W ME</div>
+      <div class="menu-icon" onclick="openMenu()">☰</div>
     </div>
 
-    <!-- FORM -->
-    <form id="bookingForm" class="booking-form">
+    <img src="Images/expedition.png" class="header-expedition" alt="Expedition">
 
-      <div class="booking-grid">
+    <div class="header-content">
+      <h1>Book Your Ride</h1>
+      <p class="subline">Fast • Safe • Luxury Transportation in Los Cabos</p>
+    </div>
+  </header>
 
-        <!-- Name -->
-        <div>
-          <label for="name">Full Name</label>
-          <input type="text" id="name" required placeholder="Your full name">
+  <!-- SIDE MENU -->
+  <div class="side-menu" id="sideMenu">
+    <div class="close-btn" onclick="closeMenu()">✕</div>
+    <div class="side-menu-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="booking.html">Book Now</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+  </div>
+
+  <div class="menu-backdrop" id="menuBackdrop" onclick="closeMenu()"></div>
+
+  <!-- BOOKING -->
+  <div class="booking-wrapper">
+    <div class="booking-card">
+
+      <h2>Book Your Ride</h2>
+      <p class="booking-subtitle">Choose service, fill details, and confirm instantly.</p>
+
+      <!-- SERVICE SUMMARY -->
+      <div class="service-summary">
+        <div class="service-summary-title">Selected service</div>
+        <div id="selectedServiceName">None selected</div>
+        <div id="selectedServicePrice">—</div>
+      </div>
+
+      <form id="bookingForm" class="booking-form">
+
+        <!-- NAME -->
+        <label>Full Name</label>
+        <input type="text" id="name" required placeholder="Your name">
+
+        <!-- PHONE -->
+        <label>Phone / WhatsApp</label>
+        <input type="tel" id="phone" required placeholder="+52 624...">
+
+        <!-- EMAIL -->
+        <label>Email</label>
+        <input type="email" id="email" required placeholder="your@email">
+
+        <!-- SERVICE TYPE -->
+        <label>Service Type</label>
+        <select id="serviceType" required>
+          <option value="">Select service</option>
+          <option value="Airport Transfer">Airport Transfer</option>
+          <option value="One Way">One Way</option>
+          <option value="Round Trip">Round Trip</option>
+          <option value="Open Service (per hour)">Open Service (per hour)</option>
+        </select>
+
+        <!-- PASSENGERS -->
+        <label>Passengers</label>
+        <select id="passengers" required>
+          <option value="">Select</option>
+          <option value="1-2">1–2</option>
+          <option value="3-4">3–4</option>
+          <option value="5-6">5–6</option>
+        </select>
+
+        <!-- PICKUP AUTOCOMPLETE -->
+        <label>Pickup Location</label>
+        <div class="autocomplete-box">
+          <input type="text" id="pickupPreset" required autocomplete="off" placeholder="Start typing...">
+          <div id="pickupDropdown" class="autocomplete-dropdown"></div>
         </div>
 
-        <!-- Phone -->
-        <div>
-          <label for="phone">Phone / WhatsApp</label>
-          <input type="tel" id="phone" required placeholder="+52 624...">
+        <!-- DESTINATION AUTOCOMPLETE -->
+        <label>Destination</label>
+        <div class="autocomplete-box">
+          <input type="text" id="destinationPreset" required autocomplete="off" placeholder="Start typing...">
+          <div id="destinationDropdown" class="autocomplete-dropdown"></div>
         </div>
 
-        <!-- Email -->
-        <div class="booking-grid-full">
-          <label for="email">Email</label>
-          <input type="email" id="email" required placeholder="example@email.com">
+        <!-- DATE + TIME -->
+        <div class="booking-grid">
+          <div>
+            <label>Date</label>
+            <input type="text" id="date" placeholder="Select date" readonly required>
+          </div>
+          <div>
+            <label>Time</label>
+            <input type="time" id="time" required>
+          </div>
         </div>
 
-        <!-- Service Type -->
-        <div>
-          <label for="serviceType">Service Type</label>
-          <select id="serviceType" required>
-            <option value="">Select service</option>
-            <option value="Airport Transfer">Airport Transfer</option>
-            <option value="One Way">One Way</option>
-            <option value="Round Trip">Round Trip</option>
-            <option value="Open Service (per hour)">Open Service (per hour)</option>
-          </select>
-        </div>
-
-        <!-- Passengers -->
-        <div>
-          <label for="passengers">Passengers</label>
-          <select id="passengers" required>
-            <option value="">Choose</option>
-            <option value="1-2">1–2</option>
-            <option value="3-4">3–4</option>
-            <option value="5-6">5–6</option>
-          </select>
-        </div>
-
-        <!-- Pickup -->
-        <div class="booking-grid-full">
-          <label for="pickupPreset">Pickup Location</label>
-          <input list="pickupList" id="pickupPreset" placeholder="Type a location...">
-          <datalist id="pickupList"></datalist>
-        </div>
-
-        <!-- Destination -->
-        <div class="booking-grid-full">
-          <label for="destinationPreset">Destination</label>
-          <input list="destinationList" id="destinationPreset" placeholder="Type a destination...">
-          <datalist id="destinationList"></datalist>
-        </div>
-
-        <!-- Date -->
-        <div>
-          <label for="date">Date (Departure)</label>
-          <input type="date" id="date" required>
-        </div>
-
-        <!-- Time -->
-        <div>
-          <label for="time">Time (Departure)</label>
-          <input type="time" id="time" required>
-        </div>
-
-        <!-- Round trip date -->
+        <!-- RETURN TRIP -->
         <div id="returnDateWrapper" style="display:none;">
-          <label for="returnDate">Return Date</label>
-          <input type="date" id="returnDate">
+          <label>Return Date</label>
+          <input type="text" id="returnDate" placeholder="Select return date">
         </div>
 
-        <!-- Round trip time -->
         <div id="returnTimeWrapper" style="display:none;">
-          <label for="returnTime">Return Time</label>
+          <label>Return Time</label>
           <input type="time" id="returnTime">
         </div>
 
-        <!-- Open Service Hours -->
+        <!-- OPEN SERVICE -->
         <div id="hoursWrapper" style="display:none;">
-          <label for="hours">Service Hours</label>
+          <label>Service Hours</label>
           <select id="hours">
-            <option value="">Choose hours</option>
+            <option value="">Select hours</option>
             <option value="2">2 hours</option>
             <option value="3">3 hours</option>
             <option value="4">4 hours</option>
             <option value="5">5 hours</option>
-            <option value="6">6+ hours</option>
+            <option value="6+">6+ hours</option>
           </select>
         </div>
 
-        <!-- Notes -->
-        <div class="booking-grid-full">
-          <label for="notes">Notes (optional)</label>
-          <textarea id="notes" placeholder="Flight number, special requests, etc."></textarea>
+        <!-- NOTES -->
+        <label>Notes (optional)</label>
+        <textarea id="notes" placeholder="Flight number, special requests, etc."></textarea>
+
+        <!-- SUBMIT -->
+        <button type="submit">Confirm Reservation</button>
+
+        <!-- UNAVAILABLE DATES -->
+        <div class="unavailable-box">
+          <strong>Unavailable / booked dates:</strong>
+          <div id="unavailableList" class="unavailable-list">Loading…</div>
         </div>
 
-      </div>
+      </form>
 
-      <button type="submit">Confirm & Send Reservation</button>
-
-      <div class="unavailable-box">
-        <strong>Unavailable Dates:</strong>
-        <div id="unavailableList" class="unavailable-list">Loading…</div>
-      </div>
-
-    </form>
+    </div>
   </div>
-</div>
 
+  <footer class="site-footer">
+    © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
+  </footer>
 
-<footer class="site-footer">
-  © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
-</footer>
+  <!-- JS LIBRARIES -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
+  <!-- BOOKING LOGIC -->
+  <script src="scripts/booking.js"></script>
 
+  <!-- MENU CONTROL -->
+  <script>
+    function openMenu() {
+      document.getElementById("sideMenu").classList.add("open");
+      document.getElementById("menuBackdrop").classList.add("show");
+    }
 
-<!-- ============================================================
-     SCRIPTS
-============================================================ -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script src="scripts/booking.js"></script>
+    function closeMenu() {
+      document.getElementById("sideMenu").classList.remove("open");
+      document.getElementById("menuBackdrop").classList.remove("show");
+    }
+  </script>
 
 </body>
 </html>
+
