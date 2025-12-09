@@ -1,9 +1,95 @@
-// =======================
-// RIDE W ME - BOOKING JS
-// =======================
+/* =====================================================
+   booking.js — Logic for Ride W Me Cabo Booking System
+   ===================================================== */
 
-// CONFIG
+emailjs.init("Ed5Qh2Qk81A6fHcRR"); // Tu PUBLIC KEY
+
+// Número de WhatsApp
 const WHATSAPP_NUMBER = "526242426741";
+
+// Elementos
+const serviceTypeEl = document.getElementById("serviceType");
+const passengersEl = document.getElementById("passengers");
+const pickupPreset = document.getElementById("pickupPreset");
+const destinationPreset = document.getElementById("destinationPreset");
+const returnDateWrapper = document.getElementById("returnDateWrapper");
+const returnTimeWrapper = document.getElementById("returnTimeWrapper");
+const hoursWrapper = document.getElementById("hoursWrapper");
+const unavailableListEl = document.getElementById("unavailableList");
+
+const selectedServiceNameEl = document.getElementById("selectedServiceName");
+const selectedServicePriceEl = document.getElementById("selectedServicePrice");
+
+// Lista de destinos (hoteles, restaurantes, clubs, áreas)
+const DESTINOS = [
+  "Los Cabos International Airport (SJD)",
+  "Cabo San Lucas Marina",
+  "San José del Cabo Downtown",
+  "Cabo San Lucas Downtown",
+  "Medano Beach",
+  "The Cape, a Thompson Hotel",
+  "Solaz Luxury Resort",
+  "Montage Los Cabos",
+  "Waldorf Astoria Pedregal",
+  "Grand Velas Los Cabos",
+  "La Marina Inn",
+  "Chileno Bay Resort",
+  "Esperanza Auberge Resorts",
+  "RIU Palace",
+  "RIU Santa Fe",
+  "RIU Baja California",
+  "Hard Rock Hotel Los Cabos",
+  "Nobu Hotel",
+  "Pueblo Bonito Sunset",
+  "Pueblo Bonito Rose",
+  "Acre Restaurant",
+  "Flora Farms",
+  "Sunset Monalisa",
+  "Jazz on the Rocks",
+  "El Farallon",
+  "Edith’s",
+  "Cabo del Sol",
+  "Diamante",
+  "Viceroy Los Cabos",
+  "Secrets Puerto Los Cabos",
+  "Hyatt Ziva",
+  "Hilton Los Cabos",
+  "One&Only Palmilla",
+  "El Merkado",
+  "Fresko Cerro Colorado",
+  "Walmart",
+  "Costco",
+  "San José Art District",
+  "Hotel Tesoro",
+  "Hotel Marina Fiesta",
+  "Cabo Adventures",
+  "Santa Maria Bay",
+  "Las Ventanas al Paraíso",
+  "Cerritos Beach",
+  "Todos Santos Downtown"
+];
+
+// Cargar destinos para autocompletado
+function cargarDestinos() {
+  const pickupList = document.getElementById("pickupList");
+  const destinationList = document.getElementById("destinationList");
+
+  DESTINOS.forEach(d => {
+    let op1 = document.createElement("option");
+    op1.value = d;
+    pickupList.appendChild(op1);
+
+    let op2 = document.createElement("option");
+    op2.value = d;
+    destinationList.appendChild(op2);
+  });
+}
+
+cargarDestinos();
+
+/* =====================================================
+   PRECIOS por servicio
+===================================================== */
 const SERVICE_PRICES = {
   "Airport Transfer": "$80 USD",
   "One Way": "$100 USD",
@@ -11,141 +97,29 @@ const SERVICE_PRICES = {
   "Open Service (per hour)": "$50 USD / hr"
 };
 
-(function () {
-  emailjs.init("Ed5Qh2Qk81A6fHcRR");
-})();
-
-// =======================
-// LOCATIONS (Uber Style)
-// =======================
-
-const LOCATIONS = [
-  // AIRPORTS
-  { name: "Los Cabos International Airport (SJD)", type: "airport" },
-
-  // MARINAS / TOWNS
-  { name: "Cabo San Lucas Marina", type: "marina" },
-  { name: "Cabo San Lucas Downtown", type: "town" },
-  { name: "San José del Cabo Downtown", type: "town" },
-  { name: "Medano Beach", type: "beach" },
-
-  // RESTAURANTS POPULARES
-  { name: "Sunset Monalisa", type: "restaurant" },
-  { name: "Flora Farms", type: "restaurant" },
-  { name: "Acre Restaurant", type: "restaurant" },
-  { name: "Edith's", type: "restaurant" },
-  { name: "El Farallon", type: "restaurant" },
-  { name: "Jazz on the Rocks at Sunset Point", type: "restaurant" },
-  { name: "RosaNegra Cabo", type: "restaurant" },
-  { name: "Taboo Cabo", type: "restaurant" },
-  { name: "Manta (The Cape Hotel)", type: "restaurant" },
-  { name: "Nobu Restaurant Cabo", type: "restaurant" },
-
-  // HOTELS
-  { name: "Montage Los Cabos", type: "hotel" },
-  { name: "Waldorf Astoria Pedregal", type: "hotel" },
-  { name: "Hard Rock Hotel Los Cabos", type: "hotel" },
-  { name: "Nobu Hotel Los Cabos", type: "hotel" },
-  { name: "One&Only Palmilla", type: "hotel" },
-  { name: "Grand Velas Los Cabos", type: "hotel" },
-  { name: "Secrets Puerto Los Cabos", type: "hotel" },
-  { name: "Hyatt Ziva Los Cabos", type: "hotel" },
-  { name: "Hilton Los Cabos", type: "hotel" },
-  { name: "Chileno Bay Resort", type: "hotel" },
-  { name: "The Cape, a Thompson Hotel", type: "hotel" },
-  { name: "Pueblo Bonito Sunset Beach", type: "hotel" },
-  { name: "Riu Palace Cabo San Lucas", type: "hotel" },
-
-  // BEACH CLUBS
-  { name: "Mango Deck", type: "club" },
-  { name: "The Office on the Beach", type: "club" },
-  { name: "Cachet Beach Club", type: "club" },
-
-  // PLACES / MALLS
-  { name: "Puerto Paraíso Mall", type: "mall" },
-  { name: "Luxury Avenue Mall", type: "mall" },
-  { name: "Cabo del Sol", type: "resort" },
-  { name: "Chileno Bay", type: "beach" },
-];
-
-// ICONS for autocomplete
-const ICONS = {
-  airport: "✈️",
-  hotel: "🏨",
-  restaurant: "🍽️",
-  town: "🏙️",
-  marina: "⛵",
-  mall: "🛍️",
-  club: "🎉",
-  beach: "🏖️",
-  resort: "🌅",
-  default: "📍"
-};
-
-// =======================
-// UBER STYLE AUTOCOMPLETE
-// =======================
-
-function setupAutocomplete(inputId, dropdownId) {
-  const input = document.getElementById(inputId);
-  const dropdown = document.getElementById(dropdownId);
-
-  input.addEventListener("input", () => {
-    const val = input.value.toLowerCase();
-    dropdown.innerHTML = "";
-
-    if (val.length < 1) {
-      dropdown.style.display = "none";
-      return;
-    }
-
-    const matches = LOCATIONS.filter(loc => loc.name.toLowerCase().includes(val));
-
-    matches.forEach(loc => {
-      const div = document.createElement("div");
-      div.className = "autocomplete-item";
-      div.innerHTML = `${ICONS[loc.type] || ICONS.default} ${loc.name}`;
-      div.onclick = () => {
-        input.value = loc.name;
-        dropdown.style.display = "none";
-      };
-      dropdown.appendChild(div);
-    });
-
-    dropdown.style.display = matches.length ? "block" : "none";
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!dropdown.contains(e.target) && e.target !== input) {
-      dropdown.style.display = "none";
-    }
-  });
-}
-
-setupAutocomplete("pickupPreset", "pickupDropdown");
-setupAutocomplete("destinationPreset", "destinationDropdown");
-
-// =======================
-// SERVICE UI (Round Trip etc.)
-// =======================
-
+/* =====================================================
+   Actualizar interfaz según servicio seleccionado
+===================================================== */
 function updateServiceUI() {
   const sv = serviceTypeEl.value;
 
-  selectedServiceNameEl.textContent = sv || "None selected";
-  selectedServicePriceEl.textContent = SERVICE_PRICES[sv] || "—";
+  if (!sv) {
+    selectedServiceNameEl.textContent = "None selected";
+    selectedServicePriceEl.textContent = "—";
+  } else {
+    selectedServiceNameEl.textContent = sv;
+    selectedServicePriceEl.textContent = SERVICE_PRICES[sv] || "Price on request";
+  }
 
   if (sv === "Round Trip") {
     returnDateWrapper.style.display = "block";
     returnTimeWrapper.style.display = "block";
     hoursWrapper.style.display = "none";
-  } 
-  else if (sv === "Open Service (per hour)") {
+  } else if (sv === "Open Service (per hour)") {
     hoursWrapper.style.display = "block";
     returnDateWrapper.style.display = "none";
     returnTimeWrapper.style.display = "none";
-  }
-  else { 
+  } else {
     returnDateWrapper.style.display = "none";
     returnTimeWrapper.style.display = "none";
     hoursWrapper.style.display = "none";
@@ -153,37 +127,29 @@ function updateServiceUI() {
 }
 
 serviceTypeEl.addEventListener("change", updateServiceUI);
-updateServiceUI();
 
-// =======================
-// FECHAS OCUPADAS (RESTORED)
-// =======================
-
-// Retrieve disabled dates
+/* =====================================================
+   Fechas no disponibles (localStorage)
+===================================================== */
 function getDisabledDates() {
   const saved = JSON.parse(localStorage.getItem("reservations")) || [];
   const dates = new Set();
-
   saved.forEach(r => {
     if (r.date) dates.add(r.date);
     if (r.returnDate) dates.add(r.returnDate);
   });
-
   return Array.from(dates);
 }
 
-let disabledDates = getDisabledDates();
-
-// Render blocked dates
 function renderUnavailableList() {
-  if (disabledDates.length === 0) {
+  const list = getDisabledDates();
+  unavailableListEl.innerHTML = "";
+  if (list.length === 0) {
     unavailableListEl.textContent = "All dates available.";
     return;
   }
-
-  unavailableListEl.innerHTML = "";
-  disabledDates.forEach(d => {
-    const div = document.createElement("div");
+  list.forEach(d => {
+    let div = document.createElement("div");
     div.textContent = d;
     unavailableListEl.appendChild(div);
   });
@@ -191,86 +157,79 @@ function renderUnavailableList() {
 
 renderUnavailableList();
 
-// Flatpickr
-let datePicker = flatpickr("#date", {
-  dateFormat: "Y-m-d",
-  minDate: "today",
-  disable: disabledDates
-});
+/* =====================================================
+   Preseleccionar servicio desde ?service=
+===================================================== */
+const urlParams = new URLSearchParams(window.location.search);
+const selectedService = urlParams.get("service");
+if (selectedService) {
+  serviceTypeEl.value = selectedService;
+  updateServiceUI();
+}
 
-let returnDatePicker = flatpickr("#returnDate", {
-  dateFormat: "Y-m-d",
-  minDate: "today",
-  disable: disabledDates
-});
-
-// =======================
-// FORM SUBMIT
-// =======================
-
-bookingForm.addEventListener("submit", function (e) {
+/* =====================================================
+   ENVIAR FORMULARIO
+===================================================== */
+document.getElementById("bookingForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
   const reservation = {
-    name: name.value.trim(),
-    phone: phone.value.trim(),
-    email: email.value.trim(),
+    name: document.getElementById("name").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    email: document.getElementById("email").value.trim(),
     serviceType: serviceTypeEl.value,
-    passengers: passengers.value.trim(),
+    passengers: passengersEl.value,
+    date: document.getElementById("date").value,
+    time: document.getElementById("time").value,
     pickup: pickupPreset.value.trim(),
     destination: destinationPreset.value.trim(),
-    date: date.value,
-    time: time.value,
-    returnDate: returnDate.value,
-    returnTime: returnTime.value,
-    hours: hours.value,
-    notes: notes.value
+    returnDate: document.getElementById("returnDate").value,
+    returnTime: document.getElementById("returnTime").value,
+    hours: document.getElementById("hours").value,
+    notes: document.getElementById("notes").value.trim()
   };
 
-  if (!reservation.name || !reservation.phone || !reservation.email ||
-      !reservation.serviceType || !reservation.pickup || !reservation.destination ||
-      !reservation.date || !reservation.time) {
-    showAlert("Please complete all required fields.", true);
+  // Validación
+  if (!reservation.name || !reservation.phone || !reservation.email || !reservation.serviceType || !reservation.date || !reservation.time) {
+    alert("Please complete required fields.");
     return;
   }
 
-  if (reservation.serviceType === "Round Trip" &&
-      (!reservation.returnDate || !reservation.returnTime)) {
-    showAlert("Please enter return date and time.", true);
-    return;
-  }
-
-  // Save reservation
+  // Guardar fecha ocupada
   let saved = JSON.parse(localStorage.getItem("reservations")) || [];
   saved.push(reservation);
   localStorage.setItem("reservations", JSON.stringify(saved));
 
-  // Update disabled dates
-  disabledDates = getDisabledDates();
-  datePicker.set("disable", disabledDates);
-  returnDatePicker.set("disable", disabledDates);
   renderUnavailableList();
 
-  // Send email
-  emailjs.send("service_8zcytcr", "template_7tkwggo", {
-      ...reservation,
-      to_email: "ridewmecabo@gmail.com"
-    })
+  // Enviar correo (a ti)
+  emailjs.send("service_8zcytcr", "template_7tkwggo", reservation)
     .then(() => {
+      // Auto-reply al cliente
+      emailjs.send("service_8zcytcr", "template_autoreply", {
+        to_email: reservation.email,
+        name: reservation.name,
+        service: reservation.serviceType,
+        date: reservation.date,
+        time: reservation.time
+      });
+
+      // Enviar WhatsApp
       sendWhatsApp(reservation);
-      showAlert("Your reservation has been sent!");
-      bookingForm.reset();
+
+      alert("Reservation sent successfully!");
+      document.getElementById("bookingForm").reset();
       updateServiceUI();
     })
-    .catch(() => {
-      showAlert("Error sending reservation.", true);
+    .catch(err => {
+      console.error(err);
+      alert("Error sending reservation. Try again.");
     });
 });
 
-// =======================
-// WHATSAPP
-// =======================
-
+/* =====================================================
+   WhatsApp Message
+===================================================== */
 function sendWhatsApp(r) {
   let msg =
     `New Reservation - Ride W Me Cabo%0A%0A` +
@@ -283,14 +242,9 @@ function sendWhatsApp(r) {
     `Destination: ${r.destination}%0A` +
     `Date: ${r.date} at ${r.time}%0A`;
 
-  if (r.returnDate && r.returnTime)
-    msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
-
-  if (r.hours)
-    msg += `Hours: ${r.hours}%0A`;
-
-  if (r.notes)
-    msg += `%0ANotes: ${r.notes}%0A`;
+  if (r.returnDate) msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
+  if (r.hours) msg += `Hours: ${r.hours}%0A`;
+  if (r.notes) msg += `%0ANotes: ${r.notes}%0A`;
 
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
 }
