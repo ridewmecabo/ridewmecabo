@@ -705,5 +705,9 @@ body {
   background: #222;
   color: var(--green-soft);
 }
+/* Hide empty dropdown so no line appears */
+.autocomplete-dropdown:empty {
+  display: none !important;
+}
 
 
