@@ -270,9 +270,11 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
       emailjs.send("service_8zcytcr", "template_autoreply", {
         to_email: reservation.email,
         name: reservation.name,
-        service: reservation.serviceType,
         date: reservation.date,
-        time: reservation.time
+        time: reservation.time,
+         
+        service: reservation.serviceType,
+        price: SERVICE_PRICES[reservation.serviceType]
       });
 
       sendWhatsApp(reservation);
