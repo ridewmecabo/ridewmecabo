@@ -709,4 +709,18 @@ body {
   background: #222;
   color: var(--green-soft);
 }
+.paypal-button-box button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  background: #ffc439;
+  color: #000;
+  border: none;
+  font-weight: 700;
+  font-size: 1.02rem;
+  cursor: not-allowed;
+  opacity: 0.6;
+  margin-top: 10px;
+}
+
 
