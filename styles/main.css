@@ -709,6 +709,7 @@ body {
   background: #222;
   color: var(--green-soft);
 }
+
 .paypal-button-box button {
   width: 100%;
   padding: 14px;
@@ -722,5 +723,5 @@ body {
   opacity: 0.6;
   margin-top: 10px;
 }
-
+}
 
