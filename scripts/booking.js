@@ -258,13 +258,6 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
     return;
   }
 
-  // Guardar fechas ocupadas
-  let saved = JSON.parse(localStorage.getItem("reservations")) || [];
-  saved.push(reservation);
-  localStorage.setItem("reservations", JSON.stringify(saved));
-
-  renderUnavailableList();
-
   // Email principal
   emailjs.send("service_8zcytcr", "template_7tkwggo", reservation)
     .then(() => {
