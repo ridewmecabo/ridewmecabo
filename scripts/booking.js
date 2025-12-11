@@ -158,11 +158,24 @@ setupAutocomplete(destinationPreset, document.getElementById("destinationDropdow
    PRECIOS
 ===================================================== */
 const SERVICE_PRICES = {
-  "Airport Transfer": "$80 USD",
-  "One Way": "$100 USD",
-  "Round Trip": "$160 USD",
-  "Open Service (per hour)": "$50 USD / hr"
+  // ARRIVALS / DEPARTURES
+  zone1: "$75.00 USD (One Way) — $130.00 USD (Round Trip)",
+  zone2: "$85.00 USD (One Way) — $150.00 USD (Round Trip)",
+  zone3a: "$95.00 USD (One Way) — $170.00 USD (Round Trip)",
+  zone3b: "$105.00 USD (One Way) — $180.00 USD (Round Trip)",
+  zone5: "$110.00 USD (One Way) — $200.00 USD (Round Trip)",
+
+  // CITY OPEN
+  city4: "$140.00 USD — 4 Hours (+$20 extra hour)",
+  city6: "$160.00 USD — 6 Hours (+$20 extra hour)",
+
+  // ACTIVITIES / DINNER TOURS
+  migrino: "$350.00 USD — 4 to 8 hours",
+  todosSantos: "$400.00 USD — 4 to 8 hours",
+  barriles: "$400.00 USD — 4 to 8 hours",
+  laPaz: "$600.00 USD — 4 to 8 hours"
 };
+
 
 /* =====================================================
    UI según tipo de servicio
