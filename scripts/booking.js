@@ -159,7 +159,7 @@ setupAutocomplete(destinationPreset, document.getElementById("destinationDropdow
 ===================================================== */
 const SERVICE_PRICES = {
   // ARRIVALS / DEPARTURES
-  zone1: "$75.00 USD (One Way)" - "$130.00 USD (Round Trip)", 
+  zone1: "$75.00 USD (One Way) — $130.00 USD (Round Trip)",
   zone2: "$85.00 USD (One Way) — $150.00 USD (Round Trip)",
   zone3a: "$95.00 USD (One Way) — $170.00 USD (Round Trip)",
   zone3b: "$105.00 USD (One Way) — $180.00 USD (Round Trip)",
@@ -175,6 +175,7 @@ const SERVICE_PRICES = {
   barriles: "$400.00 USD — 4 to 8 hours",
   laPaz: "$600.00 USD — 4 to 8 hours"
 };
+
 
 
 /* =====================================================
