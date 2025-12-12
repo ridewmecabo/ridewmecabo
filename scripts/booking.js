@@ -195,27 +195,20 @@ document.getElementById("bookingForm").addEventListener("submit", (e) => {
    WHATSAPP MESSAGE
 ===================================================== */
 function sendWhatsApp(r) {
-  let msg =
-`NEW RESERVATION – RIDE W ME CABO
---------------------------
-Name: ${r.name}
-Phone: ${r.phone}
-Email: ${r.email}
+  const msg =
+    `🚗 *New Reservation – Ride W Me Cabo*\n\n` +
+    `Hi ${r.name}, your reservation has been received.\n\n` +
+    `• Service: ${r.service_label}\n` +
+    `• Trip Type: ${r.trip_type}\n` +
+    `• Passengers: ${r.passengers}\n\n` +
+    `• Pickup: ${r.pickup}\n` +
+    `• Destination: ${r.destination}\n\n` +
+    `• Departure: ${r.date} at ${r.time}\n` +
+    (r.return_date ? `• Return: ${r.return_date} at ${r.return_time}\n` : "") +
+    (r.extra_hours ? `• Extra Hours: ${r.extra_hours}\n` : "") +
+    `\n💵 Total: $${r.total_price} USD\n\n` +
+    `Notes: ${r.notes || "None"}`;
 
-Service: ${r.service_label}
-Trip Type: ${r.trip_type}
-Passengers: ${r.passengers}
-
-Pickup: ${r.pickup}
-Destination: ${r.destination}
-
-Departure: ${r.date} at ${r.time}
-${r.return_date ? `Return: ${r.return_date} at ${r.return_time}` : ""}
-
-Extra Hours: ${r.extra_hours || "None"}
-
-TOTAL: $${r.total_price} USD
-Notes: ${r.notes || "None"}`;
-
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
+  window.open(`https://wa.me/526242426741?text=${encodeURIComponent(msg)}`);
 }
+
