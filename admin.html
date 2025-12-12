@@ -5,95 +5,382 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | Ride W Me Cabo</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="/styles/admin.css">
-
-  <!-- JS LIBRARIES -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      background: #0b0b0b;
+      color: white;
+      margin: 0;
+      padding: 40px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .admin-container {
+      width: 95%;
+      max-width: 1100px;
+      background: #141414;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(0,255,150,0.15);
+    }
+
+    h2 {
+      color: #00c16e;
+      margin-top: 0;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .excel-btn { background: #0077ff; color: white; }
+    .pdf-btn { background: #bb00ff; color: white; }
+    .clear-btn { background: #b30000; color: white; }
+    .today-btn { background: #00c16e; color: black; }
+
+    button:hover { opacity: 0.85; }
+
+    /* FILTERS */
+    .filters {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filters input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #222;
+      color: white;
+      min-width: 160px;
+    }
+
+    /* RESERVATION LIST */
+    .reservation-list {
+      margin-top: 20px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .reservation-card {
+      background: #1c1c1c;
+      padding: 16px;
+      border-radius: 12px;
+      border-left: 4px solid #00c16e;
+      margin-bottom: 12px;
+      box-shadow: 0 0 15px rgba(0,255,150,0.08);
+    }
+
+    .reservation-card p { margin: 4px 0; }
+
+    .card-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .delete-btn {
+      background: #b30000;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      color: white;
+    }
+
+    .edit-btn {
+      background: #0077ff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      color: white;
+    }
+
+    .delete-btn:hover { background: #d00000; }
+    .edit-btn:hover { background: #1591ff; }
+
+    /* EDIT MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal-content {
+      background: #141414;
+      padding: 25px;
+      width: 90%;
+      max-width: 450px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,150,0.25);
+    }
+
+    .modal-content input, .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #222;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    .modal-content button {
+      width: 100%;
+      margin-top: 10px;
+      background: #00c16e;
+      padding: 12px;
+      border-radius: 10px;
+      color: black;
+      font-weight: 700;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ========================= LOGIN ========================= -->
-<div id="loginBox" class="login-container">
-  <h2>Admin Access</h2>
-  <p class="muted">Enter password to access dashboard</p>
+<div class="admin-container">
 
-  <input type="password" id="adminPass" placeholder="Admin Password">
-  <button onclick="checkLogin()">Login</button>
+  <h2>Reservation Dashboard</h2>
 
-  <p id="errorMsg" class="error-msg">Incorrect password ❌</p>
-</div>
+  <!-- FILTERS -->
+  <div class="filters">
+    <input type="date" id="filterDate" placeholder="Filter by date">
+    <input type="text" id="filterName" placeholder="Search name">
+  </div>
 
-<!-- ========================= ADMIN PANEL ========================= -->
-<div id="adminPanel" class="admin-container">
+  <!-- ACTION BUTTONS -->
+  <div class="top-actions">
+    <button class="excel-btn" onclick="exportExcel()">📄 Export Excel</button>
+    <button class="pdf-btn" onclick="exportPDF()">📘 Export PDF</button>
+    <button class="today-btn" onclick="exportToday()">📆 Today Only</button>
+    <button class="clear-btn" onclick="clearAll()">🗑 Delete All</button>
+  </div>
 
-  <header class="admin-header">
-    <img src="Images/ridewmelogo.png" class="admin-logo">
-    <h1>Ride W Me Cabo — Reservations Dashboard</h1>
-  </header>
-
-  <!-- ====== DASHBOARD ====== -->
-  <section class="dashboard">
-    <h2>📊 Statistics Overview</h2>
-
-    <div class="stats-grid">
-      <div class="stat-card">
-        <h3 id="totalReservations">0</h3>
-        <p>Total Reservations</p>
-      </div>
-
-      <div class="stat-card">
-        <h3 id="todayReservations">0</h3>
-        <p>Today</p>
-      </div>
-
-      <div class="stat-card">
-        <h3 id="airportCount">0</h3>
-        <p>Airport Transfers</p>
-      </div>
-
-      <div class="stat-card">
-        <h3 id="roundTripCount">0</h3>
-        <p>Round Trips</p>
-      </div>
-    </div>
-
-    <canvas id="chartServices" height="120"></canvas>
-  </section>
-
-  <!-- ===== FILTERS ===== -->
-  <section class="filters">
-    <h2>🔎 Filters</h2>
-
-    <div class="filter-grid">
-      <input type="date" id="filterDate">
-      <input type="text" id="searchInput" placeholder="Search by name or phone…">
-      <button onclick="clearFilters()">Clear Filters</button>
-    </div>
-  </section>
-
-  <!-- ===== ACTION BUTTONS ===== -->
-  <section class="top-actions">
-
-    <button onclick="exportToExcel()">📄 Export Excel</button>
-
-    <button onclick="exportPDF()">📘 Download PDF</button>
-
-    <button onclick="deleteAll()" class="danger">🗑 Delete All</button>
-    
-  </section>
-
-  <!-- ===== RESERVATION LIST ===== -->
-  <section class="reservation-list" id="reservationList">
-  </section>
+  <!-- RESERVATIONS -->
+  <div id="reservationList" class="reservation-list"></div>
 
 </div>
 
-<!-- JS -->
-<script src="/scripts/admin.js"></script>
+<!-- EDIT MODAL -->
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <h3>Edit Reservation</h3>
+
+    <input id="editName">
+    <input id="editPhone">
+    <input id="editEmail">
+    <input id="editPickup">
+    <input id="editDestination">
+    <textarea id="editNotes"></textarea>
+
+    <button onclick="saveEdit()">Save Changes</button>
+  </div>
+</div>
+
+<script>
+let editIndex = null;
+
+/* Load Reservations */
+function loadReservations() {
+  const list = document.getElementById("reservationList");
+  const reservations = JSON.parse(localStorage.getItem("reservations")) || [];
+
+  list.innerHTML = "";
+
+  reservations.forEach((r, index) => {
+    let div = document.createElement("div");
+    div.className = "reservation-card";
+
+    div.innerHTML = `
+      <p><strong>${r.name}</strong> (${r.passengers} pax)</p>
+      <p>${r.serviceType} — ${r.tripType}</p>
+      <p>📅 ${r.date} at ${r.time}</p>
+      ${r.returnDate ? `<p>🔁 Return: ${r.returnDate} ${r.returnTime}</p>` : ""}
+      <p>📍 ${r.pickup} → ${r.destination}</p>
+      <p>${r.notes || ""}</p>
+
+      <div class="card-buttons">
+         <button class="edit-btn" onclick="openEdit(${index})">Edit</button>
+         <button class="delete-btn" onclick="deleteOne(${index})">Delete</button>
+      </div>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+loadReservations();
+
+/* Delete One */
+function deleteOne(i) {
+  let r = JSON.parse(localStorage.getItem("reservations")) || [];
+  r.splice(i, 1);
+  localStorage.setItem("reservations", JSON.stringify(r));
+  loadReservations();
+}
+
+/* Delete All */
+function clearAll() {
+  if (confirm("Delete ALL reservations?")) {
+    localStorage.removeItem("reservations");
+    loadReservations();
+  }
+}
+
+/* EDIT MODAL */
+function openEdit(i) {
+  let r = JSON.parse(localStorage.getItem("reservations"))[i];
+  editIndex = i;
+
+  document.getElementById("editName").value = r.name;
+  document.getElementById("editPhone").value = r.phone;
+  document.getElementById("editEmail").value = r.email;
+  document.getElementById("editPickup").value = r.pickup;
+  document.getElementById("editDestination").value = r.destination;
+  document.getElementById("editNotes").value = r.notes;
+
+  document.getElementById("editModal").style.display = "flex";
+}
+
+function saveEdit() {
+  let r = JSON.parse(localStorage.getItem("reservations"));
+  let updated = r[editIndex];
+
+  updated.name = document.getElementById("editName").value;
+  updated.phone = document.getElementById("editPhone").value;
+  updated.email = document.getElementById("editEmail").value;
+  updated.pickup = document.getElementById("editPickup").value;
+  updated.destination = document.getElementById("editDestination").value;
+  updated.notes = document.getElementById("editNotes").value;
+
+  r[editIndex] = updated;
+
+  localStorage.setItem("reservations", JSON.stringify(r));
+  document.getElementById("editModal").style.display = "none";
+  loadReservations();
+}
+
+/* EXPORT EXCEL */
+function exportExcel() {
+  let r = JSON.parse(localStorage.getItem("reservations")) || [];
+
+  let data = r.map(x => ({
+    Name: x.name,
+    Phone: x.phone,
+    Email: x.email,
+    Service: x.serviceType,
+    Trip: x.tripType,
+    Passengers: x.passengers,
+    Pickup: x.pickup,
+    Destination: x.destination,
+    Date: x.date,
+    Time: x.time,
+    ReturnDate: x.returnDate,
+    ReturnTime: x.returnTime,
+    ExtraHours: x.extraHours,
+    Notes: x.notes,
+    BasePrice: x.basePrice,
+    ExtraPrice: x.extraPrice,
+    Total: x.totalPrice
+  }));
+
+  let sheet = XLSX.utils.json_to_sheet(data);
+  let book = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(book, sheet, "Reservations");
+  XLSX.writeFile(book, "RideWMe_Reservations.xlsx");
+}
+
+/* EXPORT PDF */
+function exportPDF() {
+  let r = JSON.parse(localStorage.getItem("reservations")) || [];
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Ride W Me Cabo - Reservations", 14, 20);
+
+  doc.autoTable({
+    startY: 30,
+    head: [["Name", "Service", "Pickup", "Destination", "Date", "Total"]],
+    body: r.map(x => [
+      x.name,
+      x.serviceType,
+      x.pickup,
+      x.destination,
+      x.date + " " + x.time,
+      "$" + x.totalPrice
+    ]),
+    styles: { fontSize: 10 },
+    headStyles: { fillColor: [0, 193, 110] }
+  });
+
+  doc.save("RideWMe_Reservations.pdf");
+}
+
+/* EXPORT TODAY ONLY */
+function exportToday() {
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("filterDate").value = today;
+  filterResults();
+}
+
+/* FILTER FUNCTION */
+document.getElementById("filterDate").oninput = filterResults;
+document.getElementById("filterName").oninput = filterResults;
+
+function filterResults() {
+  const date = document.getElementById("filterDate").value;
+  const name = document.getElementById("filterName").value.toLowerCase();
+
+  let r = JSON.parse(localStorage.getItem("reservations")) || [];
+
+  let filtered = r.filter(x =>
+    (!date || x.date === date) &&
+    (!name || x.name.toLowerCase().includes(name))
+  );
+
+  const list = document.getElementById("reservationList");
+  list.innerHTML = "";
+
+  filtered.forEach((r, index) => {
+    let div = document.createElement("div");
+    div.className = "reservation-card";
+    div.innerHTML = `
+      <p><strong>${r.name}</strong></p>
+      <p>${r.serviceType} - ${r.tripType}</p>
+      <p>${r.date} ${r.time}</p>
+      <p>${r.pickup} → ${r.destination}</p>
+    `;
+    list.appendChild(div);
+  });
+}
+</script>
 
 </body>
 </html>
