@@ -710,6 +710,39 @@ body {
   color: var(--green-soft);
 }
 
+/* ===============================
+   FIX — BOOKING LAYOUT IMPROVEMENTS
+   =============================== */
+
+.booking-grid > div {
+  margin-bottom: 12px;
+}
+
+/* Reduce spacing for trip-related fields */
+#returnDateWrapper,
+#returnTimeWrapper,
+#hoursWrapper {
+  margin-top: -4px;
+}
+
+/* Align labels nicely inside grid */
+.booking-grid label {
+  margin-bottom: 4px;
+}
+
+/* Improve spacing consistency */
+.input-wrapper {
+  position: relative;
+}
+
+.autocomplete-dropdown {
+  margin-top: 2px;
+}
+
+/* Fix PayPal button box layout */
+.paypal-button-box {
+  grid-column: 1 / -1;
+}
 .paypal-button-box button {
   width: 100%;
   padding: 14px;
@@ -718,10 +751,9 @@ body {
   color: #000;
   border: none;
   font-weight: 700;
-  font-size: 1.02rem;
+  font-size: 1rem;
   cursor: not-allowed;
   opacity: 0.6;
-  margin-top: 10px;
 }
-}
+
 
