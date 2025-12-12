@@ -18,14 +18,14 @@
     <img src="Images/expedition.png" alt="Luxury SUV" class="header-expedition">
 
     <div class="header-top">
-      <div class="logo-text">¡RIDE W ME!</div>
+      <div class="logo-text">RIDE W ME</div>
       <div class="menu-icon" id="openMenu">☰</div>
     </div>
 
     <div class="header-content">
-      <h1>¡RIDE W ME!</h1>
-      <p>Luxury Transportation Services</p>
-      <p class="subline">Premium Airport & Private Rides in Los Cabos</p>
+      <h1>Ride W Me Cabo</h1>
+      <p>Luxury Private Transportation</p>
+      <p class="subline">Airport Transfers • Open Services • Activities</p>
 
       <div class="hero-buttons">
         <a href="booking.html" class="hero-btn primary">Book Now</a>
@@ -53,20 +53,22 @@
     <!-- Why Ride W Me -->
     <section class="section">
       <h2 class="section-title">Why Ride W Me Cabo?</h2>
-      <p class="section-subtitle">Private, safe and reliable transportation for airport, hotels, villas and restaurants in Los Cabos.</p>
+      <p class="section-subtitle">
+        Private, safe, and reliable transportation for airport arrivals, departures, dinners, and tours in Los Cabos.
+      </p>
 
       <div class="features-grid">
         <div class="feature-card">
           <h3>Professional Driver</h3>
-          <p>Bilingual, experienced and focused on your comfort and safety.</p>
+          <p>Bilingual, experienced, and focused on safety and comfort.</p>
         </div>
         <div class="feature-card">
           <h3>Luxury SUV</h3>
-          <p>Spacious Ford Expedition, leather interior and cold A/C for up to 6 passengers.</p>
+          <p>Ford Expedition Platinum — spacious, clean, A/C, and equipped with amenities.</p>
         </div>
         <div class="feature-card">
-          <h3>On-Time Service</h3>
-          <p>Flight tracking and punctual pickups for airport arrivals and departures.</p>
+          <h3>Always On Time</h3>
+          <p>Flight tracking and punctual pickups for stress-free traveling.</p>
         </div>
       </div>
     </section>
@@ -76,32 +78,37 @@
       <h2 class="section-title">Popular Services</h2>
 
       <div class="services-grid home-grid">
+
+        <!-- ZONE 1 -->
         <article class="service-card">
-          <h3>Airport Transfer</h3>
-          <p>Private ride to or from Los Cabos International Airport (SJD).</p>
+          <h3>Airport Zone 1</h3>
+          <p>SJC – Palmilla</p>
           <div class="service-footer">
-            <span class="service-price">$80 USD</span>
-            <a href="booking.html?service=Airport%20Transfer" class="mini-btn">Book</a>
+            <span class="service-price">$75 USD</span>
+            <a href="booking.html?service=zone1" class="mini-btn">Book</a>
           </div>
         </article>
 
+        <!-- CITY 4 -->
         <article class="service-card">
-          <h3>One Way Transfer</h3>
-          <p>Point-to-point transportation between hotels, villas and restaurants.</p>
+          <h3>Open Service – 4 Hours</h3>
+          <p>Private chauffeur for flexible transportation.</p>
           <div class="service-footer">
-            <span class="service-price">$100 USD</span>
-            <a href="booking.html?service=One%20Way" class="mini-btn">Book</a>
+            <span class="service-price">$140 USD</span>
+            <a href="booking.html?service=city4" class="mini-btn">Book</a>
           </div>
         </article>
 
+        <!-- MIGRIÑO -->
         <article class="service-card">
-          <h3>Round Trip</h3>
-          <p>Pickup, waiting time and safe return to your accommodation.</p>
+          <h3>Activities – Migriño</h3>
+          <p>4–8 hr tour or dinner transportation.</p>
           <div class="service-footer">
-            <span class="service-price">$160 USD</span>
-            <a href="booking.html?service=Round%20Trip" class="mini-btn">Book</a>
+            <span class="service-price">$350 USD</span>
+            <a href="booking.html?service=migrino" class="mini-btn">Book</a>
           </div>
         </article>
+
       </div>
 
       <div class="centered-link">
@@ -115,16 +122,17 @@
         <div class="vehicle-text">
           <h2 class="section-title">Ford Expedition Platinum</h2>
           <p class="section-subtitle">
-            Travel with space, comfort and style. Perfect for airport transfers, dinners, golf days and private tours around Los Cabos.
+            Travel with space, style, and comfort. Ideal for airport transfers, events, and private tours around Los Cabos.
           </p>
           <ul class="vehicle-list">
-            <li>Up to 6 passengers with luggage</li>
-            <li>Leather interior & tri-zone A/C</li>
-            <li>Cold bottled water & amenities</li>
-            <li>Phone chargers on board</li>
+            <li>Up to 6 passengers</li>
+            <li>Leather interior • Cold A/C</li>
+            <li>Complimentary bottled water</li>
+            <li>Phone chargers included</li>
           </ul>
-          <a href="booking.html" class="hero-btn primary small">Reserve Your Ride</a>
+          <a href="booking.html" class="hero-btn primary small">Reserve Now</a>
         </div>
+
         <div class="vehicle-img-box">
           <img src="Images/expedition.png" alt="Ford Expedition" class="vehicle-img">
         </div>
@@ -134,7 +142,7 @@
     <!-- Quick contact -->
     <section class="section">
       <h2 class="section-title">Need a ride soon?</h2>
-      <p class="section-subtitle">You can book online or contact us directly on WhatsApp for last-minute rides.</p>
+      <p class="section-subtitle">Message us for last-minute availability.</p>
 
       <div class="contact-quick-grid">
         <a class="contact-pill" href="https://wa.me/526242426741" target="_blank">📱 WhatsApp</a>
@@ -149,26 +157,27 @@
     © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
   </footer>
 
-  <!-- ===== MENU SCRIPT (igual en todas las páginas) ===== -->
+  <!-- ===== MENU SCRIPT ===== -->
   <script>
     const openBtn = document.getElementById("openMenu");
     const closeBtn = document.getElementById("closeMenu");
     const menu = document.getElementById("sideMenu");
     const backdrop = document.getElementById("menuBackdrop");
 
-    if (openBtn && closeBtn && menu && backdrop) {
-      openBtn.onclick = () => {
-        menu.classList.add("open");
-        backdrop.classList.add("show");
-        document.body.style.overflow = "hidden";
-      };
-      closeBtn.onclick = () => {
-        menu.classList.remove("open");
-        backdrop.classList.remove("show");
-        document.body.style.overflow = "auto";
-      };
-      backdrop.onclick = closeBtn.onclick;
-    }
+    openBtn.onclick = () => {
+      menu.classList.add("open");
+      backdrop.classList.add("show");
+      document.body.style.overflow = "hidden";
+    };
+
+    closeBtn.onclick = () => {
+      menu.classList.remove("open");
+      backdrop.classList.remove("show");
+      document.body.style.overflow = "auto";
+    };
+
+    backdrop.onclick = closeBtn.onclick;
   </script>
+
 </body>
 </html>
