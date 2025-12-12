@@ -263,14 +263,14 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
     .then(() => {
       // Auto-reply
       emailjs.send("service_8zcytcr", "template_autoreply", {
-        to_email: reservation.email,
-        name: reservation.name,
-        date: reservation.date,
-        time: reservation.time,
-         
-        service: reservation.serviceType,
-        price: SERVICE_PRICES[reservation.serviceType]
-      });
+  to_email: reservation.email,
+  name: reservation.name,
+  service: reservation.serviceType,
+  price: SERVICE_PRICES[reservation.serviceType],
+  date: reservation.date,
+  time: reservation.time
+});
+
 
       sendWhatsApp(reservation);
 
