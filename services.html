@@ -1,132 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Services | Ride W Me Cabo</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/mobile.css">
   <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
 </head>
-<body class="services-body">
 
-  <!-- HEADER (más bajo) -->
-  <header class="new-header inner-header">
-    <div class="header-overlay"></div>
-    <img src="Images/expedition.png" alt="Luxury SUV" class="header-expedition">
+<body>
 
-    <div class="header-top">
-      <div class="logo-text">¡RIDE W ME!</div>
-      <div class="menu-icon" id="openMenu">☰</div>
-    </div>
+<!-- HEADER -->
+<header class="new-header inner-header">
+  <img src="Images/expedition.png" class="header-expedition" alt="SUV">
+  <div class="header-overlay"></div>
 
-    <div class="header-content">
-      <h1>Our Services</h1>
-      <p>Airport, dinners, villas and private events in Los Cabos.</p>
-    </div>
-  </header>
-
-  <!-- SIDE MENU -->
-  <div id="sideMenu" class="side-menu">
-    <div class="close-btn" id="closeMenu">×</div>
-    <nav class="side-menu-links">
-      <a href="index.html">Home</a>
-      <a href="services.html">Services</a>
-      <a href="booking.html">Book Now</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="admin.html">Admin Panel</a>
-    </nav>
+  <div class="header-top">
+    <div class="logo-text">RIDE W ME</div>
+    <div class="menu-icon" onclick="openMenu()">☰</div>
   </div>
-  <div id="menuBackdrop" class="menu-backdrop"></div>
 
-  <!-- CONTENT -->
-  <main class="services-wrapper">
-    <section class="section">
-      <h2 class="section-title">Choose Your Service</h2>
-      <p class="section-subtitle">Click on any service to book and send your reservation online.</p>
+  <div class="header-content">
+    <h1>Our Services</h1>
+    <p>Premium private transportation in Los Cabos</p>
+  </div>
+</header>
 
-      <div class="services-grid">
-        <!-- Airport -->
-        <article class="service-card">
-          <h3>Airport Transfer</h3>
-          <p>Private and comfortable ride to or from Los Cabos International Airport (SJD).</p>
-          <div class="service-footer">
-            <span class="service-price">$80 USD</span>
-            <div class="btn-row">
-              <a href="booking.html?service=Airport%20Transfer" class="mini-btn">Book Now</a>
-              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
-            </div>
-          </div>
-        </article>
+<!-- SIDE MENU -->
+<div id="sideMenu" class="side-menu">
+  <div class="close-btn" onclick="closeMenu()">×</div>
+  <div class="side-menu-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="booking.html">Book Now</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
 
-        <!-- One Way -->
-        <article class="service-card">
-          <h3>One Way Transfer</h3>
-          <p>Point-to-point private ride between hotels, villas, marina and restaurants.</p>
-          <div class="service-footer">
-            <span class="service-price">$100 USD</span>
-            <div class="btn-row">
-              <a href="booking.html?service=One%20Way" class="mini-btn">Book Now</a>
-              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
-            </div>
-          </div>
-        </article>
+<div id="menuBackdrop" class="menu-backdrop" onclick="closeMenu()"></div>
 
-        <!-- Round Trip -->
-        <article class="service-card">
-          <h3>Round Trip</h3>
-          <p>Pickup, waiting time and return ride in complete comfort.</p>
-          <div class="service-footer">
-            <span class="service-price">$160 USD</span>
-            <div class="btn-row">
-              <a href="booking.html?service=Round%20Trip" class="mini-btn">Book Now</a>
-              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
-            </div>
-          </div>
-        </article>
+<script>
+function openMenu() {
+  document.getElementById("sideMenu").classList.add("open");
+  document.getElementById("menuBackdrop").classList.add("show");
+}
+function closeMenu() {
+  document.getElementById("sideMenu").classList.remove("open");
+  document.getElementById("menuBackdrop").classList.remove("show");
+}
+</script>
 
-        <!-- Open Service -->
-        <article class="service-card">
-          <h3>Open Service (per hour)</h3>
-          <p>Flexible transportation by the hour for events, dinners or custom itineraries.</p>
-          <div class="service-footer">
-            <span class="service-price">$50 USD / hr</span>
-            <div class="btn-row">
-              <a href="booking.html?service=Open%20Service%20(per%20hour)" class="mini-btn">Book Now</a>
-              <button class="mini-btn outline" disabled>Pay with PayPal (coming soon)</button>
-            </div>
-          </div>
-        </article>
+<!-- MAIN CONTENT -->
+<div class="section">
+
+  <!-- ARRIVALS / DEPARTURES -->
+  <h2 class="section-title">🚐 Arrivals / Departures</h2>
+  <p class="section-subtitle">Airport transportation with premium SUV comfort</p>
+
+  <div class="services-grid">
+
+    <div class="service-card">
+      <h3>Zone 1 – SJC to Palmilla</h3>
+      <p>One Way: <strong>$75 USD</strong></p>
+      <p>Round Trip: <strong>$130 USD</strong></p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=zone1">Book</a>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <footer class="site-footer">
-    © 2025 Ride W Me Cabo — Premium Transportation in Los Cabos
-  </footer>
+    <div class="service-card">
+      <h3>Zone 2 – Puerto Los Cabos</h3>
+      <p>One Way: <strong>$85 USD</strong></p>
+      <p>Round Trip: <strong>$150 USD</strong></p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=zone2">Book</a>
+      </div>
+    </div>
 
-  <!-- MENU SCRIPT -->
-  <script>
-    const openBtn = document.getElementById("openMenu");
-    const closeBtn = document.getElementById("closeMenu");
-    const menu = document.getElementById("sideMenu");
-    const backdrop = document.getElementById("menuBackdrop");
+    <div class="service-card">
+      <h3>Zone 3 – Palmilla to Cabo del Sol</h3>
+      <p>One Way: <strong>$95 USD</strong></p>
+      <p>Round Trip: <strong>$170 USD</strong></p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=zone3a">Book</a>
+      </div>
+    </div>
 
-    if (openBtn && closeBtn && menu && backdrop) {
-      openBtn.onclick = () => {
-        menu.classList.add("open");
-        backdrop.classList.add("show");
-        document.body.style.overflow = "hidden";
-      };
-      closeBtn.onclick = () => {
-        menu.classList.remove("open");
-        backdrop.classList.remove("show");
-        document.body.style.overflow = "auto";
-      };
-      backdrop.onclick = closeBtn.onclick;
-    }
-  </script>
+    <div class="service-card">
+      <h3>Zone 3B – Punta Ballena / Solmar</h3>
+      <p>One Way: <strong>$105 USD</strong></p>
+      <p>Round Trip: <strong>$180 USD</strong></p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=zone3b">Book</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <h3>Zone 5 – Pedregal / Diamante</h3>
+      <p>One Way: <strong>$110 USD</strong></p>
+      <p>Round Trip: <strong>$200 USD</strong></p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=zone5">Book</a>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- CITY OPEN SERVICES -->
+  <h2 class="section-title" style="margin-top:55px;">🏙 City Open Services</h2>
+  <p class="section-subtitle">Perfect for dinners, events, shopping and day-time transportation</p>
+
+  <div class="services-grid">
+
+    <div class="service-card">
+      <h3>4 Hours Open Service</h3>
+      <p>Base: <strong>$140 USD</strong></p>
+      <p>Extra Hour: <strong>$20 USD</strong></p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=city4">Book</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <h3>6 Hours Open Service</h3>
+      <p>Base: <strong>$160 USD</strong></p>
+      <p>Extra Hour: <strong>$20 USD</strong></p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=city6">Book</a>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- TOURS -->
+  <h2 class="section-title" style="margin-top:55px;">🌅 Activities & Dinner Tours</h2>
+  <p class="section-subtitle">Private SUV service for excursions and iconic destinations</p>
+
+  <div class="services-grid">
+
+    <div class="service-card">
+      <h3>Migriño</h3>
+      <p><strong>$350 USD</strong> (4–8 hrs)</p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=migrino">Book</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <h3>Todos Santos</h3>
+      <p><strong>$400 USD</strong> (4–8 hrs)</p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=todosSantos">Book</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <h3>La Ribera / Los Barriles</h3>
+      <p><strong>$400 USD</strong> (4–8 hrs)</p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=barriles">Book</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <h3>La Paz</h3>
+      <p><strong>$600 USD</strong> (4–8 hrs)</p>
+      <div class="service-footer">
+        <a class="mini-btn" href="booking.html?service=laPaz">Book</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<footer class="site-footer">
+  © 2025 Ride W Me Cabo — Luxury Transportation
+</footer>
+
 </body>
 </html>
