@@ -98,29 +98,43 @@ const SERVICE_INFO = {
 ===================================================== */
 function updateServiceUI() {
   const sv = serviceTypeEl.value;
-  const type = tripTypeEl.value;
   const info = SERVICE_INFO[sv];
 
-  if (!sv || !info) return;
+  if (!sv || !info) {
+    selectedServiceNameEl.textContent = "Select a service";
+    selectedServicePriceEl.innerHTML = "—";
+    return;
+  }
 
   selectedServiceNameEl.textContent = info.label;
 
-  let priceText = "";
-
   if (info.oneWay) {
-    if (type === "oneway") {
-      priceText = `$${info.oneWay} USD`;
-    } else {
-      priceText = `One Way: $${info.oneWay} USD<br>Round Trip: $${info.roundTrip} USD`;
-    }
-  } else {
-    priceText = `$${info.base} USD`;
+    selectedServicePriceEl.innerHTML = `
+      <strong>One Way:</strong> $${info.oneWay} USD<br>
+      <strong>Round Trip:</strong> $${info.roundTrip} USD
+    `;
+  } 
+  else if (info.extraHour) {
+    selectedServicePriceEl.innerHTML = `
+      <strong>Base Price:</strong> $${info.base} USD (${info.duration})<br>
+      <strong>Extra Hour:</strong> $${info.extraHour} USD
+    `;
+  } 
+  else {
+    selectedServicePriceEl.innerHTML = `
+      <strong>Price:</strong> $${info.base} USD<br>
+      <strong>Duration:</strong> ${info.duration}
+    `;
   }
 
-  selectedServicePriceEl.innerHTML = priceText;
+  returnDateWrapper.style.display = "none";
+  returnTimeWrapper.style.display = "none";
+  hoursWrapper.style.display = "none";
 }
+
+// Escuchar cambios del selector de servicio
 serviceTypeEl.addEventListener("change", updateServiceUI);
-tripTypeEl.addEventListener("change", handleTripType);
+
 
 /* =====================================================
    TRIP TYPE UI
