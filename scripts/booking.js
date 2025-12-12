@@ -1,13 +1,12 @@
 /* =====================================================
-   booking.js — Logic for Ride W Me Cabo Booking System
-   ===================================================== */
+   RIDE W ME CABO — BOOKING SYSTEM (2025 UPDATED)
+===================================================== */
 
-emailjs.init("Ed5Qh2Qk81A6fHcRR"); // Tu PUBLIC KEY
+emailjs.init("Ed5Qh2Qk81A6fHcRR"); // PUBLIC KEY
 
-// Número de WhatsApp
 const WHATSAPP_NUMBER = "526242426741";
 
-// Elementos
+// Elements
 const serviceTypeEl = document.getElementById("serviceType");
 const passengersEl = document.getElementById("passengers");
 const pickupPreset = document.getElementById("pickupPreset");
@@ -22,10 +21,11 @@ const selectedServiceNameEl = document.getElementById("selectedServiceName");
 const selectedServicePriceEl = document.getElementById("selectedServicePrice");
 
 /* =====================================================
-   TODAS LAS LOCACIONES — HOTELS, RESTAURANTS, CLUBS, ETC.
+   DESTINOS / AUTOCOMPLETE
 ===================================================== */
+
 const DESTINOS = [
-  // 📌 HOTELS / RESORTS
+  // Resorts, restaurantes, clubs, zonas… (tu lista completa aquí)
   "Nobu Hotel Los Cabos",
   "Hard Rock Hotel Los Cabos",
   "Waldorf Astoria Pedregal",
@@ -37,15 +37,13 @@ const DESTINOS = [
   "The Cape, a Thompson Hotel",
   "Riu Palace",
   "Riu Santa Fe",
-  "Breathless Cabo San Lucas",
+  "Breathless Cabo",
   "Secrets Puerto Los Cabos",
   "Hyatt Ziva",
   "Le Blanc Spa Resort",
   "Pueblo Bonito Sunset",
   "Pueblo Bonito Rose",
-  "Pueblo Bonito Blanco",
   "Solaz Resort",
-  "Hilton Los Cabos",
   "Marquis Los Cabos",
   "Grand Fiesta Americana",
   "Dreams Los Cabos",
@@ -53,101 +51,62 @@ const DESTINOS = [
   "Marina Fiesta Resort",
   "Cabo Azul Resort",
   "Sheraton Grand Los Cabos",
-  "CostaBaja Resort (La Paz)",
   "Chileno Bay Resort",
   "Las Ventanas al Paraíso",
   "Vidanta Los Cabos",
 
-  // 🍽 RESTAURANTES
+  // Food
   "Edith’s",
-  "The Office on the Beach",
   "Sunset Monalisa",
-  "Lorenzillo’s",
-  "Rosa Negra",
-  "Funky Geisha",
-  "Taboo Cabo",
-  "Mamazzita Cabo",
-  "Animalón",
-  "El Farallon",
   "Acre Restaurant",
   "Flora Farms",
-  "Jazmin’s Restaurant",
-  "Tacos Gardenias",
-  "La Lupita Tacos",
-  "Carbón Cabrón",
+  "Lorenzillo’s",
+  "The Office on the Beach",
 
-  // 🎉 BEACH CLUBS
+  // Clubs
   "Mango Deck",
-  "SUR Beach House",
   "OMNIA Los Cabos",
-  "Blue Marlin Ibiza",
-  "Veleros Beach Club",
+  "SUR Beach House",
 
-  // 🎯 ZONAS / LANDMARKS
+  // Zonas
   "Cabo San Lucas Downtown",
   "San José del Cabo Downtown",
+  "Medano Beach",
   "El Arco",
-  "Marina Cabo San Lucas",
   "Puerto Paraíso Mall",
   "Luxury Avenue",
-  "Medano Beach",
-  "La Marina SJC",
   "Cabo del Sol Golf",
-  "Palmilla Golf",
   "Diamante Golf",
-  "Costco CSL",
-  "Fresko CSL",
-  "Walmart San Lucas",
-  "Home Depot CSL",
-  "Puerto Los Cabos Marina",
-  "Zacatitos",
-  "East Cape",
 
-  // ✈️ Airport
+  // Airport
   "Los Cabos International Airport (SJD)",
-  "FBO Private Terminal (SJD Private Jets)",
-  "FBO Private CSL, Cabo San Lucas",
+  "FBO Private Terminal",
 
-  // 🏠 Otros
-  "Airbnb (Custom)",
-  "Private Villa (Custom)",
+  // Other
+  "Private Villa",
+  "Airbnb Custom",
   "H+ Hospital",
   "Cabo Adventures"
 ];
 
-/* =====================================================
-   AUTOCOMPLETADO — SUGERENCIAS TIPO UBER (LOCAL)
-===================================================== */
 function setupAutocomplete(input, dropdown) {
   input.addEventListener("input", function () {
-    const query = this.value.trim().toLowerCase();
     dropdown.innerHTML = "";
+    const text = this.value.toLowerCase();
+    if (!text) return;
 
-    if (!query) return;
-
-    const results = DESTINOS.filter(loc =>
-      loc.toLowerCase().includes(query)
-    ).slice(0, 8);
-
-    results.forEach(loc => {
-      const div = document.createElement("div");
-      div.className = "autocomplete-item";
-      div.textContent = loc;
-
-      div.onclick = () => {
-        input.value = loc;
-        dropdown.innerHTML = "";
-      };
-
-      dropdown.appendChild(div);
-    });
-  });
-
-  // Ocultar cuando se hace clic fuera
-  document.addEventListener("click", e => {
-    if (!dropdown.contains(e.target) && !input.contains(e.target)) {
-      dropdown.innerHTML = "";
-    }
+    DESTINOS.filter(d => d.toLowerCase().includes(text))
+      .slice(0, 8)
+      .forEach(match => {
+        const item = document.createElement("div");
+        item.className = "autocomplete-item";
+        item.textContent = match;
+        item.onclick = () => {
+          input.value = match;
+          dropdown.innerHTML = "";
+        };
+        dropdown.appendChild(item);
+      });
   });
 }
 
@@ -157,151 +116,118 @@ setupAutocomplete(destinationPreset, document.getElementById("destinationDropdow
 /* =====================================================
    PRECIOS
 ===================================================== */
-const SERVICE_PRICES = {
-  // ARRIVALS / DEPARTURES
-  zone1: "$75.00 USD (One Way) — $130.00 USD (Round Trip)",
-  zone2: "$85.00 USD (One Way) — $150.00 USD (Round Trip)",
-  zone3a: "$95.00 USD (One Way) — $170.00 USD (Round Trip)",
-  zone3b: "$105.00 USD (One Way) — $180.00 USD (Round Trip)",
-  zone5: "$110.00 USD (One Way) — $200.00 USD (Round Trip)",
 
-  // CITY OPEN
-  city4: "$140.00 USD — 4 Hours (+$20 extra hour)",
-  city6: "$160.00 USD — 6 Hours (+$20 extra hour)",
+const SERVICE_INFO = {
+  zone1: { label: "Arrivals / Departures – Zone 1 (SJC → Palmilla)", oneWay: 75, roundTrip: 130 },
+  zone2: { label: "Zone 2 — Puerto Los Cabos / El Encanto", oneWay: 85, roundTrip: 150 },
+  zone3a: { label: "Zone 3 — Palmilla → Cabo del Sol", oneWay: 95, roundTrip: 170 },
+  zone3b: { label: "Zone 3B — Punta Ballena / Solmar", oneWay: 105, roundTrip: 180 },
+  zone5: { label: "Zone 5 — Pedregal / Diamante", oneWay: 110, roundTrip: 200 },
 
-  // ACTIVITIES / DINNER TOURS
-  migrino: "$350.00 USD — 4 to 8 hours",
-  todosSantos: "$400.00 USD — 4 to 8 hours",
-  barriles: "$400.00 USD — 4 to 8 hours",
-  laPaz: "$600.00 USD — 4 to 8 hours"
+  city4: { label: "Open Service – 4 Hours", base: 140, extraHour: 20, duration: "4 Hours" },
+  city6: { label: "Open Service – 6 Hours", base: 160, extraHour: 20, duration: "6 Hours" },
+
+  migrino: { label: "Tour – Migriño", base: 350, duration: "4 to 8 Hours" },
+  todosSantos: { label: "Tour – Todos Santos", base: 400, duration: "4 to 8 Hours" },
+  barriles: { label: "Tour – La Ribera / Los Barriles", base: 400, duration: "4 to 8 Hours" },
+  laPaz: { label: "Tour – La Paz", base: 600, duration: "4 to 8 Hours" }
 };
 
-
-
-
 /* =====================================================
-   UI según tipo de servicio
+   UPDATE SERVICE UI
 ===================================================== */
+
 function updateServiceUI() {
   const sv = serviceTypeEl.value;
+  const info = SERVICE_INFO[sv];
 
-  if (!sv) {
-    selectedServiceNameEl.textContent = "None selected";
-    selectedServicePriceEl.textContent = "—";
-  } else {
-    selectedServiceNameEl.textContent = sv;
-    selectedServicePriceEl.textContent = SERVICE_PRICES[sv] || "Price on request";
+  if (!info) {
+    selectedServiceNameEl.textContent = "Select a service";
+    selectedServicePriceEl.innerHTML = "—";
+    return;
   }
 
-  returnDateWrapper.style.display = sv === "Round Trip" ? "block" : "none";
-  returnTimeWrapper.style.display = sv === "Round Trip" ? "block" : "none";
-  hoursWrapper.style.display = sv === "Open Service (per hour)" ? "block" : "none";
+  selectedServiceNameEl.textContent = info.label;
+
+  if (info.oneWay) {
+    selectedServicePriceEl.innerHTML =
+      `One Way: $${info.oneWay} USD<br>Round Trip: $${info.roundTrip} USD`;
+  } else if (info.extraHour) {
+    selectedServicePriceEl.innerHTML =
+      `Base: $${info.base} USD (${info.duration})<br>Extra Hour: $${info.extraHour} USD`;
+  } else {
+    selectedServicePriceEl.innerHTML =
+      `Price: $${info.base} USD<br>Duration: ${info.duration}`;
+  }
 }
 
 serviceTypeEl.addEventListener("change", updateServiceUI);
 
 /* =====================================================
-   Fechas ocupadas (localStorage)
+   RESERVAR
 ===================================================== */
-function getDisabledDates() {
-  const saved = JSON.parse(localStorage.getItem("reservations")) || [];
-  return saved.flatMap(r => [r.date, r.returnDate]).filter(Boolean);
-}
 
-function renderUnavailableList() {
-  const list = getDisabledDates();
-  unavailableListEl.innerHTML = list.length ? "" : "All dates available.";
-
-  list.forEach(d => {
-    let div = document.createElement("div");
-    div.textContent = d;
-    unavailableListEl.appendChild(div);
-  });
-}
-
-renderUnavailableList();
-
-/* =====================================================
-   Preseleccionar servicio desde ?service=
-===================================================== */
-const urlParams = new URLSearchParams(window.location.search);
-const selectedService = urlParams.get("service");
-if (selectedService) {
-  serviceTypeEl.value = selectedService;
-}
-updateServiceUI();
-
-/* =====================================================
-   Enviar Formulario
-===================================================== */
 document.getElementById("bookingForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  const sv = serviceTypeEl.value;
+  const info = SERVICE_INFO[sv];
+
   const reservation = {
-    name: document.getElementById("name").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    serviceType: serviceTypeEl.value,
+    name: name.value.trim(),
+    phone: phone.value.trim(),
+    email: email.value.trim(),
     passengers: passengersEl.value,
-    date: document.getElementById("date").value,
-    time: document.getElementById("time").value,
-    pickup: pickupPreset.value.trim(),
-    destination: destinationPreset.value.trim(),
-    returnDate: document.getElementById("returnDate").value,
-    returnTime: document.getElementById("returnTime").value,
-    hours: document.getElementById("hours").value,
-    notes: document.getElementById("notes").value.trim()
+    pickup: pickupPreset.value,
+    destination: destinationPreset.value,
+    date: date.value,
+    time: time.value,
+    notes: notes.value,
+    service_label: info.label,
+    one_way: info.oneWay || "",
+    round_trip: info.roundTrip || "",
+    base: info.base || "",
+    extra_hour: info.extraHour || "",
+    duration: info.duration || ""
   };
 
-  if (!reservation.name || !reservation.phone || !reservation.email || !reservation.serviceType) {
-    alert("Please complete all required fields.");
-    return;
-  }
+  // Save local
+  const saved = JSON.parse(localStorage.getItem("reservations")) || [];
+  saved.push(reservation);
+  localStorage.setItem("reservations", JSON.stringify(saved));
 
-  // Email principal
-  emailjs.send("service_8zcytcr", "template_7tkwggo", reservation)
-    .then(() => {
-      // Auto-reply
-      emailjs.send("service_8zcytcr", "template_autoreply", {
-  to_email: reservation.email,
-  name: reservation.name,
-  service: reservation.serviceType,
-  price: SERVICE_PRICES[reservation.serviceType],
-  date: reservation.date,
-  time: reservation.time
-});
+  // Email for YOU
+  emailjs.send("service_8zcytcr", "template_7tkwggo", reservation);
 
+  // Auto-reply for CLIENT
+  emailjs.send("service_8zcytcr", "template_autoreply", reservation);
 
-      sendWhatsApp(reservation);
+  sendWhatsApp(reservation);
 
-      alert("Reservation sent successfully!");
-      document.getElementById("bookingForm").reset();
-      updateServiceUI();
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Error sending reservation. Try again.");
-    });
+  alert("Reservation sent!");
+  bookingForm.reset();
+  updateServiceUI();
 });
 
 /* =====================================================
-   WhatsApp
+   WHATSAPP MESSAGE
 ===================================================== */
+
 function sendWhatsApp(r) {
   let msg =
-    `New Reservation - Ride W Me Cabo%0A%0A` +
-    `Name: ${r.name}%0A` +
-    `Phone: ${r.phone}%0A` +
-    `Email: ${r.email}%0A` +
-    `Service: ${r.serviceType}%0A` +
-    `Passengers: ${r.passengers}%0A` +
-    `Pickup: ${r.pickup}%0A` +
-    `Destination: ${r.destination}%0A` +
-    `Date: ${r.date} at ${r.time}%0A`;
+`New Reservation%0A%0A
+Name: ${r.name}%0A
+Phone: ${r.phone}%0A
+Pickup: ${r.pickup}%0A
+Destination: ${r.destination}%0A
+Date: ${r.date} - ${r.time}%0A%0A
+Service: ${r.service_label}%0A`;
 
-  if (r.returnDate) msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
-  if (r.hours) msg += `Hours: ${r.hours}%0A`;
-  if (r.notes) msg += `%0ANotes: ${r.notes}%0A`;
+  if (r.one_way) msg += `One Way: $${r.one_way} USD%0A`;
+  if (r.round_trip) msg += `Round Trip: $${r.round_trip} USD%0A`;
+  if (r.base) msg += `Base: $${r.base} USD%0A`;
+  if (r.extra_hour) msg += `Extra Hour: $${r.extra_hour} USD%0A`;
+  if (r.duration) msg += `Duration: ${r.duration}%0A`;
 
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
 }
