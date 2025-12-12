@@ -1,247 +1,221 @@
 /* =====================================================
-   Ride W Me Cabo — FINAL BOOKING ENGINE (2025)
-   ===================================================== */
+   RIDE W ME CABO - BOOKING SYSTEM FINAL VERSION
+===================================================== */
 
-emailjs.init("Ed5Qh2Qk81A6fHcRR"); // Your PUBLIC KEY
+// EmailJS
+emailjs.init("Ed5Qh2Qk81A6fHcRR"); // PUBLIC KEY
 
+// WhatsApp Number
 const WHATSAPP_NUMBER = "526242426741";
 
-/* =====================================================
-   PRICE TABLE (OFFICIAL)
-===================================================== */
-const SERVICES = {
-  // =======================
-  // ZONES (One Way / RT)
-  // =======================
-  zone1: {
-    label: "Zone 1 – SJC ↔ Palmilla",
-    oneWay: 75,
-    roundTrip: 130,
-    type: "zone"
-  },
-  zone2: {
-    label: "Zone 2 – Puerto Los Cabos / El Encanto",
-    oneWay: 85,
-    roundTrip: 150,
-    type: "zone"
-  },
-  zone3a: {
-    label: "Zone 3 – Palmilla → Cabo del Sol",
-    oneWay: 95,
-    roundTrip: 170,
-    type: "zone"
-  },
-  zone3b: {
-    label: "Zone 3B – Punta Ballena / Solmar",
-    oneWay: 105,
-    roundTrip: 180,
-    type: "zone"
-  },
-  zone5: {
-    label: "Zone 5 – Pedregal / Diamante",
-    oneWay: 110,
-    roundTrip: 200,
-    type: "zone"
-  },
-
-  // =======================
-  // CITY OPEN SERVICES
-  // =======================
-  city4: {
-    label: "City Open Service – 4 Hours",
-    base: 140,
-    extraHour: 20,
-    type: "open"
-  },
-  city6: {
-    label: "City Open Service – 6 Hours",
-    base: 160,
-    extraHour: 20,
-    type: "open"
-  },
-
-  // =======================
-  // TOURS (1 price only)
-  // =======================
-  migrino: {
-    label: "Activity / Dinner Tour – Migriño",
-    base: 350,
-    duration: "4–8 hrs",
-    type: "tour"
-  },
-  todosSantos: {
-    label: "Activity / Dinner Tour – Todos Santos",
-    base: 400,
-    duration: "4–8 hrs",
-    type: "tour"
-  },
-  barriles: {
-    label: "Activity / Dinner Tour – La Ribera / Los Barriles",
-    base: 400,
-    duration: "4–8 hrs",
-    type: "tour"
-  },
-  laPaz: {
-    label: "Activity / Dinner Tour – La Paz",
-    base: 600,
-    duration: "4–8 hrs",
-    type: "tour"
-  }
-};
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
+// DOM ELEMENTS
 const serviceTypeEl = document.getElementById("serviceType");
-const tripTypeEl = document.getElementById("tripType");
-const extraHoursEl = document.getElementById("extraHours");
+const passengersEl = document.getElementById("passengers");
+const pickupEl = document.getElementById("pickupPreset");
+const destinationEl = document.getElementById("destinationPreset");
+const notesEl = document.getElementById("notes");
+
+const returnDateWrapper = document.getElementById("returnDateWrapper");
+const returnTimeWrapper = document.getElementById("returnTimeWrapper");
+const hoursWrapper = document.getElementById("hoursWrapper");
 
 const selectedServiceNameEl = document.getElementById("selectedServiceName");
 const selectedServicePriceEl = document.getElementById("selectedServicePrice");
 
-const returnDateWrapper = document.getElementById("returnDateWrapper");
-const returnTimeWrapper = document.getElementById("returnTimeWrapper");
+// AUTOCOMPLETE
+function setupAutocomplete(input, dropdown, list) {
+  input.addEventListener("input", () => {
+    const val = input.value.toLowerCase().trim();
+    dropdown.innerHTML = "";
+
+    if (!val) return;
+
+    list
+      .filter((x) => x.toLowerCase().includes(val))
+      .slice(0, 8)
+      .forEach((match) => {
+        const div = document.createElement("div");
+        div.className = "autocomplete-item";
+        div.textContent = match;
+
+        div.onclick = () => {
+          input.value = match;
+          dropdown.innerHTML = "";
+        };
+        dropdown.appendChild(div);
+      });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!dropdown.contains(e.target) && !input.contains(e.target)) {
+      dropdown.innerHTML = "";
+    }
+  });
+}
+
+// Destinations (hotels, restaurants, clubs)
+const DESTINOS = [
+  "Nobu Hotel Los Cabos", "Hard Rock Hotel Los Cabos", "Waldorf Astoria",
+  "Garza Blanca", "Grand Velas", "Esperanza Auberge", "One&Only Palmilla",
+  "Montage Los Cabos", "The Cape", "Riu Palace", "Riu Santa Fe",
+  "Breathless", "Secrets Puerto Los Cabos", "Hyatt Ziva", "Le Blanc",
+  "Pueblo Bonito Sunset", "Pueblo Bonito Rose", "Pueblo Bonito Blanco",
+  "Solaz Resort", "Hilton Los Cabos", "Marquis", "Grand Fiesta Americana",
+  "Dreams Los Cabos", "Barceló", "Marina Fiesta", "Cabo Azul",
+  "Sheraton Grand", "Vidanta", "Chileno Bay", "Las Ventanas",
+  "Sunset Monalisa", "Edith's", "Taboo", "Rosa Negra", "Mamazzita",
+  "Acre", "Flora Farms", "Medano Beach", "Cabo Downtown",
+  "San José Downtown", "Los Cabos Airport (SJD)"
+];
+
+setupAutocomplete(pickupEl, document.getElementById("pickupDropdown"), DESTINOS);
+setupAutocomplete(destinationEl, document.getElementById("destinationDropdown"), DESTINOS);
 
 /* =====================================================
-   UPDATE UI + SHOW PRICES
+   SERVICE DATA
+===================================================== */
+const SERVICE_INFO = {
+  // Airport Zones
+  zone1: { label: "Zone 1 – SJC to Palmilla", oneWay: 75, roundTrip: 130 },
+  zone2: { label: "Zone 2 – Puerto Los Cabos / El Encanto", oneWay: 85, roundTrip: 150 },
+  zone3a: { label: "Zone 3 – Palmilla to Cabo del Sol", oneWay: 95, roundTrip: 170 },
+  zone3b: { label: "Zone 3 – Punta Ballena / Solmar", oneWay: 105, roundTrip: 180 },
+  zone5: { label: "Zone 5 – Pedregal / Diamante", oneWay: 110, roundTrip: 200 },
+
+  // City Open Services
+  city4: { label: "Open Service – 4 Hours", base: 140, extraHour: 20 },
+  city6: { label: "Open Service – 6 Hours", base: 160, extraHour: 20 },
+
+  // Activities
+  migrino: { label: "Tour – Migriño", base: 350 },
+  todosSantos: { label: "Tour – Todos Santos", base: 400 },
+  barriles: { label: "Tour – La Ribera / Los Barriles", base: 400 },
+  laPaz: { label: "Tour – La Paz", base: 600 }
+};
+
+/* =====================================================
+   UI LOGIC
 ===================================================== */
 function updateServiceUI() {
-  const key = serviceTypeEl.value;
-  const service = SERVICES[key];
-  const trip = tripTypeEl.value;
+  const sv = serviceTypeEl.value;
+  const info = SERVICE_INFO[sv];
 
-  if (!service) {
-    selectedServiceNameEl.textContent = "Select a service";
-    selectedServicePriceEl.innerHTML = "—";
-    return;
-  }
+  if (!info) return;
 
-  selectedServiceNameEl.textContent = service.label;
+  selectedServiceNameEl.textContent = info.label;
 
-  // AIRPORT ZONES
-  if (service.type === "zone") {
+  // Show pricing preview
+  if (info.oneWay) {
     selectedServicePriceEl.innerHTML = `
-      <strong>One Way:</strong> $${service.oneWay} USD<br>
-      <strong>Round Trip:</strong> $${service.roundTrip} USD
+      One Way: $${info.oneWay} USD<br>
+      Round Trip: $${info.roundTrip} USD
     `;
-    returnDateWrapper.style.display = trip === "round" ? "block" : "none";
-    returnTimeWrapper.style.display = trip === "round" ? "block" : "none";
-    extraHoursEl.parentElement.style.display = "none";
-  }
-
-  // CITY OPEN SERVICES
-  if (service.type === "open") {
+    returnDateWrapper.style.display = "block";
+    returnTimeWrapper.style.display = "block";
+    hoursWrapper.style.display = "none";
+  } else if (info.extraHour) {
     selectedServicePriceEl.innerHTML = `
-      <strong>Base:</strong> $${service.base} USD<br>
-      <strong>Extra Hour:</strong> $${service.extraHour} USD
+      Base Price: $${info.base} USD<br>
+      Extra Hour: $${info.extraHour} USD
     `;
     returnDateWrapper.style.display = "none";
     returnTimeWrapper.style.display = "none";
-    extraHoursEl.parentElement.style.display = "block";
-  }
-
-  // TOURS
-  if (service.type === "tour") {
+    hoursWrapper.style.display = "block";
+  } else {
     selectedServicePriceEl.innerHTML = `
-      <strong>Price:</strong> $${service.base} USD<br>
-      <strong>Duration:</strong> ${service.duration}
+      Price: $${info.base} USD<br>Duration: 4–8 hours
     `;
     returnDateWrapper.style.display = "none";
     returnTimeWrapper.style.display = "none";
-    extraHoursEl.parentElement.style.display = "none";
+    hoursWrapper.style.display = "none";
   }
 }
 
 serviceTypeEl.addEventListener("change", updateServiceUI);
-tripTypeEl.addEventListener("change", updateServiceUI);
 
 /* =====================================================
-   PRICE CALCULATION
+   CALCULATE PRICE
 ===================================================== */
-function calculateTotal(service, trip, extraHours) {
-  if (service.type === "zone") {
-    return trip === "round" ? service.roundTrip : service.oneWay;
-  }
+function calculateTotal(serviceKey, returnDate, hours) {
+  const s = SERVICE_INFO[serviceKey];
 
-  if (service.type === "open") {
-    return service.base + (extraHours * service.extraHour);
-  }
+  if (!s) return 0;
 
-  if (service.type === "tour") {
-    return service.base;
+  if (s.oneWay) {
+    return returnDate ? s.roundTrip : s.oneWay;
   }
-
-  return 0;
+  if (s.extraHour) {
+    let extra = hours ? Number(hours) * s.extraHour : 0;
+    return s.base + extra;
+  }
+  return s.base;
 }
 
 /* =====================================================
-   SEND FORM
+   FORM SUBMISSION
 ===================================================== */
-document.getElementById("bookingForm").addEventListener("submit", function (e) {
+document.getElementById("bookingForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const key = serviceTypeEl.value;
-  const service = SERVICES[key];
-  const trip = tripTypeEl.value;
-  const extraHours = Number(extraHoursEl.value || 0);
-
-  if (!service) return alert("Please select a valid service.");
-
-  const total = calculateTotal(service, trip, extraHours);
+  const serviceKey = serviceTypeEl.value;
+  const info = SERVICE_INFO[serviceKey];
 
   const reservation = {
-    name: document.getElementById("name").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    passengers: document.getElementById("passengers").value,
-    pickup: document.getElementById("pickupPreset").value.trim(),
-    destination: document.getElementById("destinationPreset").value.trim(),
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    email: document.getElementById("email").value,
+    passengers: passengersEl.value,
+    pickup: pickupEl.value,
+    destination: destinationEl.value,
     date: document.getElementById("date").value,
     time: document.getElementById("time").value,
-    returnDate: document.getElementById("returnDate").value,
-    returnTime: document.getElementById("returnTime").value,
-
-    // NEW
-    service_label: service.label,
-    tripType: trip === "one" ? "One Way" : "Round Trip",
-    extraHours,
-    total
+    return_date: document.getElementById("returnDate").value || "",
+    return_time: document.getElementById("returnTime").value || "",
+    extra_hours: document.getElementById("hours").value || "",
+    notes: notesEl.value || "",
+    service_label: info.label,
+    trip_type: info.oneWay ? (reservation.return_date ? "Round Trip" : "One Way") : "Fixed Price",
+    base_price: info.oneWay ? info.oneWay : info.base,
+    round_trip_price: info.roundTrip || "",
+    extra_hours_total: info.extraHour && reservation.extra_hours ? info.extraHour * reservation.extra_hours : "",
   };
 
-  // SEND TO EMAILJS
+  reservation.total_price = calculateTotal(serviceKey, reservation.return_date, reservation.extra_hours);
+
+  // SEND EMAIL
   emailjs.send("service_8zcytcr", "template_7tkwggo", reservation)
     .then(() => {
+      alert("Your reservation was sent successfully!");
       sendWhatsApp(reservation);
-      alert("Reservation sent successfully!");
-      document.getElementById("bookingForm").reset();
-      updateServiceUI();
     })
-    .catch(err => {
-      console.error(err);
-      alert("Error sending reservation.");
-    });
+    .catch(() => alert("Error sending reservation. Try again."));
 });
 
 /* =====================================================
-   WHATSAPP
+   WHATSAPP MESSAGE
 ===================================================== */
 function sendWhatsApp(r) {
   let msg =
-    `New Reservation - Ride W Me Cabo%0A%0A` +
-    `Name: ${r.name}%0A` +
-    `Phone: ${r.phone}%0A` +
-    `Email: ${r.email}%0A` +
-    `Service: ${r.service_label}%0A` +
-    `Trip Type: ${r.tripType}%0A` +
-    `Passengers: ${r.passengers}%0A` +
-    `Pickup: ${r.pickup}%0A` +
-    `Destination: ${r.destination}%0A` +
-    `Date: ${r.date} at ${r.time}%0A`;
+`NEW RESERVATION – RIDE W ME CABO
+--------------------------
+Name: ${r.name}
+Phone: ${r.phone}
+Email: ${r.email}
 
-  if (r.returnDate) msg += `Return: ${r.returnDate} at ${r.returnTime}%0A`;
-  if (r.extraHours) msg += `Extra Hours: ${r.extraHours}%0A`;
+Service: ${r.service_label}
+Trip Type: ${r.trip_type}
+Passengers: ${r.passengers}
 
-  msg += `%0ATotal: $${r.total} USD`;
+Pickup: ${r.pickup}
+Destination: ${r.destination}
 
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+Departure: ${r.date} at ${r.time}
+${r.return_date ? `Return: ${r.return_date} at ${r.return_time}` : ""}
+
+Extra Hours: ${r.extra_hours || "None"}
+
+TOTAL: $${r.total_price} USD
+Notes: ${r.notes || "None"}`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
 }
