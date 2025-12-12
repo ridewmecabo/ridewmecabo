@@ -8,17 +8,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/mobile.css">
-
   <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
+
 </head>
 
 <body class="booking-body">
 
-<!-- ======================
-     HEADER
-======================= -->
+<!-- ============================================================
+     HEADER (MISMO DISEÑO DEL SITIO COMPLETO)
+============================================================ -->
 <header class="new-header inner-header">
-  <img src="Images/expedition.png" class="header-expedition">
+
+  <!-- Expedition Car -->
+  <img src="Images/expedition.png" alt="Expedition" class="header-expedition">
+
   <div class="header-overlay"></div>
 
   <div class="header-top">
@@ -28,13 +31,15 @@
 
   <div class="header-content">
     <h1>Book Your Ride</h1>
-    <p>Luxury transportation tailored to your needs</p>
+    <p>Luxury transportation tailored to your travel needs</p>
   </div>
+
 </header>
 
 <!-- SIDE MENU -->
 <div id="sideMenu" class="side-menu">
   <div class="close-btn" onclick="closeMenu()">×</div>
+
   <div class="side-menu-links">
     <a href="index.html">Home</a>
     <a href="services.html">Services</a>
@@ -47,86 +52,59 @@
 <div id="menuBackdrop" class="menu-backdrop" onclick="closeMenu()"></div>
 
 <script>
-  function openMenu() {
-    document.getElementById("sideMenu").classList.add("open");
-    document.getElementById("menuBackdrop").classList.add("show");
-  }
-  function closeMenu() {
-    document.getElementById("sideMenu").classList.remove("open");
-    document.getElementById("menuBackdrop").classList.remove("show");
-  }
+function openMenu() {
+  document.getElementById("sideMenu").classList.add("open");
+  document.getElementById("menuBackdrop").classList.add("show");
+}
+function closeMenu() {
+  document.getElementById("sideMenu").classList.remove("open");
+  document.getElementById("menuBackdrop").classList.remove("show");
+}
 </script>
 
-<!-- ======================
-     BOOKING
-======================= -->
+
+
+<!-- ============================================================
+     BOOKING FORM — FINAL VERSION
+============================================================ -->
 <div class="booking-wrapper">
   <div class="booking-card">
 
     <h2>Book Your Ride</h2>
-    <p class="booking-subtitle">Fast, easy and secure.</p>
+    <p class="booking-subtitle">Fast, simple and secure — reserve your private transport now.</p>
 
-    <!-- SERVICE SUMMARY -->
+    <!-- SUMMARY BOX -->
     <div class="service-summary">
       <span class="service-summary-title">Selected Service</span>
       <span id="selectedServiceName">None selected</span>
       <span id="selectedServicePrice">—</span>
-      <span id="totalPrice" style="margin-top:6px; font-weight:700; color:#00c16e;"></span>
     </div>
 
-    <!-- FORM -->
     <form id="bookingForm" class="booking-form">
 
       <div class="booking-grid">
 
         <!-- NAME -->
         <div>
-          <label>Full Name</label>
-          <input type="text" id="name" required>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required placeholder="Your full name">
         </div>
 
         <!-- PHONE -->
         <div>
-          <label>Phone / WhatsApp</label>
-          <input type="tel" id="phone" required>
+          <label for="phone">Phone / WhatsApp</label>
+          <input type="tel" id="phone" required placeholder="+52 624...">
         </div>
 
         <!-- EMAIL -->
         <div class="booking-grid-full">
-          <label>Email</label>
-          <input type="email" id="email" required>
-        </div>
-
-        <!-- SERVICE TYPE -->
-        <div class="booking-grid-full">
-  <label for="serviceType">Service Type</label>
-  <select id="serviceType" required>
-    <optgroup label="🚐 ARRIVALS / DEPARTURES">
-      <option value="zone1">Zone 1 – SJC to Palmilla</option>
-      <option value="zone2">Zone 2 – Puerto Los Cabos / El Encanto Laguna</option>
-      <option value="zone3a">Zone 3 – Palmilla to Cabo del Sol</option>
-      <option value="zone3b">Zone 3B – Punta Ballena / Solmar</option>
-      <option value="zone5">Zone 5 – Pedregal / Diamante</option>
-    </optgroup>
-
-    <optgroup label="🏙 CITY OPEN SERVICES">
-      <option value="city4">City Open Service – 4 Hours</option>
-      <option value="city6">City Open Service – 6 Hours</option>
-    </optgroup>
-
-    <optgroup label="🌅 ACTIVITIES / DINNER TOURS">
-      <option value="migrino">Activities / Dinner Tour – Migriño</option>
-      <option value="todosSantos">Activities / Dinner Tour – Todos Santos</option>
-      <option value="barriles">Activities / Dinner Tour – La Ribera / Los Barriles</option>
-      <option value="laPaz">Activities / Dinner Tour – La Paz</option>
-    </optgroup>
-  </select>
-          
+          <label for="email">Email</label>
+          <input type="email" id="email" required placeholder="example@email.com">
         </div>
 
         <!-- PASSENGERS -->
         <div>
-          <label>Passengers</label>
+          <label for="passengers">Passengers</label>
           <select id="passengers" required>
             <option value="">Choose</option>
             <option value="1-2">1–2</option>
@@ -135,73 +113,104 @@
           </select>
         </div>
 
+        <!-- SERVICE TYPE -->
+        <div class="booking-grid-full">
+          <label for="serviceType">Service Type</label>
+          <select id="serviceType" required>
+
+            <optgroup label="🚐 Arrivals / Departures">
+              <option value="zone1">Zone 1 – SJC to Palmilla</option>
+              <option value="zone2">Zone 2 – Puerto Los Cabos / El Encanto</option>
+              <option value="zone3a">Zone 3 – Palmilla to Cabo del Sol</option>
+              <option value="zone3b">Zone 3B – Punta Ballena / Solmar</option>
+              <option value="zone5">Zone 5 – Pedregal / Diamante</option>
+            </optgroup>
+
+            <optgroup label="🏙 City Open Services">
+              <option value="city4">Open Service – 4 Hours</option>
+              <option value="city6">Open Service – 6 Hours</option>
+            </optgroup>
+
+            <optgroup label="🌅 Activities / Tours">
+              <option value="migrino">Activity – Migriño</option>
+              <option value="todosSantos">Activity – Todos Santos</option>
+              <option value="barriles">Activity – La Ribera / Los Barriles</option>
+              <option value="laPaz">Activity – La Paz</option>
+            </optgroup>
+
+          </select>
+        </div>
+
+        <!-- TRIP TYPE -->
+        <div>
+          <label>Trip Type</label>
+          <select id="tripType">
+            <option value="one">One Way</option>
+            <option value="round">Round Trip</option>
+          </select>
+        </div>
+
+        <!-- EXTRA HOURS -->
+        <div id="extraHoursWrapper" style="display:none;">
+          <label for="extraHours">Extra Hours (Open Service)</label>
+          <select id="extraHours">
+            <option value="0">0 hours</option>
+            <option value="1">1 extra hour</option>
+            <option value="2">2 extra hours</option>
+            <option value="3">3 extra hours</option>
+          </select>
+        </div>
+
         <!-- PICKUP -->
         <div class="input-wrapper">
-          <label>Pickup location</label>
-          <input id="pickupPreset" type="text" autocomplete="off">
+          <label for="pickupPreset">Pickup Location</label>
+          <input id="pickupPreset" type="text" placeholder="Pickup location" autocomplete="off">
           <div id="pickupDropdown" class="autocomplete-dropdown"></div>
         </div>
 
         <!-- DESTINATION -->
         <div class="input-wrapper">
-          <label>Destination</label>
-          <input id="destinationPreset" type="text" autocomplete="off">
+          <label for="destinationPreset">Destination</label>
+          <input id="destinationPreset" type="text" placeholder="Destination" autocomplete="off">
           <div id="destinationDropdown" class="autocomplete-dropdown"></div>
         </div>
 
         <!-- DATE -->
         <div>
-          <label>Date</label>
+          <label for="date">Departure Date</label>
           <input type="date" id="date" required>
         </div>
 
         <!-- TIME -->
         <div>
-          <label>Time</label>
+          <label for="time">Departure Time</label>
           <input type="time" id="time" required>
         </div>
 
         <!-- RETURN DATE -->
         <div id="returnDateWrapper" style="display:none;">
-          <label>Return Date</label>
+          <label for="returnDate">Return Date</label>
           <input type="date" id="returnDate">
         </div>
 
         <!-- RETURN TIME -->
         <div id="returnTimeWrapper" style="display:none;">
-          <label>Return Time</label>
+          <label for="returnTime">Return Time</label>
           <input type="time" id="returnTime">
-        </div>
-
-        <!-- HOURS FOR CITY -->
-        <div id="hoursWrapper" style="display:none;">
-          <label>Service Hours</label>
-          <select id="hours">
-            <option value="">Choose</option>
-            <option value="4">4 Hours</option>
-            <option value="5">5 Hours</option>
-            <option value="6">6 Hours</option>
-          </select>
         </div>
 
         <!-- NOTES -->
         <div class="booking-grid-full">
-          <label>Notes (optional)</label>
-          <textarea id="notes"></textarea>
-        </div>
-
-        <!-- PAYPAL BUTTON -->
-        <div class="booking-grid-full">
-          <button id="paypalBtn" disabled>💳 Pay with PayPal (coming soon)</button>
-        </div>
-
-        <!-- SUBMIT -->
-        <div class="booking-grid-full">
-          <button type="submit">Confirm & Send Reservation</button>
+          <label for="notes">Notes (Optional)</label>
+          <textarea id="notes" placeholder="Flight number, special requests, etc."></textarea>
         </div>
 
       </div>
+
+      <button type="submit">Confirm & Send Reservation</button>
+
     </form>
+
   </div>
 </div>
 
@@ -209,6 +218,8 @@
   © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
 </footer>
 
+
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script src="scripts/booking.js"></script>
 
