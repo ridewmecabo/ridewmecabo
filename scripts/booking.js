@@ -175,23 +175,37 @@ function sendEmail(data) {
 }
 
 // ================= WHATSAPP =================
-function sendWhatsApp(data) {
-  const msg =
-`🚗 Ride W Me Cabo – Reservation Confirmed
+function sendWhatsApp(res) {
+  let msg =
+    `🚗 *Ride W Me Cabo – Reservation Confirmed*\n\n` +
+    `Hi ${res.name} 👋\n\n` +
+    `*Service:* ${res.service_label}\n` +
+    `*Trip Type:* ${res.trip_type}\n` +
+    `*Passengers:* ${res.passengers}\n\n` +
+    `*Pickup:* ${res.pickup}\n` +
+    `*Destination:* ${res.destination}\n\n` +
+    `*Departure:* ${res.date} at ${res.time}\n`;
 
-Name: ${data.name}
-Service: ${data.service_label}
-Trip: ${data.trip_type}
+  if (res.return_date) {
+    msg += `*Return:* ${res.return_date} at ${res.return_time}\n`;
+  }
 
-Pickup: ${data.pickup}
-Destination: ${data.destination}
+  if (res.extra_hours && Number(res.extra_hours) > 0) {
+    msg += `*Extra Hours:* ${res.extra_hours}\n`;
+  }
 
-Date: ${data.date} ${data.time}
-${data.return_date ? `Return: ${data.return_date} ${data.return_time}\n` : ""}
-Total: $${data.total_price} USD`;
+  msg +=
+    `\n💵 *Payment Summary*\n` +
+    `Base Price: $${res.base_price} USD\n` +
+    `Total: $${res.total_price} USD\n\n` +
+    `Thank you for choosing *Ride W Me Cabo* ✨`;
 
-  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`);
+  window.open(
+    `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`,
+    "_blank"
+  );
 }
+
 
 // ================= SUBMIT =================
 document.getElementById("bookingForm").addEventListener("submit", e => {
