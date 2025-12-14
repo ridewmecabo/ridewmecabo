@@ -50,6 +50,84 @@ const SERVICES = {
 };
 
 /* ============================================================
+   DESTINOS PARA AUTOCOMPLETADO
+============================================================ */
+const DESTINOS = [
+  // HOTELS
+  "Nobu Hotel Los Cabos","Hard Rock Hotel Los Cabos","Waldorf Astoria Pedregal",
+  "Garza Blanca Resort","Grand Velas Los Cabos","Esperanza Auberge",
+  "One&Only Palmilla","Montage Los Cabos","The Cape, a Thompson Hotel",
+  "Riu Palace","Riu Santa Fe","Breathless Cabo","Secrets Puerto Los Cabos",
+  "Hyatt Ziva","Le Blanc Spa Resort","Pueblo Bonito Sunset","Pueblo Bonito Rose",
+  "Pueblo Bonito Blanco","Solaz Resort","Hilton Los Cabos","Marquis Los Cabos",
+  "Grand Fiesta Americana","Dreams Los Cabos","Barceló Gran Faro",
+  "Marina Fiesta Resort","Cabo Azul Resort","Sheraton Grand Los Cabos",
+  "Chileno Bay Resort","Las Ventanas al Paraíso",
+
+  // RESTAURANTS
+  "Edith’s","The Office on the Beach","Sunset Monalisa","Lorenzillo’s",
+  "Rosa Negra","Funky Geisha","Taboo Cabo","Mamazzita","Animalón",
+  "El Farallon","Acre Restaurant","Flora Farms","Jazmin’s Restaurant",
+  "Tacos Gardenias","La Lupita Tacos","Carbón Cabrón",
+
+  // BEACH CLUBS
+  "Mango Deck","SUR Beach House","OMNIA Los Cabos","Blue Marlin Ibiza",
+  "Veleros Beach Club",
+
+  // LANDMARKS
+  "Cabo San Lucas Downtown","San José del Cabo Downtown","El Arco",
+  "Marina Cabo San Lucas","Puerto Paraíso Mall","Luxury Avenue",
+  "Medano Beach","Palmilla Golf","Diamante Golf","Costco CSL",
+  "Fresko CSL","Walmart San Lucas","Home Depot CSL",
+
+  // AIRPORT / PRIVATE
+  "Los Cabos International Airport (SJD)",
+  "FBO Private Terminal (SJD Private Jets)",
+
+  // CUSTOM
+  "Airbnb (Custom)","Private Villa (Custom)","H+ Hospital"
+];
+
+/* ============================================================
+   AUTOCOMPLETADO – TIPO UBER
+============================================================ */
+function setupAutocomplete(input, dropdown) {
+  
+  input.addEventListener("input", function () {
+    const text = this.value.toLowerCase().trim();
+    dropdown.innerHTML = "";
+
+    if (!text) return;
+
+    const results = DESTINOS.filter(d => d.toLowerCase().includes(text)).slice(0, 7);
+
+    results.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "autocomplete-item";
+      div.textContent = item;
+
+      div.onclick = () => {
+        input.value = item;
+        dropdown.innerHTML = "";
+      };
+
+      dropdown.appendChild(div);
+    });
+  });
+
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target) && !input.contains(e.target)) {
+      dropdown.innerHTML = "";
+    }
+  });
+}
+
+// ACTIVATE AUTOCOMPLETE
+setupAutocomplete(pickupEl, document.getElementById("pickupDropdown"));
+setupAutocomplete(destinationEl, document.getElementById("destinationDropdown"));
+
+
+/* ============================================================
    UPDATE UI WHEN SERVICE CHANGES
 ============================================================ */
 function updateServiceUI() {
