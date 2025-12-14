@@ -133,13 +133,15 @@
         </div>
 
         <!-- Trip Type -->
-<div id="tripTypeWrapper">
+
+  <div>
   <label for="tripType">Trip Type</label>
-  <select id="tripType">
-    <option value="oneway" selected>One Way</option>
-<option value="roundtrip">Round Trip</option>
+  <select id="tripType" required>
+    <option value="oneway">One Way</option>
+    <option value="roundtrip">Round Trip</option>
   </select>
 </div>
+
 
 
         <!-- Passengers -->
@@ -166,14 +168,6 @@
           <input id="destinationPreset" autocomplete="off" type="text" placeholder="Hotel, airport, restaurant...">
           <div id="destinationDropdown" class="autocomplete-dropdown"></div>
         </div>
-
-<div id="tripTypeWrapper">
-  <label for="tripType">Trip Type</label>
-  <select id="tripType" required>
-    <option value="oneway">One Way</option>
-    <option value="roundtrip">Round Trip</option>
-  </select>
-</div>
 
         
         <!-- Date -->
