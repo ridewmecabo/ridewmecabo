@@ -32,6 +32,7 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 const uiName = document.getElementById("selectedServiceName");
 const uiPrice = document.getElementById("selectedServicePrice");
 
+
 // ================= SERVICES =================
 const SERVICES = {
   zone1: { label: "Arrivals / Departures – Zone 1 (SJD ↔ Palmilla)", oneWay: 75, roundTrip: 130 },
@@ -140,20 +141,33 @@ updateServiceUI();
 // ================= PRICE CALC =================
 function calculatePrice() {
   const s = SERVICES[serviceTypeEl.value];
+  let basePrice = 0;
   let total = 0;
 
   if (s.oneWay) {
-    total = tripTypeEl.value === "round" ? s.roundTrip : s.oneWay;
+    if (tripTypeEl.value === "round") {
+      basePrice = s.roundTrip;
+      total = s.roundTrip;
+    } else {
+      basePrice = s.oneWay;
+      total = s.oneWay;
+    }
   }
+
   else if (s.extraHour) {
-    total = s.base + (Number(hoursEl.value || 0) * s.extraHour);
+    const hrs = Number(hoursEl.value || 0);
+    basePrice = s.base;
+    total = s.base + (hrs * s.extraHour);
   }
+
   else {
+    basePrice = s.base;
     total = s.base;
   }
 
-  return total;
+  return { basePrice, total };
 }
+
 
 // ================= SEND EMAIL =================
 function sendEmail(data) {
@@ -184,25 +198,32 @@ document.getElementById("bookingForm").addEventListener("submit", e => {
   e.preventDefault();
 
   const service = SERVICES[serviceTypeEl.value];
-  const total = calculatePrice();
+  const pricing = calculatePrice();
+
 
   const data = {
-    name: document.getElementById("name").value,
-    phone: document.getElementById("phone").value,
-    email: document.getElementById("email").value,
-    passengers: passengersEl.value,
-    pickup: pickupEl.value,
-    destination: destinationEl.value,
-    date: dateEl.value,
-    time: timeEl.value,
-    return_date: returnDateEl.value,
-    return_time: returnTimeEl.value,
-    extra_hours: hoursEl.value,
-    notes: notesEl.value,
-    service_label: service.label,
-    trip_type: tripTypeEl.value === "round" ? "Round Trip" : "One Way",
-    total_price: total
-  };
+  name: document.getElementById("name").value,
+  phone: document.getElementById("phone").value,
+  email: document.getElementById("email").value,
+
+  passengers: passengersEl.value,
+  pickup: pickupEl.value,
+  destination: destinationEl.value,
+  date: dateEl.value,
+  time: timeEl.value,
+  return_date: returnDateEl.value,
+  return_time: returnTimeEl.value,
+  extra_hours: hoursEl.value,
+  notes: notesEl.value,
+
+  service_label: service.label,
+  trip_type: tripTypeEl.value === "round" ? "Round Trip" : "One Way",
+
+  // 👇 ESTO ES LO QUE FALTABA
+  base_price: pricing.basePrice,
+  total_price: pricing.total
+};
+
 
   sendEmail(data).then(() => {
     sendWhatsApp(data);
