@@ -32,6 +32,19 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 const uiName = document.getElementById("selectedServiceName");
 const uiPrice = document.getElementById("selectedServicePrice");
 
+tripTypeEl.addEventListener("change", () => {
+  if (tripTypeEl.value === "roundtrip") {
+    returnDateWrapper.style.display = "block";
+    returnTimeWrapper.style.display = "block";
+  } else {
+    returnDateWrapper.style.display = "none";
+    returnTimeWrapper.style.display = "none";
+    returnDateEl.value = "";
+    returnTimeEl.value = "";
+  }
+});
+
+
 
 // ================= SERVICES =================
 const SERVICES = {
@@ -140,33 +153,41 @@ updateServiceUI();
 
 // ================= PRICE CALC =================
 function calculatePrice() {
-  const s = SERVICES[serviceTypeEl.value];
-  let basePrice = 0;
-  let total = 0;
+  const sv = serviceTypeEl.value;
+  const info = SERVICES[sv];
 
-  if (s.oneWay) {
-    if (tripTypeEl.value === "round") {
-      basePrice = s.roundTrip;
-      total = s.roundTrip;
+  if (!info) return { total: 0, tripType: "—" };
+
+  let total = 0;
+  let tripType = "One Way";
+
+  // AIRPORT TRANSFERS
+  if (info.oneWay) {
+    if (tripTypeEl.value === "roundtrip") {
+      total = info.roundTrip;
+      tripType = "Round Trip";
     } else {
-      basePrice = s.oneWay;
-      total = s.oneWay;
+      total = info.oneWay;
+      tripType = "One Way";
     }
   }
 
-  else if (s.extraHour) {
+  // OPEN SERVICE
+  else if (info.extraHour) {
     const hrs = Number(hoursEl.value || 0);
-    basePrice = s.base;
-    total = s.base + (hrs * s.extraHour);
+    total = info.base + hrs * info.extraHour;
+    tripType = "Open Service";
   }
 
+  // TOURS
   else {
-    basePrice = s.base;
-    total = s.base;
+    total = info.base;
+    tripType = "Tour";
   }
 
-  return { basePrice, total };
+  return { total, tripType };
 }
+
 
 
 // ================= SEND EMAIL =================
