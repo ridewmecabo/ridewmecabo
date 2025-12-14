@@ -138,7 +138,7 @@ function toggleReturnFields() {
 
 tripTypeEl.addEventListener("change", () => {
   toggleReturnFields();
-  updateServiceUI(); // para que actualice precio mostrado
+  updateServiceUI(); // actualiza summary
 });
 
 // ================= UI UPDATE =================
@@ -204,12 +204,14 @@ updateServiceUI();
 function calculatePrice() {
   const sv = serviceTypeEl.value;
   const info = SERVICES[sv];
-  if (!info) return { total: 0, tripTypeText: "—", basePrice: 0, extraHoursTotal: 0 };
+  if (!info) return { total: 0, tripTypeText: "—", basePrice: 0, extraHoursTotal: 0, roundTripPrice: 0, extraHours: 0 };
 
   let total = 0;
   let basePrice = 0;
   let extraHoursTotal = 0;
   let tripTypeText = "";
+  let roundTripPrice = 0;
+  let extraHours = 0;
 
   // Airport transfers
   if (info.oneWay) {
@@ -217,29 +219,31 @@ function calculatePrice() {
       basePrice = info.roundTrip;
       total = info.roundTrip;
       tripTypeText = "Round Trip";
+      roundTripPrice = info.roundTrip;
     } else {
       basePrice = info.oneWay;
       total = info.oneWay;
       tripTypeText = "One Way";
+      roundTripPrice = 0;
     }
-    return { total, tripTypeText, basePrice, extraHoursTotal };
+    return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
   }
 
   // Open service
   if (info.extraHour) {
-    const hrs = Number(hoursEl.value || 0);
+    extraHours = Number(hoursEl.value || 0);
     basePrice = info.base;
-    extraHoursTotal = hrs * info.extraHour;
+    extraHoursTotal = extraHours * info.extraHour;
     total = basePrice + extraHoursTotal;
     tripTypeText = "Open Service";
-    return { total, tripTypeText, basePrice, extraHoursTotal };
+    return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
   }
 
   // Tours
   basePrice = info.base;
   total = info.base;
   tripTypeText = "Tour";
-  return { total, tripTypeText, basePrice, extraHoursTotal };
+  return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
 }
 
 // ================= SEND EMAIL =================
@@ -264,8 +268,9 @@ function sendWhatsApp(res) {
 
   msg += `\n💵 *Payment Summary*\n`;
   msg += `Base Price: $${res.base_price} USD\n`;
+  if (res.round_trip_price_msg) msg += `Round Trip Price: $${res.base_price} USD\n`;
   if (res.extra_hours_total && Number(res.extra_hours_total) > 0) {
-    msg += `Extra Hours: $${res.extra_hours_total} USD\n`;
+    msg += `Extra Hours Total: $${res.extra_hours_total} USD\n`;
   }
   msg += `Total: $${res.total_price} USD\n\n`;
   msg += `Thank you for choosing *Ride W Me Cabo* ✨`;
@@ -303,6 +308,27 @@ document.getElementById("bookingForm").addEventListener("submit", (e) => {
     }
   }
 
+  // ✅ MENSAJES LISTOS PARA TU TEMPLATE (tal cual lo tienes)
+  const returnDateMsg =
+    (info.oneWay && tripTypeEl.value === "roundtrip")
+      ? `• Return: ${returnDateEl.value} at ${returnTimeEl.value}`
+      : "";
+
+  const extraHoursMsg =
+    (info.extraHour && pricing.extraHours > 0)
+      ? `• Extra Hours: ${pricing.extraHours}`
+      : "";
+
+  const roundTripPriceMsg =
+    (info.oneWay && tripTypeEl.value === "roundtrip")
+      ? `Round Trip Price: $${info.roundTrip} USD`
+      : "";
+
+  const extraHoursTotalMsg =
+    (info.extraHour && pricing.extraHoursTotal > 0)
+      ? `Extra Hours Total: $${pricing.extraHoursTotal} USD`
+      : "";
+
   const payload = {
     name,
     phone,
@@ -325,8 +351,13 @@ document.getElementById("bookingForm").addEventListener("submit", (e) => {
     notes: notesEl.value.trim(),
 
     base_price: pricing.basePrice,
-    extra_hours_total: pricing.extraHoursTotal || "",
-    total_price: pricing.total
+    total_price: pricing.total,
+
+    // ✅ Estos son los que tu template imprime:
+    return_date_msg: returnDateMsg,
+    extra_hours_msg: extraHoursMsg,
+    round_trip_price_msg: roundTripPriceMsg,
+    extra_hours_total_msg: extraHoursTotalMsg
   };
 
   sendEmail(payload)
