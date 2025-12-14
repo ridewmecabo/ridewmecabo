@@ -139,43 +139,66 @@ function updateServiceUI() {
   if (!info) {
     uiName.textContent = "Select a service";
     uiPrice.textContent = "—";
+    tripTypeWrapper.style.display = "none";
+    returnDateWrapper.style.display = "none";
+    returnTimeWrapper.style.display = "none";
+    hoursWrapper.style.display = "none";
     return;
   }
 
   uiName.textContent = info.label;
 
-  // Show price summary
-  if (info.oneWay) {
-    uiPrice.innerHTML = `
-      <strong>One Way:</strong> $${info.oneWay} USD<br>
-      <strong>Round Trip:</strong> $${info.roundTrip} USD
-    `;
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
+  // ZONES (oneWay/roundTrip)
+  if (info.oneWay && info.roundTrip) {
+    tripTypeWrapper.style.display = "block";
     hoursWrapper.style.display = "none";
+
+    const isRoundTrip = tripTypeEl.value === "roundtrip";
+
+    // UI precio según elección
+    uiPrice.innerHTML = isRoundTrip
+      ? `<strong>Round Trip:</strong> $${info.roundTrip} USD`
+      : `<strong>One Way:</strong> $${info.oneWay} USD`;
+
+    // Mostrar Return Date/Time solo si es Round Trip
+    returnDateWrapper.style.display = isRoundTrip ? "block" : "none";
+    returnTimeWrapper.style.display = isRoundTrip ? "block" : "none";
+
+    // Si cambian a One Way, limpia retorno
+    if (!isRoundTrip) {
+      returnDateEl.value = "";
+      returnTimeEl.value = "";
+    }
+    return;
   }
 
-  else if (info.extraHour) {
+  // OPEN SERVICE
+  if (info.extraHour) {
+    tripTypeWrapper.style.display = "none";
+    returnDateWrapper.style.display = "none";
+    returnTimeWrapper.style.display = "none";
+    hoursWrapper.style.display = "block";
+
     uiPrice.innerHTML = `
       <strong>Base:</strong> $${info.base} USD<br>
       <strong>Extra Hour:</strong> $${info.extraHour} USD
     `;
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
-    hoursWrapper.style.display = "block";
+    return;
   }
 
-  else {
-    uiPrice.innerHTML = `
-      <strong>Price:</strong> $${info.base} USD
-    `;
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
-    hoursWrapper.style.display = "none";
-  }
+  // TOURS
+  tripTypeWrapper.style.display = "none";
+  returnDateWrapper.style.display = "none";
+  returnTimeWrapper.style.display = "none";
+  hoursWrapper.style.display = "none";
+
+  uiPrice.innerHTML = `<strong>Price:</strong> $${info.base} USD`;
+}
 }
 
 serviceTypeEl.addEventListener("change", updateServiceUI);
+tripTypeEl.addEventListener("change", updateServiceUI);
+
 
 /* ============================================================
    TOTAL PRICE CALCULATION
@@ -184,31 +207,33 @@ function calculatePrice() {
   const sv = serviceTypeEl.value;
   const info = SERVICES[sv];
 
-  if (!info) return { total: 0 };
+  if (!info) return { total: 0, tripType: "—" };
 
   let total = 0;
-  let tripType = "One Way";
+  let tripType = "—";
 
-  if (info.oneWay) {
-    if (returnDateEl.value) {
-      total = info.roundTrip;
-      tripType = "Round Trip";
-    } else {
-      total = info.oneWay;
-    }
+  // ZONES (One Way / Round Trip)
+  if (info.oneWay && info.roundTrip) {
+    const isRoundTrip = tripTypeEl.value === "roundtrip";
+    total = isRoundTrip ? info.roundTrip : info.oneWay;
+    tripType = isRoundTrip ? "Round Trip" : "One Way";
+    return { total, tripType };
   }
 
-  else if (info.extraHour) {
-    const hrs = Number(hoursEl.value || 0);
-    total = info.base + (hrs * info.extraHour);
+  // OPEN SERVICE (base + extra hours)
+  if (info.extraHour) {
+    const extra = Math.max(0, Number(hoursEl.value || 0));
+    total = info.base + (extra * info.extraHour);
+    tripType = "Open Service";
+    return { total, tripType };
   }
 
-  else {
-    total = info.base;
-  }
-
+  // TOURS
+  total = info.base;
+  tripType = "Tour / Activities";
   return { total, tripType };
 }
+
 
 /* ============================================================
    EMAILJS – SEND TO CLIENT + TO YOU
