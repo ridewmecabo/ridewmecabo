@@ -370,14 +370,20 @@ document.getElementById("bookingForm").addEventListener("submit", (e) => {
     extra_hours_total_msg: extraHoursTotalMsg
   };
 
-  sendEmail(payload)
-    .then(() => {
-      sendWhatsApp(payload);
-      alert("Your reservation has been sent successfully!");
-      document.getElementById("bookingForm").reset();
-      tripTypeEl.value = "oneway";
-      updateServiceUI();
-    })
+ sendEmail(payload)
+  .then(() => {
+
+    // ✅ GUARDAR RESERVA
+    saveReservation(payload);
+
+    // 📲 WhatsApp
+    sendWhatsApp(payload);
+
+    alert("Your reservation has been sent successfully!");
+    document.getElementById("bookingForm").reset();
+    tripTypeEl.value = "oneway";
+    updateServiceUI();
+  })
     .catch((err) => {
       console.error(err);
       alert("Error sending reservation. Please try again.");
