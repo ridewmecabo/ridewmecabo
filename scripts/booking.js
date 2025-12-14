@@ -278,6 +278,16 @@ function sendWhatsApp(res) {
   window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
+function saveReservation(data) {
+  const existing = JSON.parse(localStorage.getItem("reservations")) || [];
+  existing.push({
+    ...data,
+    created_at: new Date().toISOString()
+  });
+  localStorage.setItem("reservations", JSON.stringify(existing));
+}
+
+
 // ================= SUBMIT =================
 document.getElementById("bookingForm").addEventListener("submit", (e) => {
   e.preventDefault();
