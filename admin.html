@@ -1,384 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel | Ride W Me Cabo</title>
+<meta charset="UTF-8">
+<title>Admin Panel | Ride W Me Cabo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/main.css">
 
-  <style>
-    body {
-      font-family: Poppins, sans-serif;
-      background: #0b0b0b;
-      color: white;
-      margin: 0;
-      padding: 40px 0;
-      display: flex;
-      justify-content: center;
-    }
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    .admin-container {
-      width: 95%;
-      max-width: 1100px;
-      background: #141414;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 0 25px rgba(0,255,150,0.15);
-    }
+<style>
+body {
+  background:#0b0b0b;
+  font-family:Poppins,sans-serif;
+  color:white;
+  margin:0;
+  padding:20px;
+}
 
-    h2 {
-      color: #00c16e;
-      margin-top: 0;
-    }
+.login-box, .admin-box {
+  max-width:1100px;
+  margin:auto;
+  background:#141414;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.6);
+}
 
-    .top-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
+.login-box {
+  max-width:400px;
+  margin-top:120px;
+}
 
-    button {
-      padding: 12px 20px;
-      border-radius: 10px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.25s;
-    }
+h2 {
+  color:#00c16e;
+  margin-bottom:15px;
+}
 
-    .excel-btn { background: #0077ff; color: white; }
-    .pdf-btn { background: #bb00ff; color: white; }
-    .clear-btn { background: #b30000; color: white; }
-    .today-btn { background: #00c16e; color: black; }
+input, button {
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
+  font-size:0.95rem;
+}
 
-    button:hover { opacity: 0.85; }
+input {
+  background:#1f1f1f;
+  color:white;
+}
 
-    /* FILTERS */
-    .filters {
-      margin: 15px 0;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+button {
+  background:#00c16e;
+  color:black;
+  font-weight:700;
+  cursor:pointer;
+}
 
-    .filters input {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background: #222;
-      color: white;
-      min-width: 160px;
-    }
+button.secondary {
+  background:#333;
+  color:white;
+}
 
-    /* RESERVATION LIST */
-    .reservation-list {
-      margin-top: 20px;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
+.top-actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
 
-    .reservation-card {
-      background: #1c1c1c;
-      padding: 16px;
-      border-radius: 12px;
-      border-left: 4px solid #00c16e;
-      margin-bottom: 12px;
-      box-shadow: 0 0 15px rgba(0,255,150,0.08);
-    }
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:0.9rem;
+}
 
-    .reservation-card p { margin: 4px 0; }
+th, td {
+  border-bottom:1px solid rgba(255,255,255,.1);
+  padding:10px;
+  text-align:left;
+  vertical-align:top;
+}
 
-    .card-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
+th {
+  color:#00c16e;
+}
 
-    .delete-btn {
-      background: #b30000;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      color: white;
-    }
+.action-btn {
+  padding:6px 10px;
+  font-size:0.8rem;
+  border-radius:8px;
+  margin:2px;
+}
 
-    .edit-btn {
-      background: #0077ff;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      color: white;
-    }
-
-    .delete-btn:hover { background: #d00000; }
-    .edit-btn:hover { background: #1591ff; }
-
-    /* EDIT MODAL */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .modal-content {
-      background: #141414;
-      padding: 25px;
-      width: 90%;
-      max-width: 450px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,255,150,0.25);
-    }
-
-    .modal-content input, .modal-content textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background: #222;
-      color: white;
-      margin-bottom: 12px;
-    }
-
-    .modal-content button {
-      width: 100%;
-      margin-top: 10px;
-      background: #00c16e;
-      padding: 12px;
-      border-radius: 10px;
-      color: black;
-      font-weight: 700;
-    }
-  </style>
+.edit { background:#ffaa00; color:black; }
+.delete { background:#cc0000; color:white; }
+.pdf { background:#0077ff; color:white; }
+</style>
 </head>
 
 <body>
 
-<div class="admin-container">
-
-  <h2>Reservation Dashboard</h2>
-
-  <!-- FILTERS -->
-  <div class="filters">
-    <input type="date" id="filterDate" placeholder="Filter by date">
-    <input type="text" id="filterName" placeholder="Search name">
-  </div>
-
-  <!-- ACTION BUTTONS -->
-  <div class="top-actions">
-    <button class="excel-btn" onclick="exportExcel()">📄 Export Excel</button>
-    <button class="pdf-btn" onclick="exportPDF()">📘 Export PDF</button>
-    <button class="today-btn" onclick="exportToday()">📆 Today Only</button>
-    <button class="clear-btn" onclick="clearAll()">🗑 Delete All</button>
-  </div>
-
-  <!-- RESERVATIONS -->
-  <div id="reservationList" class="reservation-list"></div>
-
+<!-- LOGIN -->
+<div id="loginBox" class="login-box">
+  <h2>Admin Access</h2>
+  <input type="password" id="adminPass" placeholder="Enter password">
+  <button onclick="login()">Login</button>
 </div>
 
-<!-- EDIT MODAL -->
-<div class="modal" id="editModal">
-  <div class="modal-content">
-    <h3>Edit Reservation</h3>
+<!-- ADMIN -->
+<div id="adminBox" class="admin-box" style="display:none;">
+  <h2>Reservations Dashboard</h2>
 
-    <input id="editName">
-    <input id="editPhone">
-    <input id="editEmail">
-    <input id="editPickup">
-    <input id="editDestination">
-    <textarea id="editNotes"></textarea>
-
-    <button onclick="saveEdit()">Save Changes</button>
+  <div class="top-actions">
+    <button onclick="exportExcel()">📄 Export Excel</button>
+    <button onclick="logout()" class="secondary">Logout</button>
   </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Service</th>
+        <th>Trip</th>
+        <th>Date</th>
+        <th>Pickup → Destination</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
 </div>
 
 <script>
-let editIndex = null;
+const PASSWORD = "rideadmin2025";
+const loginBox = document.getElementById("loginBox");
+const adminBox = document.getElementById("adminBox");
+const tableBody = document.getElementById("tableBody");
 
-/* Load Reservations */
-function loadReservations() {
-  const list = document.getElementById("reservationList");
-  const reservations = JSON.parse(localStorage.getItem("reservations")) || [];
-
-  list.innerHTML = "";
-
-  reservations.forEach((r, index) => {
-    let div = document.createElement("div");
-    div.className = "reservation-card";
-
-    div.innerHTML = `
-      <p><strong>${r.name}</strong> (${r.passengers} pax)</p>
-      <p>${r.serviceType} — ${r.tripType}</p>
-      <p>📅 ${r.date} at ${r.time}</p>
-      ${r.returnDate ? `<p>🔁 Return: ${r.returnDate} ${r.returnTime}</p>` : ""}
-      <p>📍 ${r.pickup} → ${r.destination}</p>
-      <p>${r.notes || ""}</p>
-
-      <div class="card-buttons">
-         <button class="edit-btn" onclick="openEdit(${index})">Edit</button>
-         <button class="delete-btn" onclick="deleteOne(${index})">Delete</button>
-      </div>
-    `;
-
-    list.appendChild(div);
-  });
-}
-
-loadReservations();
-
-/* Delete One */
-function deleteOne(i) {
-  let r = JSON.parse(localStorage.getItem("reservations")) || [];
-  r.splice(i, 1);
-  localStorage.setItem("reservations", JSON.stringify(r));
-  loadReservations();
-}
-
-/* Delete All */
-function clearAll() {
-  if (confirm("Delete ALL reservations?")) {
-    localStorage.removeItem("reservations");
-    loadReservations();
+function login(){
+  if(document.getElementById("adminPass").value === PASSWORD){
+    localStorage.setItem("adminLogged","true");
+    loginBox.style.display="none";
+    adminBox.style.display="block";
+    loadData();
+  } else {
+    alert("Incorrect password");
   }
 }
 
-/* EDIT MODAL */
-function openEdit(i) {
-  let r = JSON.parse(localStorage.getItem("reservations"))[i];
-  editIndex = i;
-
-  document.getElementById("editName").value = r.name;
-  document.getElementById("editPhone").value = r.phone;
-  document.getElementById("editEmail").value = r.email;
-  document.getElementById("editPickup").value = r.pickup;
-  document.getElementById("editDestination").value = r.destination;
-  document.getElementById("editNotes").value = r.notes;
-
-  document.getElementById("editModal").style.display = "flex";
+function logout(){
+  localStorage.removeItem("adminLogged");
+  location.reload();
 }
 
-function saveEdit() {
-  let r = JSON.parse(localStorage.getItem("reservations"));
-  let updated = r[editIndex];
-
-  updated.name = document.getElementById("editName").value;
-  updated.phone = document.getElementById("editPhone").value;
-  updated.email = document.getElementById("editEmail").value;
-  updated.pickup = document.getElementById("editPickup").value;
-  updated.destination = document.getElementById("editDestination").value;
-  updated.notes = document.getElementById("editNotes").value;
-
-  r[editIndex] = updated;
-
-  localStorage.setItem("reservations", JSON.stringify(r));
-  document.getElementById("editModal").style.display = "none";
-  loadReservations();
+if(localStorage.getItem("adminLogged")==="true"){
+  loginBox.style.display="none";
+  adminBox.style.display="block";
+  loadData();
 }
 
-/* EXPORT EXCEL */
-function exportExcel() {
-  let r = JSON.parse(localStorage.getItem("reservations")) || [];
+function loadData(){
+  const data = JSON.parse(localStorage.getItem("reservations")) || [];
+  tableBody.innerHTML="";
 
-  let data = r.map(x => ({
-    Name: x.name,
-    Phone: x.phone,
-    Email: x.email,
-    Service: x.serviceType,
-    Trip: x.tripType,
-    Passengers: x.passengers,
-    Pickup: x.pickup,
-    Destination: x.destination,
-    Date: x.date,
-    Time: x.time,
-    ReturnDate: x.returnDate,
-    ReturnTime: x.returnTime,
-    ExtraHours: x.extraHours,
-    Notes: x.notes,
-    BasePrice: x.basePrice,
-    ExtraPrice: x.extraPrice,
-    Total: x.totalPrice
-  }));
-
-  let sheet = XLSX.utils.json_to_sheet(data);
-  let book = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(book, sheet, "Reservations");
-  XLSX.writeFile(book, "RideWMe_Reservations.xlsx");
-}
-
-/* EXPORT PDF */
-function exportPDF() {
-  let r = JSON.parse(localStorage.getItem("reservations")) || [];
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  doc.setFontSize(18);
-  doc.text("Ride W Me Cabo - Reservations", 14, 20);
-
-  doc.autoTable({
-    startY: 30,
-    head: [["Name", "Service", "Pickup", "Destination", "Date", "Total"]],
-    body: r.map(x => [
-      x.name,
-      x.serviceType,
-      x.pickup,
-      x.destination,
-      x.date + " " + x.time,
-      "$" + x.totalPrice
-    ]),
-    styles: { fontSize: 10 },
-    headStyles: { fillColor: [0, 193, 110] }
-  });
-
-  doc.save("RideWMe_Reservations.pdf");
-}
-
-/* EXPORT TODAY ONLY */
-function exportToday() {
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("filterDate").value = today;
-  filterResults();
-}
-
-/* FILTER FUNCTION */
-document.getElementById("filterDate").oninput = filterResults;
-document.getElementById("filterName").oninput = filterResults;
-
-function filterResults() {
-  const date = document.getElementById("filterDate").value;
-  const name = document.getElementById("filterName").value.toLowerCase();
-
-  let r = JSON.parse(localStorage.getItem("reservations")) || [];
-
-  let filtered = r.filter(x =>
-    (!date || x.date === date) &&
-    (!name || x.name.toLowerCase().includes(name))
-  );
-
-  const list = document.getElementById("reservationList");
-  list.innerHTML = "";
-
-  filtered.forEach((r, index) => {
-    let div = document.createElement("div");
-    div.className = "reservation-card";
-    div.innerHTML = `
-      <p><strong>${r.name}</strong></p>
-      <p>${r.serviceType} - ${r.tripType}</p>
-      <p>${r.date} ${r.time}</p>
-      <p>${r.pickup} → ${r.destination}</p>
+  data.forEach((r,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.name}</td>
+      <td>${r.service_label}</td>
+      <td>${r.trip_type}</td>
+      <td>${r.date} ${r.time}</td>
+      <td>${r.pickup}<br>→ ${r.destination}</td>
+      <td>$${r.total_price} USD</td>
+      <td>
+        <button class="action-btn pdf" onclick="pdf(${i})">PDF</button>
+        <button class="action-btn edit" onclick="edit(${i})">Edit</button>
+        <button class="action-btn delete" onclick="del(${i})">Delete</button>
+      </td>
     `;
-    list.appendChild(div);
+    tableBody.appendChild(tr);
   });
+}
+
+function del(i){
+  if(!confirm("Delete this reservation?")) return;
+  const d = JSON.parse(localStorage.getItem("reservations")) || [];
+  d.splice(i,1);
+  localStorage.setItem("reservations",JSON.stringify(d));
+  loadData();
+}
+
+function edit(i){
+  const d = JSON.parse(localStorage.getItem("reservations"));
+  const name = prompt("Client name:", d[i].name);
+  if(name!==null) d[i].name=name;
+  localStorage.setItem("reservations",JSON.stringify(d));
+  loadData();
+}
+
+function exportExcel(){
+  const data = JSON.parse(localStorage.getItem("reservations")) || [];
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,"Reservations");
+  XLSX.writeFile(wb,"RideWMe_Reservations.xlsx");
+}
+
+function pdf(i){
+  const { jsPDF } = window.jspdf;
+  const d = JSON.parse(localStorage.getItem("reservations"))[i];
+  const pdf = new jsPDF();
+
+  pdf.setFontSize(14);
+  pdf.text("Ride W Me Cabo - Itinerary",20,20);
+
+  pdf.setFontSize(11);
+  let y=35;
+  Object.entries(d).forEach(([k,v])=>{
+    pdf.text(`${k.replace(/_/g," ")}: ${v}`,20,y);
+    y+=7;
+  });
+
+  pdf.save(`RideWMe_${d.name}.pdf`);
 }
 </script>
 
