@@ -32,21 +32,6 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 const uiName = document.getElementById("selectedServiceName");
 const uiPrice = document.getElementById("selectedServicePrice");
 
-tripTypeEl.addEventListener("change", () => {
-  if (tripTypeEl.value === "roundtrip") {
-    returnDateWrapper.style.display = "block";
-    returnTimeWrapper.style.display = "block";
-  } else {
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
-    returnDateEl.value = "";
-    returnTimeEl.value = "";
-  }
-});
-
-
-
-
 // ================= SERVICES =================
 const SERVICES = {
   zone1: { label: "Arrivals / Departures – Zone 1 (SJD ↔ Palmilla)", oneWay: 75, roundTrip: 130 },
@@ -66,17 +51,39 @@ const SERVICES = {
 
 // ================= DESTINOS (AUTOCOMPLETE) =================
 const DESTINOS = [
+  // HOTELS
   "Nobu Hotel Los Cabos","Hard Rock Hotel Los Cabos","Waldorf Astoria Pedregal",
-  "One&Only Palmilla","Grand Velas Los Cabos","Montage Los Cabos","The Cape",
-  "Pueblo Bonito Sunset","Pueblo Bonito Rose","Pueblo Bonito Blanco",
-  "Solaz Resort","Hilton Los Cabos","Marquis Los Cabos",
-  "Rosa Negra","Taboo Cabo","Funky Geisha","Sunset Monalisa",
-  "Flora Farms","Acre Restaurant","El Farallon",
-  "Mango Deck","SUR Beach House","Blue Marlin Ibiza",
-  "Cabo San Lucas Downtown","San José del Cabo Downtown","Marina Cabo San Lucas",
+  "Garza Blanca Resort","Grand Velas Los Cabos","Esperanza Auberge",
+  "One&Only Palmilla","Montage Los Cabos","The Cape, a Thompson Hotel",
+  "Riu Palace","Riu Santa Fe","Breathless Cabo","Secrets Puerto Los Cabos",
+  "Hyatt Ziva","Le Blanc Spa Resort","Pueblo Bonito Sunset","Pueblo Bonito Rose",
+  "Pueblo Bonito Blanco","Solaz Resort","Hilton Los Cabos","Marquis Los Cabos",
+  "Grand Fiesta Americana","Dreams Los Cabos","Barceló Gran Faro",
+  "Marina Fiesta Resort","Cabo Azul Resort","Sheraton Grand Los Cabos",
+  "Chileno Bay Resort","Las Ventanas al Paraíso",
+
+  // RESTAURANTS
+  "Edith’s","The Office on the Beach","Sunset Monalisa","Lorenzillo’s",
+  "Rosa Negra","Funky Geisha","Taboo Cabo","Mamazzita","Animalón",
+  "El Farallon","Acre Restaurant","Flora Farms","Jazmin’s Restaurant",
+  "Tacos Gardenias","La Lupita Tacos","Carbón Cabrón",
+
+  // BEACH CLUBS
+  "Mango Deck","SUR Beach House","OMNIA Los Cabos","Blue Marlin Ibiza",
+  "Veleros Beach Club",
+
+  // LANDMARKS
+  "Cabo San Lucas Downtown","San José del Cabo Downtown","El Arco",
+  "Marina Cabo San Lucas","Puerto Paraíso Mall","Luxury Avenue",
+  "Medano Beach","Palmilla Golf","Diamante Golf","Costco CSL",
+  "Fresko CSL","Walmart San Lucas","Home Depot CSL",
+
+  // AIRPORT / PRIVATE
   "Los Cabos International Airport (SJD)",
-  "FBO Private Terminal (SJD)",
-  "Airbnb (Custom)","Private Villa (Custom)"
+  "FBO Private Terminal (SJD Private Jets)",
+
+  // CUSTOM
+  "Airbnb (Custom)","Private Villa (Custom)","H+ Hospital"
 ];
 
 // ================= AUTOCOMPLETE =================
@@ -86,7 +93,8 @@ function setupAutocomplete(input, dropdown) {
     dropdown.innerHTML = "";
     if (!q) return;
 
-    DESTINOS.filter(d => d.toLowerCase().includes(q))
+    DESTINOS
+      .filter(d => d.toLowerCase().includes(q))
       .slice(0, 7)
       .forEach(place => {
         const div = document.createElement("div");
@@ -100,100 +108,143 @@ function setupAutocomplete(input, dropdown) {
       });
   });
 
-  document.addEventListener("click", e => {
-    if (!input.contains(e.target)) dropdown.innerHTML = "";
+  // Close dropdown when clicking outside input OR dropdown
+  document.addEventListener("click", (e) => {
+    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.innerHTML = "";
+    }
   });
 }
 
 setupAutocomplete(pickupEl, document.getElementById("pickupDropdown"));
 setupAutocomplete(destinationEl, document.getElementById("destinationDropdown"));
 
-// ================= UI UPDATE =================
-function updateServiceUI() {
-  const service = SERVICES[serviceTypeEl.value];
-  if (!service) {
-    uiName.textContent = "Select a service";
-    uiPrice.textContent = "—";
-    return;
-  }
+// ================= TRIP TYPE (SHOW/HIDE RETURN) =================
+function toggleReturnFields() {
+  const sv = serviceTypeEl.value;
+  const info = SERVICES[sv];
 
-  uiName.textContent = service.label;
-
-  returnDateWrapper.style.display = "none";
-  returnTimeWrapper.style.display = "none";
-  hoursWrapper.style.display = "none";
-
-  if (service.oneWay) {
-    uiPrice.innerHTML = `
-      <strong>One Way:</strong> $${service.oneWay} USD<br>
-      <strong>Round Trip:</strong> $${service.roundTrip} USD
-    `;
-    if (tripTypeEl.value === "round") {
-      returnDateWrapper.style.display = "block";
-      returnTimeWrapper.style.display = "block";
-    }
-  }
-  else if (service.extraHour) {
-    uiPrice.innerHTML = `
-      <strong>Base:</strong> $${service.base} USD<br>
-      <strong>Extra Hour:</strong> $${service.extraHour} USD
-    `;
-    hoursWrapper.style.display = "block";
-  }
-  else {
-    uiPrice.innerHTML = `<strong>Price:</strong> $${service.base} USD`;
+  // Solo aplica retorno para airport transfers (zones)
+  if (info && info.oneWay && tripTypeEl.value === "roundtrip") {
+    returnDateWrapper.style.display = "block";
+    returnTimeWrapper.style.display = "block";
+  } else {
+    returnDateWrapper.style.display = "none";
+    returnTimeWrapper.style.display = "none";
+    returnDateEl.value = "";
+    returnTimeEl.value = "";
   }
 }
 
-serviceTypeEl.addEventListener("change", updateServiceUI);
-tripTypeEl.addEventListener("change", updateServiceUI);
+tripTypeEl.addEventListener("change", () => {
+  toggleReturnFields();
+  updateServiceUI(); // para que actualice precio mostrado
+});
+
+// ================= UI UPDATE =================
+function updateServiceUI() {
+  const info = SERVICES[serviceTypeEl.value];
+
+  if (!info) {
+    uiName.textContent = "Select a service";
+    uiPrice.textContent = "—";
+    hoursWrapper.style.display = "none";
+    toggleReturnFields();
+    return;
+  }
+
+  uiName.textContent = info.label;
+
+  // Default wrappers
+  hoursWrapper.style.display = "none";
+
+  // Airport transfers (zones)
+  if (info.oneWay) {
+    uiPrice.innerHTML = `
+      <strong>One Way:</strong> $${info.oneWay} USD<br>
+      <strong>Round Trip:</strong> $${info.roundTrip} USD
+    `;
+    toggleReturnFields();
+    return;
+  }
+
+  // Open service
+  if (info.extraHour) {
+    uiPrice.innerHTML = `
+      <strong>Base:</strong> $${info.base} USD<br>
+      <strong>Extra Hour:</strong> $${info.extraHour} USD
+    `;
+    hoursWrapper.style.display = "block";
+    // No return fields for open services
+    returnDateWrapper.style.display = "none";
+    returnTimeWrapper.style.display = "none";
+    returnDateEl.value = "";
+    returnTimeEl.value = "";
+    return;
+  }
+
+  // Tours
+  uiPrice.innerHTML = `<strong>Price:</strong> $${info.base} USD`;
+  // No return fields for tours
+  returnDateWrapper.style.display = "none";
+  returnTimeWrapper.style.display = "none";
+  returnDateEl.value = "";
+  returnTimeEl.value = "";
+}
+
+serviceTypeEl.addEventListener("change", () => {
+  updateServiceUI();
+});
 
 // Default
-tripTypeEl.value = "oneway";
+if (tripTypeEl) tripTypeEl.value = "oneway";
 updateServiceUI();
 
 // ================= PRICE CALC =================
 function calculatePrice() {
   const sv = serviceTypeEl.value;
   const info = SERVICES[sv];
-
-  if (!info) return { total: 0, tripType: "—" };
+  if (!info) return { total: 0, tripTypeText: "—", basePrice: 0, extraHoursTotal: 0 };
 
   let total = 0;
-  let tripType = "One Way";
+  let basePrice = 0;
+  let extraHoursTotal = 0;
+  let tripTypeText = "";
 
-  // AIRPORT TRANSFERS
+  // Airport transfers
   if (info.oneWay) {
     if (tripTypeEl.value === "roundtrip") {
+      basePrice = info.roundTrip;
       total = info.roundTrip;
-      tripType = "Round Trip";
+      tripTypeText = "Round Trip";
     } else {
+      basePrice = info.oneWay;
       total = info.oneWay;
-      tripType = "One Way";
+      tripTypeText = "One Way";
     }
+    return { total, tripTypeText, basePrice, extraHoursTotal };
   }
 
-  // OPEN SERVICE
-  else if (info.extraHour) {
+  // Open service
+  if (info.extraHour) {
     const hrs = Number(hoursEl.value || 0);
-    total = info.base + hrs * info.extraHour;
-    tripType = "Open Service";
+    basePrice = info.base;
+    extraHoursTotal = hrs * info.extraHour;
+    total = basePrice + extraHoursTotal;
+    tripTypeText = "Open Service";
+    return { total, tripTypeText, basePrice, extraHoursTotal };
   }
 
-  // TOURS
-  else {
-    total = info.base;
-    tripType = "Tour";
-  }
-
-  return { total, tripType };
+  // Tours
+  basePrice = info.base;
+  total = info.base;
+  tripTypeText = "Tour";
+  return { total, tripTypeText, basePrice, extraHoursTotal };
 }
 
-
-
 // ================= SEND EMAIL =================
-function sendEmail(data) {
-  return emailjs.send("service_8zcytcr", "template_7tkwggo", data);
+function sendEmail(payload) {
+  return emailjs.send("service_8zcytcr", "template_7tkwggo", payload);
 }
 
 // ================= WHATSAPP =================
@@ -208,66 +259,86 @@ function sendWhatsApp(res) {
     `*Destination:* ${res.destination}\n\n` +
     `*Departure:* ${res.date} at ${res.time}\n`;
 
-  if (res.return_date) {
-    msg += `*Return:* ${res.return_date} at ${res.return_time}\n`;
+  if (res.return_date) msg += `*Return:* ${res.return_date} at ${res.return_time}\n`;
+  if (res.extra_hours && Number(res.extra_hours) > 0) msg += `*Extra Hours:* ${res.extra_hours}\n`;
+
+  msg += `\n💵 *Payment Summary*\n`;
+  msg += `Base Price: $${res.base_price} USD\n`;
+  if (res.extra_hours_total && Number(res.extra_hours_total) > 0) {
+    msg += `Extra Hours: $${res.extra_hours_total} USD\n`;
   }
+  msg += `Total: $${res.total_price} USD\n\n`;
+  msg += `Thank you for choosing *Ride W Me Cabo* ✨`;
 
-  if (res.extra_hours && Number(res.extra_hours) > 0) {
-    msg += `*Extra Hours:* ${res.extra_hours}\n`;
-  }
-
-  msg +=
-    `\n💵 *Payment Summary*\n` +
-    `Base Price: $${res.base_price} USD\n` +
-    `Total: $${res.total_price} USD\n\n` +
-    `Thank you for choosing *Ride W Me Cabo* ✨`;
-
-  window.open(
-    `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`,
-    "_blank"
-  );
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
-
 // ================= SUBMIT =================
-document.getElementById("bookingForm").addEventListener("submit", e => {
+document.getElementById("bookingForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const service = SERVICES[serviceTypeEl.value];
+  const info = SERVICES[serviceTypeEl.value];
+  if (!info) {
+    alert("Please select a service.");
+    return;
+  }
+
   const pricing = calculatePrice();
 
+  // Basic validations
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
 
-  const data = {
-  name: document.getElementById("name").value,
-  phone: document.getElementById("phone").value,
-  email: document.getElementById("email").value,
+  if (!name || !phone || !email || !passengersEl.value || !pickupEl.value.trim() || !destinationEl.value.trim() || !dateEl.value || !timeEl.value) {
+    alert("Please complete all required fields.");
+    return;
+  }
 
-  passengers: passengersEl.value,
-  pickup: pickupEl.value,
-  destination: destinationEl.value,
-  date: dateEl.value,
-  time: timeEl.value,
-  return_date: returnDateEl.value,
-  return_time: returnTimeEl.value,
-  extra_hours: hoursEl.value,
-  notes: notesEl.value,
+  // If roundtrip selected for zones -> require return fields
+  if (info.oneWay && tripTypeEl.value === "roundtrip") {
+    if (!returnDateEl.value || !returnTimeEl.value) {
+      alert("Please select return date and time for Round Trip.");
+      return;
+    }
+  }
 
-  service_label: service.label,
-  trip_type: tripTypeEl.value === "round" ? "Round Trip" : "One Way",
+  const payload = {
+    name,
+    phone,
+    email,
 
-  // 👇 ESTO ES LO QUE FALTABA
-  base_price: pricing.basePrice,
-  total_price: pricing.total
-};
+    service_label: info.label,
+    trip_type: pricing.tripTypeText,
 
+    passengers: passengersEl.value,
+    pickup: pickupEl.value.trim(),
+    destination: destinationEl.value.trim(),
 
-  sendEmail(data).then(() => {
-    sendWhatsApp(data);
-    alert("Reservation sent successfully!");
-    document.getElementById("bookingForm").reset();
-    tripTypeEl.value = "oneway";
-    updateServiceUI();
-  }).catch(() => {
-    alert("Error sending reservation.");
-  });
+    date: dateEl.value,
+    time: timeEl.value,
+
+    return_date: (info.oneWay && tripTypeEl.value === "roundtrip") ? returnDateEl.value : "",
+    return_time: (info.oneWay && tripTypeEl.value === "roundtrip") ? returnTimeEl.value : "",
+
+    extra_hours: info.extraHour ? (hoursEl.value || "") : "",
+    notes: notesEl.value.trim(),
+
+    base_price: pricing.basePrice,
+    extra_hours_total: pricing.extraHoursTotal || "",
+    total_price: pricing.total
+  };
+
+  sendEmail(payload)
+    .then(() => {
+      sendWhatsApp(payload);
+      alert("Your reservation has been sent successfully!");
+      document.getElementById("bookingForm").reset();
+      tripTypeEl.value = "oneway";
+      updateServiceUI();
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Error sending reservation. Please try again.");
+    });
 });
