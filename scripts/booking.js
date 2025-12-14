@@ -10,6 +10,8 @@ emailjs.init("Ed5Qh2Qk81A6fHcRR");
 const WHATSAPP = "526242426741";
 
 // Inputs
+const tripTypeEl = document.getElementById("tripType");
+const tripTypeWrapper = document.getElementById("tripTypeWrapper");
 const serviceTypeEl = document.getElementById("serviceType");
 const passengersEl = document.getElementById("passengers");
 const pickupEl = document.getElementById("pickupPreset");
