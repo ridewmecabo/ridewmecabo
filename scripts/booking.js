@@ -32,11 +32,6 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 const uiName = document.getElementById("selectedServiceName");
 const uiPrice = document.getElementById("selectedServicePrice");
 
-// Button
-const submitBtn = document.querySelector(".booking-submit");
-
-submitBtn.disabled = true;
-submitBtn.textContent = "Sending reservation…";
 
 
 // ================= SERVICES =================
