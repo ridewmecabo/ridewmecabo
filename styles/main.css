@@ -755,9 +755,15 @@ body {
   cursor: not-allowed;
   opacity: 0.6;
 }
-.booking-form button[type="submit"] {
+/* ===============================
+   BOOKING MAIN SUBMIT BUTTON
+================================ */
+
+.booking-submit {
+  grid-column: 1 / -1;       /* 🔥 ocupa todo el grid */
   width: 100%;
-  padding: 14px;
+  padding: 16px;
+  margin-top: 14px;
   border-radius: 999px;
   background: var(--green-soft);
   color: #000;
@@ -769,9 +775,11 @@ body {
   transition: 0.25s ease;
 }
 
-.booking-form button[type="submit"]:hover {
+.booking-submit:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 26px rgba(0,193,110,0.45);
 }
 
-
+.booking-submit:active {
+  transform: scale(0.98);
+}
