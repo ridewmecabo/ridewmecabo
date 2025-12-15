@@ -32,6 +32,13 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 const uiName = document.getElementById("selectedServiceName");
 const uiPrice = document.getElementById("selectedServicePrice");
 
+// Button
+const submitBtn = document.querySelector(".booking-submit");
+
+submitBtn.disabled = true;
+submitBtn.textContent = "Sending reservation…";
+
+
 // ================= SERVICES =================
 const SERVICES = {
   zone1: { label: "Arrivals / Departures – Zone 1 (SJD ↔ Palmilla)", oneWay: 75, roundTrip: 130 },
