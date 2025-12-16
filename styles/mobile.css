@@ -1,37 +1,37 @@
 /* MOBILE EXTRA TWEAKS */
 @media (max-width: 900px) {
+
+  .new-header {
+    height: 520px;
+    min-height: 520px;
+  }
+
   .header-content {
-    margin-bottom: 80px;
+    margin-bottom: 90px;
+    padding: 0 14px;
   }
+
   .header-content h1 {
-    font-size: 2.3rem;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
   }
+
   .header-expedition {
-    width: 135%;
-    bottom: -60px;
+    width: 120%;
+    bottom: -40px;
   }
+
   .vehicle-layout {
     grid-template-columns: 1fr;
   }
+
   .vehicle-text .section-title,
   .vehicle-text .section-subtitle {
     text-align: center;
   }
+
   .booking-grid {
     grid-template-columns: 1fr;
   }
 }
-@media (max-width: 600px) {
-  .header-top {
-    padding: 14px 16px;
-  }
-  .section {
-    margin: 45px auto;
-  }
-  .booking-card {
-    padding: 20px 16px;
-  }
-  .contact-form {
-    padding: 24px 16px;
-  }
-}
+
