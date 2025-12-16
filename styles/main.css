@@ -870,5 +870,57 @@ body {
   text-align: center;
   margin-top: 25px;
 }
+/* ================== NO CANCELLATION ================== */
+.no-cancel-section {
+  margin-top: 30px;
+}
+
+.no-cancel-box {
+  background: linear-gradient(135deg, #0f1f18, #0b0b0b);
+  border-radius: 18px;
+  padding: 30px 25px;
+  text-align: center;
+  border: 1px solid rgba(0,193,110,0.25);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.75);
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.no-cancel-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: #000;
+  font-size: 1.8rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0,193,110,0.45);
+}
+
+.no-cancel-title {
+  font-size: 1.9rem;
+  margin-bottom: 10px;
+  color: var(--green-soft);
+}
+
+.no-cancel-text {
+  font-size: 1rem;
+  color: #e0e0e0;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.no-cancel-text strong {
+  color: var(--green-soft);
+}
+
+.no-cancel-subtext {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
 
 
