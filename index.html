@@ -117,36 +117,105 @@
     </section>
 
     <!-- ================== GALLERY SECTION ================== -->
-<section class="section gallery-section">
+<section class="section gallery-section" id="gallery">
+  <h2 class="section-title">Gallery</h2>
+  <p class="section-subtitle">Real rides, real moments — Los Cabos in style.</p>
 
-  <h2 class="section-title">Real Experiences with Ride W Me Cabo</h2>
-  <p class="section-subtitle">
-    Airport transfers, private tours and luxury rides around Los Cabos.
-  </p>
-
-  <!-- AIRPORT TRANSFERS -->
-  <h3 class="gallery-subtitle">Airport Transfers</h3>
-  <div class="gallery-grid">
-    <img src="Images/gallery/saudit.jpg" alt="Airport Transfer Los Cabos">
-    <img src="Images/gallery/nobu.jpg" alt="Luxury Airport Pickup">
-    <img src="Images/gallery/house1.jpg" alt="SJD Private Transfer">
+  <!-- Tabs -->
+  <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
+    <button class="gallery-tab active" data-filter="all" role="tab">All</button>
+    <button class="gallery-tab" data-filter="activities" role="tab">Activities</button>
+    <button class="gallery-tab" data-filter="places" role="tab">Places</button>
+    <button class="gallery-tab" data-filter="clients" role="tab">Clients</button>
+    <button class="gallery-tab" data-filter="vehicle" role="tab">SUV</button>
   </div>
 
-  <!-- TOURS -->
-  <h3 class="gallery-subtitle">Tours & Experiences</h3>
-  <div class="gallery-grid">
-    <img src="Images/gallery/migriño1.jpg" alt="Migriño Tour">
-    <img src="Images/gallery/tour2.jpg" alt="Todos Santos Tour">
-    <img src="Images/gallery/hotel1.jpg" alt="La Paz Private Tour">
-  </div>
+  <!-- Grid -->
+  <div class="gallery-grid fancy-gallery" id="galleryGrid">
+    <!-- ACTIVITIES -->
+    <figure class="gallery-item" data-cat="activities">
+      <img src="Images/gallery/activities1.jpg" alt="Activity tour in Los Cabos" loading="lazy">
+      <figcaption>
+        <span class="tag">Activities</span>
+        <h4>Adventure Tour</h4>
+        <p>Premium ride • Private experience</p>
+      </figcaption>
+    </figure>
 
-  <!-- VEHICLE -->
-  <h3 class="gallery-subtitle">The Vehicle</h3>
-  <div class="gallery-grid">
-    <img src="Images/gallery/Interior1.jpg" alt="Ford Expedition Exterior">
-    <img src="Images/gallery/Interior2.jpg" alt="Luxury SUV Interior">
-    <img src="Images/gallery/Interior3.jpg" alt="Spacious SUV Seating">
+    <figure class="gallery-item" data-cat="activities">
+      <img src="Images/gallery/activities2.jpg" alt="Dinner tour" loading="lazy">
+      <figcaption>
+        <span class="tag">Activities</span>
+        <h4>Dinner Tour</h4>
+        <p>Elegant arrival • No stress</p>
+      </figcaption>
+    </figure>
+
+    <!-- PLACES -->
+    <figure class="gallery-item" data-cat="places">
+      <img src="Images/gallery/places1.jpg" alt="Los Cabos landmark" loading="lazy">
+      <figcaption>
+        <span class="tag">Places</span>
+        <h4>Iconic Spots</h4>
+        <p>Los Cabos • Best views</p>
+      </figcaption>
+    </figure>
+
+    <figure class="gallery-item" data-cat="places">
+      <img src="Images/gallery/places2.jpg" alt="Marina Cabo" loading="lazy">
+      <figcaption>
+        <span class="tag">Places</span>
+        <h4>Marina</h4>
+        <p>Pickups • Drop-offs</p>
+      </figcaption>
+    </figure>
+
+    <!-- CLIENTS -->
+    <figure class="gallery-item" data-cat="clients">
+      <img src="Images/gallery/clients1.jpg" alt="Happy clients" loading="lazy">
+      <figcaption>
+        <span class="tag">Clients</span>
+        <h4>Happy Guests</h4>
+        <p>Comfort • Safety</p>
+      </figcaption>
+    </figure>
+
+    <figure class="gallery-item" data-cat="clients">
+      <img src="Images/gallery/clients2.jpg" alt="VIP ride" loading="lazy">
+      <figcaption>
+        <span class="tag">Clients</span>
+        <h4>VIP Ride</h4>
+        <p>Private • Premium</p>
+      </figcaption>
+    </figure>
+
+    <!-- VEHICLE -->
+    <figure class="gallery-item" data-cat="vehicle">
+      <img src="Images/gallery/suv1.jpg" alt="Ford Expedition exterior" loading="lazy">
+      <figcaption>
+        <span class="tag">SUV</span>
+        <h4>Expedition Platinum</h4>
+        <p>Luxury • Space • A/C</p>
+      </figcaption>
+    </figure>
+
+    <figure class="gallery-item" data-cat="vehicle">
+      <img src="Images/gallery/suv2.jpg" alt="SUV interior" loading="lazy">
+      <figcaption>
+        <span class="tag">SUV</span>
+        <h4>Interior Comfort</h4>
+        <p>Leather • Clean • Premium</p>
+      </figcaption>
+    </figure>
   </div>
+</section>
+
+<!-- Lightbox (una sola vez por página) -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+  <img id="lightboxImg" alt="Gallery preview">
+  <p class="lightboxCaption" id="lightboxCaption"></p>
+</div>
 
 </section>
 
