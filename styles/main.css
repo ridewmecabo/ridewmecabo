@@ -71,7 +71,7 @@ body {
   transform: translateX(-50%);
   width: 110%;
   max-width: 950px;
-  opacity: 10%;
+  opacity: 200%;
   z-index: 0;
 }
 
