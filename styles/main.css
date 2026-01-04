@@ -61,7 +61,6 @@ body {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 100%;
-  z-index: 1;
 }
 
 .header-expedition {
