@@ -2,8 +2,8 @@
 @media (max-width: 900px) {
 
   .new-header {
-    height: 820px;
-    min-height: 820px;
+    height: 520px;
+    min-height: 520px;
     overflow: hidden;
   }
 
@@ -19,7 +19,7 @@
 
   .header-expedition {
     width: 120%;
-    bottom: -60px;
+    bottom: -40px;
   }
 
   .vehicle-layout {
