@@ -4,6 +4,7 @@
   .new-header {
     height: 520px;
     min-height: 520px;
+    overflow: hidden;
   }
 
   .header-content {
