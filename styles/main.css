@@ -45,7 +45,7 @@ body {
 .new-header {
   position: relative;
   width: 100%;
-  height: 85vh;
+  height: 100vh;
   background: #000;
   display: flex;
   flex-direction: column;
