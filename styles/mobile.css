@@ -2,8 +2,8 @@
 @media (max-width: 900px) {
 
   .new-header {
-    height: 100vh;
-    min-height: 100vh;
+    height: 35vh;
+    min-height: 35vh;
     overflow: hidden;
   }
 
