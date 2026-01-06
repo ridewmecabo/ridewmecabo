@@ -1,8 +1,8 @@
 /* MOBILE EXTRA TWEAKS */
-@media (max-width: 1400px) {
+@media (max-width: 900px) {
 
   .new-header {
-    height: 1400px;
+    height: 65hv;
     min-height: 65vh;
     overflow: hidden;
   }
