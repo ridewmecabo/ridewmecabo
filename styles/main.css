@@ -1092,5 +1092,35 @@ body {
   font-size: .95rem;
 }
 
+/* ===============================
+   SERVICE COURTESY NOTE
+=============================== */
+
+.service-note {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #101010;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #dcdcdc;
+}
+
+.service-note-icon {
+  font-size: 1.2rem;
+  color: var(--green-soft);
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.service-note p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+
 
 
