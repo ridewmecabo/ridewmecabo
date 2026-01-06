@@ -3,6 +3,7 @@
 
   .new-header {
     height: 70vh;
+    min-heught: 45vh;
     overflow: hidden;
   }
 
