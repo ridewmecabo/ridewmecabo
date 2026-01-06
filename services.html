@@ -121,6 +121,110 @@
   </div>
 </section>
 
+  <!-- ================== GALLERY SECTION ================== -->
+<section class="section gallery-section" id="gallery">
+  <h2 class="section-title">📸 Gallery 📷</h2>
+  <p class="section-subtitle">Real rides, real moments — Los Cabos in style.</p>
+
+  <!-- Tabs -->
+  <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
+    <button class="gallery-tab active" data-filter="all" role="tab">All</button>
+    <button class="gallery-tab" data-filter="activities" role="tab">Activities</button>
+    <button class="gallery-tab" data-filter="places" role="tab">Places</button>
+    <button class="gallery-tab" data-filter="clients" role="tab">Clients</button>
+    <button class="gallery-tab" data-filter="vehicle" role="tab">SUV</button>
+  </div>
+
+  <!-- Grid -->
+  <div class="gallery-grid fancy-gallery" id="galleryGrid">
+    <!-- ACTIVITIES -->
+    <figure class="gallery-item" data-cat="activities">
+      <img src="Images/gallery/tour2.jpg" alt="Activity tour in Los Cabos" loading="lazy">
+      <figcaption>
+        <span class="tag">Activities</span>
+        <h4>Adventure Tour</h4>
+        <p>Premium ride • Private experience</p>
+      </figcaption>
+    </figure>
+
+    <figure class="gallery-item" data-cat="activities">
+      <img src="Images/gallery/migriño1.jpg" alt="Dinner tour" loading="lazy">
+      <figcaption>
+        <span class="tag">Activities</span>
+        <h4>Dinner Tour</h4>
+        <p>Elegant arrival • No stress</p>
+      </figcaption>
+    </figure>
+
+    <!-- PLACES -->
+    <figure class="gallery-item" data-cat="places">
+      <img src="Images/expeditionavion.jpg" alt="Los Cabos landmark" loading="lazy">
+      <figcaption>
+        <span class="tag">Places</span>
+        <h4>Iconic Spots</h4>
+        <p>Los Cabos • Best views</p>
+      </figcaption>
+    </figure>
+
+    <figure class="gallery-item" data-cat="places">
+      <img src="Images/aeropuerto.jpg" alt="Marina Cabo" loading="lazy">
+      <figcaption>
+        <span class="tag">Places</span>
+        <h4>Marina</h4>
+        <p>Pickups • Drop-offs</p>
+      </figcaption>
+    </figure>
+
+    <!-- CLIENTS -->
+    <figure class="gallery-item" data-cat="clients">
+      <img src="Images/transportadorallena.jpg" alt="Happy clients" loading="lazy">
+      <figcaption>
+        <span class="tag">Clients</span>
+        <h4>Happy Guests</h4>
+        <p>Comfort • Safety</p>
+      </figcaption>
+    </figure>
+
+    <figure class="gallery-item" data-cat="clients">
+      <img src="Images/ridewmearco.jpg" alt="VIP ride" loading="lazy">
+      <figcaption>
+        <span class="tag">Clients</span>
+        <h4>VIP Ride</h4>
+        <p>Private • Premium</p>
+      </figcaption>
+    </figure>
+
+    <!-- VEHICLE -->
+    <figure class="gallery-item" data-cat="vehicle">
+      <img src="Images/gallery/nobu.jpg" alt="Ford Expedition exterior" loading="lazy">
+      <figcaption>
+        <span class="tag">SUV</span>
+        <h4>Expedition Platinum</h4>
+        <p>Luxury • Space • A/C</p>
+      </figcaption>
+    </figure>
+
+    <figure class="gallery-item" data-cat="vehicle">
+      <img src="Images/gallery/Interior1.jpg" alt="SUV interior" loading="lazy">
+      <figcaption>
+        <span class="tag">SUV</span>
+        <h4>Interior Comfort</h4>
+        <p>Leather • Clean • Premium</p>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Lightbox (una sola vez por página) -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+  <img id="lightboxImg" alt="Gallery preview">
+  <p class="lightboxCaption" id="lightboxCaption"></p>
+</div>
+
+  </section>
+
+
 <!-- ============================
      OPEN SERVICES
 ============================ -->
