@@ -6,7 +6,7 @@
 emailjs.init("Ed5Qh2Qk81A6fHcRR");
 
 // ================= WHATSAPP =================
-const WHATSAPP = "526242426741";
+const WHATSAPP = "526241598793";
 
 // ================= ELEMENTS =================
 const tripTypeEl = document.getElementById("tripType");
