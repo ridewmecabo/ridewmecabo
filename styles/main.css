@@ -692,7 +692,7 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   margin-top: -8px;
-  z-index: 20;
+  z-index: 999; /* Súbelo para asegurar que pase por encima de PayPal */
 }
 
 .autocomplete-dropdown:empty {
@@ -742,19 +742,19 @@ body {
 /* Fix PayPal button box layout */
 .paypal-button-box {
   grid-column: 1 / -1;
-}
-.paypal-button-box button {
+  margin-top: 15px;
+  min-height: 150px; /* Evita saltos en la pantalla mientras carga PayPal */
+  display: flex;
+  justify-content: center;
   width: 100%;
-  padding: 14px;
-  border-radius: 999px;
-  background: #ffc439;
-  color: #000;
-  border: none;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: not-allowed;
-  opacity: 0.6;
 }
+
+#paypal-button-container {
+  width: 100%;
+  max-width: 600px; /* Evita que el botón ocupe toda la pantalla en PC */
+  z-index: 1; /* Lo mantiene por debajo de tus menús desplegables */
+}
+
 /* ===============================
    BOOKING MAIN SUBMIT BUTTON
 ================================ */
@@ -783,6 +783,7 @@ body {
 .booking-submit:active {
   transform: scale(0.98);
 }
+
 /* ================== GALLERY ================== */
 .gallery-section {
   margin-top: 40px;
@@ -815,6 +816,7 @@ body {
   transform: translateY(-6px);
   box-shadow: 0 18px 40px rgba(0,0,0,0.8);
 }
+
 /* ================== REVIEWS ================== */
 .reviews-section {
   margin-top: 40px;
@@ -870,6 +872,7 @@ body {
   text-align: center;
   margin-top: 25px;
 }
+
 /* ================== NO CANCELLATION ================== */
 .no-cancel-section {
   margin-top: 30px;
@@ -922,6 +925,7 @@ body {
   font-size: 0.9rem;
   color: var(--muted);
 }
+
 /* ================== GALLERY (FLUID + SECTIONS) ================== */
 .gallery-section { margin-top: 40px; }
 
@@ -1120,7 +1124,3 @@ body {
   margin: 0;
   line-height: 1.5;
 }
-
-
-
-
