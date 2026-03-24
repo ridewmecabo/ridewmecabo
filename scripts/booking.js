@@ -1,5 +1,5 @@
 /* ============================================================
-   BOOKING.JS – Ride W Me Cabo (FINAL & PAYPAL INTEGRATED)
+   BOOKING.JS – Ride W Me Cabo (FIXED & SECURE)
 ============================================================ */
 
 // ================= EMAILJS =================
@@ -31,7 +31,6 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 // UI Summary
 const uiName = document.getElementById("selectedServiceName");
 const uiPrice = document.getElementById("selectedServicePrice");
-// Busca el span del depósito si lo agregaste al HTML, si no, no interrumpe el código
 const depositDisplay = document.getElementById('depositAmount'); 
 
 // ================= SERVICES =================
@@ -79,6 +78,8 @@ const DESTINOS = [
 
 // ================= AUTOCOMPLETE =================
 function setupAutocomplete(input, dropdown) {
+  if (!input || !dropdown) return;
+  
   input.addEventListener("input", () => {
     const q = input.value.toLowerCase().trim();
     dropdown.innerHTML = "";
@@ -115,17 +116,17 @@ function toggleReturnFields() {
   const info = SERVICES[sv];
 
   if (info && info.oneWay && tripTypeEl.value === "roundtrip") {
-    returnDateWrapper.style.display = "block";
-    returnTimeWrapper.style.display = "block";
+    if (returnDateWrapper) returnDateWrapper.style.display = "block";
+    if (returnTimeWrapper) returnTimeWrapper.style.display = "block";
   } else {
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
-    returnDateEl.value = "";
-    returnTimeEl.value = "";
+    if (returnDateWrapper) returnDateWrapper.style.display = "none";
+    if (returnTimeWrapper) returnTimeWrapper.style.display = "none";
+    if (returnDateEl) returnDateEl.value = "";
+    if (returnTimeEl) returnTimeEl.value = "";
   }
 }
 
-tripTypeEl.addEventListener("change", () => {
+tripTypeEl?.addEventListener("change", () => {
   toggleReturnFields();
   updateServiceUI(); 
 });
@@ -137,21 +138,20 @@ hoursEl?.addEventListener("change", () => {
 // ================= UI UPDATE =================
 function updateServiceUI() {
   const info = SERVICES[serviceTypeEl.value];
-  const pricing = calculatePrice(); // Llamamos al cálculo para obtener el total actual
+  const pricing = calculatePrice(); 
 
   if (!info) {
     uiName.textContent = "Select a service";
     uiPrice.textContent = "—";
     if (depositDisplay) depositDisplay.textContent = "$0.00 USD";
-    hoursWrapper.style.display = "none";
+    if (hoursWrapper) hoursWrapper.style.display = "none";
     toggleReturnFields();
     return;
   }
 
   uiName.textContent = info.label;
-  hoursWrapper.style.display = "none";
+  if (hoursWrapper) hoursWrapper.style.display = "none";
 
-  // Mostrar Depósito si existe en el HTML
   if (depositDisplay && pricing.total > 0) {
       let deposit = (pricing.total * 0.20).toFixed(2);
       depositDisplay.textContent = `$${deposit} USD`;
@@ -171,22 +171,22 @@ function updateServiceUI() {
       <strong>Base:</strong> $${info.base} USD<br>
       <strong>Extra Hour:</strong> $${info.extraHour} USD
     `;
-    hoursWrapper.style.display = "block";
-    returnDateWrapper.style.display = "none";
-    returnTimeWrapper.style.display = "none";
-    returnDateEl.value = "";
-    returnTimeEl.value = "";
+    if (hoursWrapper) hoursWrapper.style.display = "block";
+    if (returnDateWrapper) returnDateWrapper.style.display = "none";
+    if (returnTimeWrapper) returnTimeWrapper.style.display = "none";
+    if (returnDateEl) returnDateEl.value = "";
+    if (returnTimeEl) returnTimeEl.value = "";
     return;
   }
 
   uiPrice.innerHTML = `<strong>Price:</strong> $${info.base} USD`;
-  returnDateWrapper.style.display = "none";
-  returnTimeWrapper.style.display = "none";
-  returnDateEl.value = "";
-  returnTimeEl.value = "";
+  if (returnDateWrapper) returnDateWrapper.style.display = "none";
+  if (returnTimeWrapper) returnTimeWrapper.style.display = "none";
+  if (returnDateEl) returnDateEl.value = "";
+  if (returnTimeEl) returnTimeEl.value = "";
 }
 
-serviceTypeEl.addEventListener("change", () => {
+serviceTypeEl?.addEventListener("change", () => {
   updateServiceUI();
 });
 
@@ -199,12 +199,8 @@ function calculatePrice() {
   const info = SERVICES[sv];
   if (!info) return { total: 0, tripTypeText: "—", basePrice: 0, extraHoursTotal: 0, roundTripPrice: 0, extraHours: 0 };
 
-  let total = 0;
-  let basePrice = 0;
-  let extraHoursTotal = 0;
+  let total = 0, basePrice = 0, extraHoursTotal = 0, roundTripPrice = 0, extraHours = 0;
   let tripTypeText = "";
-  let roundTripPrice = 0;
-  let extraHours = 0;
 
   if (info.oneWay) {
     if (tripTypeEl.value === "roundtrip") {
@@ -216,7 +212,6 @@ function calculatePrice() {
       basePrice = info.oneWay;
       total = info.oneWay;
       tripTypeText = "One Way";
-      roundTripPrice = 0;
     }
     return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
   }
@@ -236,143 +231,92 @@ function calculatePrice() {
   return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
 }
 
-// ================= SEND EMAIL =================
+// ================= SEND EMAIL & WHATSAPP =================
 function sendEmail(payload) {
   return emailjs.send("service_8zcytcr", "template_7tkwggo", payload);
 }
 
-// ================= WHATSAPP =================
 function sendWhatsApp(res) {
-  let msg =
-    `🚗 *Ride W Me Cabo – Reservation Confirmed*\n\n` +
-    `Hi ${res.name} 👋\n\n` +
-    `*Service:* ${res.service_label}\n` +
-    `*Trip Type:* ${res.trip_type}\n` +
-    `*Passengers:* ${res.passengers}\n\n` +
-    `*Pickup:* ${res.pickup}\n` +
-    `*Destination:* ${res.destination}\n\n` +
-    `*Departure:* ${res.date} at ${res.time}\n`;
-
+  let msg = `🚗 *Ride W Me Cabo – Reservation Confirmed*\n\nHi ${res.name} 👋\n\n*Service:* ${res.service_label}\n*Trip Type:* ${res.trip_type}\n*Passengers:* ${res.passengers}\n\n*Pickup:* ${res.pickup}\n*Destination:* ${res.destination}\n\n*Departure:* ${res.date} at ${res.time}\n`;
   if (res.return_date) msg += `*Return:* ${res.return_date} at ${res.return_time}\n`;
   if (res.extra_hours && Number(res.extra_hours) > 0) msg += `*Extra Hours:* ${res.extra_hours}\n`;
-
-  msg += `\n💵 *Payment Summary*\n`;
-  msg += `Total Service Price: $${res.total_price} USD\n`;
-  msg += `*Deposit Paid (20%):* $${res.deposit_paid} USD\n`;
-  msg += `*Balance Due:* $${res.balance_due} USD\n\n`;
-  msg += `Thank you for choosing *Ride W Me Cabo* ✨`;
-
+  msg += `\n💵 *Payment Summary*\nTotal Service Price: $${res.total_price} USD\n*Deposit Paid (20%):* $${res.deposit_paid} USD\n*Balance Due:* $${res.balance_due} USD\n\nThank you for choosing *Ride W Me Cabo* ✨`;
   window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
 function saveReservation(data) {
   const existing = JSON.parse(localStorage.getItem("reservations")) || [];
-  existing.push({
-    ...data,
-    created_at: new Date().toISOString()
-  });
+  existing.push({ ...data, created_at: new Date().toISOString() });
   localStorage.setItem("reservations", JSON.stringify(existing));
 }
 
-// ================= PAYPAL & SUBMIT LOGIC =================
+// ================= PAYPAL & SUBMIT =================
+document.getElementById("bookingForm").addEventListener("submit", (e) => { e.preventDefault(); });
 
-// Evitamos que el formulario haga un submit tradicional si alguien presiona "Enter"
-document.getElementById("bookingForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-});
-
-// Configuración de los botones de PayPal
-paypal.Buttons({
-    // 1. VALIDACIÓN ANTES DE PAGAR
-    onClick: function(data, actions) {
-        const form = document.getElementById("bookingForm");
-        
-        // Verificamos si los campos requeridos de HTML están llenos
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return actions.reject(); // Detiene PayPal
-        }
-
-        const phoneVal = document.getElementById("phone").value.replace(/\D/g, ''); // Quita espacios y símbolos
-        const info = SERVICES[serviceTypeEl.value];
-
-        // Validación estricta del teléfono (Mínimo 10 dígitos)
-        if (phoneVal.length < 10) {
-            alert("⚠️ Por favor, ingresa un número de teléfono o WhatsApp válido (mínimo 10 dígitos) para poder contactarte.");
-            document.getElementById("phone").focus();
-            return actions.reject(); 
-        }
-
-        // Validación de retorno si es viaje redondo
-        if (info.oneWay && tripTypeEl.value === "roundtrip") {
-            if (!returnDateEl.value || !returnTimeEl.value) {
-                alert("Please select return date and time for Round Trip.");
+if (typeof paypal !== 'undefined') {
+    paypal.Buttons({
+        onClick: function(data, actions) {
+            const form = document.getElementById("bookingForm");
+            if (!form.checkValidity()) {
+                form.reportValidity();
                 return actions.reject();
             }
-        }
 
-        return actions.resolve(); // Todo en orden, permite abrir PayPal
-    },
+            const phoneVal = document.getElementById("phone").value.replace(/\D/g, '');
+            const info = SERVICES[serviceTypeEl.value];
 
-    // 2. CREAR LA ORDEN CON EL 20% DE ANTICIPO
-    createOrder: function(data, actions) {
-        const pricing = calculatePrice();
-        const deposit = (pricing.total * 0.20).toFixed(2);
+            if (phoneVal.length < 10) {
+                alert("⚠️ Por favor, ingresa un número de teléfono válido (mínimo 10 dígitos).");
+                document.getElementById("phone").focus();
+                return actions.reject(); 
+            }
 
-        return actions.order.create({
-            purchase_units: [{
-                amount: {
-                    value: deposit.toString()
-                },
-                description: `20% Reservation Deposit - ${uiName.textContent}`
-            }]
-        });
-    },
+            if (info.oneWay && tripTypeEl.value === "roundtrip") {
+                if (!returnDateEl.value || !returnTimeEl.value) {
+                    alert("Please select return date and time for Round Trip.");
+                    return actions.reject();
+                }
+            }
+            return actions.resolve();
+        },
 
-    // 3. ACCIÓN AL APROBAR EL PAGO
-    onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
+        createOrder: function(data, actions) {
             const pricing = calculatePrice();
-            const depositPaid = (pricing.total * 0.20).toFixed(2);
-            const balanceDue = (pricing.total - depositPaid).toFixed(2);
-            
-            alert('¡Pago exitoso! Procesando tu reservación, ' + details.payer.name.given_name);
-            
-            // Llamamos a nuestra función maestra para procesar todo
-            executeCompleteReservation(details.id, depositPaid, balanceDue, pricing);
-        });
-    },
+            const deposit = (pricing.total * 0.20).toFixed(2);
+            return actions.order.create({
+                purchase_units: [{
+                    amount: { value: deposit.toString() },
+                    description: `20% Reservation Deposit - ${uiName.textContent}`
+                }]
+            });
+        },
 
-    onError: function(err) {
-        console.error('PayPal Error:', err);
-        alert('Hubo un error al procesar el pago con PayPal. Por favor, intenta de nuevo.');
-    }
-}).render('#paypal-button-container');
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                const pricing = calculatePrice();
+                const depositPaid = (pricing.total * 0.20).toFixed(2);
+                const balanceDue = (pricing.total - depositPaid).toFixed(2);
+                
+                alert('¡Pago exitoso! Procesando reservación para ' + details.payer.name.given_name);
+                executeCompleteReservation(details.id, depositPaid, balanceDue, pricing);
+            });
+        },
 
+        onError: function(err) {
+            console.error('PayPal Error:', err);
+            alert('Hubo un error con PayPal. Por favor, intenta de nuevo.');
+        }
+    }).render('#paypal-button-container');
+} else {
+    console.warn("PayPal SDK no cargó correctamente.");
+}
 
-// ================= FUNCIÓN MAESTRA DE RESERVACIÓN =================
 function executeCompleteReservation(transactionId, depositPaid, balanceDue, pricing) {
     const info = SERVICES[serviceTypeEl.value];
-    
-    // Variables de UI
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-
-    // Mensajes para el template
-    const returnDateMsg = (info.oneWay && tripTypeEl.value === "roundtrip")
-        ? `• Return: ${returnDateEl.value} at ${returnTimeEl.value}` : "";
-    const extraHoursMsg = (info.extraHour && pricing.extraHours > 0)
-        ? `• Extra Hours: ${pricing.extraHours}` : "";
-    const roundTripPriceMsg = (info.oneWay && tripTypeEl.value === "roundtrip")
-        ? `Round Trip Price: $${info.roundTrip} USD` : "";
-    const extraHoursTotalMsg = (info.extraHour && pricing.extraHoursTotal > 0)
-        ? `Extra Hours Total: $${pricing.extraHoursTotal} USD` : "";
-
     const payload = {
-        name,
-        phone,
-        email,
+        name: document.getElementById("name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
         service_label: info.label,
         trip_type: pricing.tripTypeText,
         passengers: passengersEl.value,
@@ -384,33 +328,26 @@ function executeCompleteReservation(transactionId, depositPaid, balanceDue, pric
         return_time: (info.oneWay && tripTypeEl.value === "roundtrip") ? returnTimeEl.value : "",
         extra_hours: info.extraHour ? (hoursEl.value || "") : "",
         notes: notesEl.value.trim(),
-        
-        // Precios
         base_price: pricing.basePrice,
         total_price: pricing.total,
         deposit_paid: depositPaid,
         balance_due: balanceDue,
         paypal_transaction_id: transactionId,
-
-        // Mensajes Template
-        return_date_msg: returnDateMsg,
-        extra_hours_msg: extraHoursMsg,
-        round_trip_price_msg: roundTripPriceMsg,
-        extra_hours_total_msg: extraHoursTotalMsg
+        return_date_msg: (info.oneWay && tripTypeEl.value === "roundtrip") ? `• Return: ${returnDateEl.value} at ${returnTimeEl.value}` : "",
+        extra_hours_msg: (info.extraHour && pricing.extraHours > 0) ? `• Extra Hours: ${pricing.extraHours}` : "",
+        round_trip_price_msg: (info.oneWay && tripTypeEl.value === "roundtrip") ? `Round Trip Price: $${info.roundTrip} USD` : "",
+        extra_hours_total_msg: (info.extraHour && pricing.extraHoursTotal > 0) ? `Extra Hours Total: $${pricing.extraHoursTotal} USD` : ""
     };
 
-    sendEmail(payload)
-    .then(() => {
+    sendEmail(payload).then(() => {
         saveReservation(payload);
         sendWhatsApp(payload);
-        
-        alert("Your reservation has been confirmed and sent successfully!");
+        alert("Your reservation has been confirmed!");
         document.getElementById("bookingForm").reset();
         tripTypeEl.value = "oneway";
         updateServiceUI();
-    })
-    .catch((err) => {
+    }).catch((err) => {
         console.error(err);
-        alert("El pago se realizó, pero hubo un error enviando el correo de confirmación. Nos contactaremos contigo.");
+        alert("Pago exitoso, pero falló el envío del correo de confirmación.");
     });
 }
