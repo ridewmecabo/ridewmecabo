@@ -1,38 +1,125 @@
-/* MOBILE EXTRA TWEAKS */
+/* ============================================================
+   MOBILE.CSS – Ride W Me Cabo (FIXED & RESPONSIVE)
+============================================================ */
+
 @media (max-width: 900px) {
 
+  /* HEADER & HERO ADJUSTMENTS (Arregla el texto encimado) */
   .new-header {
-    height: 47vh;
-    min-height: 47vh;
-    overflow: hidden;
+    height: 60vh; /* Le damos más altura al fondo para que quepa el texto */
+    min-height: 450px;
+  }
+
+  .new-header.inner-header {
+    height: 45vh;
+    min-height: 350px;
   }
 
   .header-content {
-    margin-bottom: 90px;
-    padding: 0 14px;
+    margin-bottom: 70px; /* Reducimos el empuje hacia abajo */
+    padding: 0 15px;
   }
 
   .header-content h1 {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     letter-spacing: 1px;
   }
 
+  .header-content p {
+    font-size: 1rem;
+  }
+
+  .subline {
+    font-size: 0.85rem;
+    margin-top: 5px;
+  }
+
+  /* Ajuste de los botones principales en celular */
+  .hero-buttons {
+    flex-direction: column; /* Pone un botón arriba del otro */
+    gap: 12px;
+    padding: 0 20px;
+    margin-top: 20px;
+  }
+
+  .hero-btn {
+    width: 100%; /* Hacen que el botón ocupe todo el ancho */
+    padding: 12px 20px;
+  }
+
+  /* La imagen de la camioneta */
   .header-expedition {
-    width: 120%;
-    bottom: -40px;
+    width: 135%; /* La hace un poco más ancha para que baje visualmente */
+    bottom: -20px;
   }
 
-  .vehicle-layout {
+  /* GENERAL SECTIONS (Reducimos el "aire" gigante de PC) */
+  .section {
+    margin: 60px auto; 
+    padding: 0 20px;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+
+  /* GRIDS TO SINGLE COLUMN (Apila todo perfectamente) */
+  .vehicle-layout,
+  .booking-grid,
+  .contact-grid,
+  .features-grid,
+  .services-grid,
+  .gallery-grid,
+  .reviews-grid {
     grid-template-columns: 1fr;
+    gap: 20px; /* Menos hueco entre tarjetas en celular */
   }
 
+  /* Centrar textos de la sección del vehículo */
   .vehicle-text .section-title,
   .vehicle-text .section-subtitle {
     text-align: center;
   }
 
-  .booking-grid {
-    grid-template-columns: 1fr;
+  /* CARDS PADDING (Tarjetas menos anchas por dentro) */
+  .feature-card,
+  .service-card,
+  .review-card,
+  .contact-card,
+  .booking-card {
+    padding: 25px 20px; 
+  }
+
+  .booking-card h2 {
+    font-size: 1.8rem;
+  }
+
+  /* GALLERY TABS (Botones de la galería más amigables al dedo) */
+  .gallery-tabs {
+    gap: 8px;
+  }
+  
+  .gallery-tab {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  /* LIGHTBOX (La imagen cuando le das clic) */
+  .lightbox-close {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+  
+  .lightboxCaption {
+    font-size: 0.85rem;
   }
 }
-
