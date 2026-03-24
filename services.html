@@ -12,7 +12,6 @@
 </head>
 <body>
 
- <!-- ========== HEADER HOME ========== -->
   <header class="new-header home-header">
     <div class="header-overlay"></div>
     <img src="Images/ridewmearco.jpg" alt="Luxury SUV" class="header-expedition">
@@ -22,245 +21,220 @@
       <div class="menu-icon" id="openMenu">☰</div>
     </div>
 
-  <div class="header-content">
-    <h1>Our Services</h1>
-    <p>Airport Transfers • Open Services • Activities & Tours</p>
+    <div class="header-content">
+      <h1>Our Services</h1>
+      <p>Airport Transfers • Open Services • Activities & Tours</p>
+    </div>
+  </header>
+
+  <div id="sideMenu" class="side-menu">
+    <div class="close-btn" id="closeMenu">×</div>
+    <nav class="side-menu-links">
+      <a href="index.html">Home 🏠︎</a>
+      <a href="services.html">Services 📚</a>
+      <a href="booking.html">Book Now 📌</a>
+      <a href="contact.html">Contact 📲</a>
+      <a href="admin.html">Admin Panel 👨🏻‍💻</a>
+    </nav>
   </div>
-</header>
+  <div id="menuBackdrop" class="menu-backdrop"></div>
 
-<!-- SIDE MENU -->
-<div id="sideMenu" class="side-menu">
-  <div class="close-btn" id="closeMenu">×</div>
-  <nav class="side-menu-links">
-    <a href="index.html">Home 🏠︎</a>
-    <a href="services.html">Services 📚</a>
-    <a href="booking.html">Book Now 📌</a>
-    <a href="contact.html">Contact 📲</a>
-    <a href="admin.html">Admin Panel 👨🏻‍💻</a>
-  </nav>
-</div>
-<div id="menuBackdrop" class="menu-backdrop"></div>
+  <main>
 
-<script>
-  const openBtn = document.getElementById("openMenu");
-  const closeBtn = document.getElementById("closeMenu");
-  const menu = document.getElementById("sideMenu");
-  const backdrop = document.getElementById("menuBackdrop");
+    <section class="section">
+      <h2 class="section-title">Airport Arrivals & Departures</h2>
+      <p class="section-subtitle">Private SUV transportation from SJD Airport to your hotel or villa.</p>
 
-  openBtn.onclick = () => {
-    menu.classList.add("open");
-    backdrop.classList.add("show");
-    document.body.style.overflow = "hidden";
-  };
+      <div class="services-grid">
 
-  closeBtn.onclick = () => {
-    menu.classList.remove("open");
-    backdrop.classList.remove("show");
-    document.body.style.overflow = "auto";
-  };
+        <article class="service-card">
+          <h3>Zone 1 – SJC to Palmilla 🏝️</h3>
+          <p>One Way: <strong>$75</strong> • Round Trip: <strong>$130</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$75 USD</span>
+            <a href="booking.html?service=zone1" class="mini-btn">Book</a>
+          </div>
+        </article>
 
-  backdrop.onclick = closeBtn.onclick;
-</script>
+        <article class="service-card">
+          <h3>Zone 2 – 🚢 Puerto Los Cabos / Laguna 🏗️</h3>
+          <p>One Way: <strong>$85</strong> • Round Trip: <strong>$150</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$85 USD</span>
+            <a href="booking.html?service=zone2" class="mini-btn">Book</a>
+          </div>
+        </article>
 
-<main>
+        <article class="service-card">
+          <h3>Zone 3 – 🌴 Palmilla to Cabo del Sol 🔆</h3>
+          <p>One Way: <strong>$95</strong> • Round Trip: <strong>$170</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$95 USD</span>
+            <a href="booking.html?service=zone3a" class="mini-btn">Book</a>
+          </div>
+        </article>
 
-<!-- ============================
-     AIRPORT TRANSFERS
-============================ -->
-<section class="section">
-  <h2 class="section-title">Airport Arrivals & Departures</h2>
-  <p class="section-subtitle">Private SUV transportation from SJD Airport to your hotel or villa.</p>
+        <article class="service-card">
+          <h3>Zone 3 – 🐳 Punta Ballena / Solmar 🌞🌊</h3>
+          <p>One Way: <strong>$105</strong> • Round Trip: <strong>$180</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$105 USD</span>
+            <a href="booking.html?service=zone3b" class="mini-btn">Book</a>
+          </div>
+        </article>
 
-  <div class="services-grid">
+        <article class="service-card">
+          <h3>Zone 5 – ⚜️ Pedregal / Diamante 💎</h3>
+          <p>One Way: <strong>$110</strong> • Round Trip: <strong>$200</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$110 USD</span>
+            <a href="booking.html?service=zone5" class="mini-btn">Book</a>
+          </div>
+        </article>
 
-    <div class="service-card">
-      <h3>Zone 1 – SJC to Palmilla 🏝️</h3>
-      <p>One Way: <strong>$75</strong> • Round Trip: <strong>$130</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$75</span>
-        <a href="booking.html?service=zone1" class="mini-btn">Book</a>
       </div>
+    </section>
+
+    <section class="section gallery-section" id="gallery">
+      <h2 class="section-title">Look Into Our Services</h2>
+      <p class="section-subtitle">Real rides, real moments — Los Cabos in style.</p>
+
+      <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
+      </div>
+
+      <div class="gallery-grid fancy-gallery" id="galleryGrid">
+        <figure class="gallery-item" data-cat="places">
+          <img src="Images/gallery/nobu.jpg" alt="Los Cabos Hotel" loading="lazy">
+          <figcaption>
+            <span class="tag">Places</span>
+            <h4>Nobu Hotel</h4>
+            <p>Los Cabos • Pick Up</p>
+          </figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-cat="places">
+          <img src="Images/expeditionavion.jpg" alt="Expedition Avion" loading="lazy">
+          <figcaption>
+            <span class="tag">Places</span>
+            <h4>Exclusive Service</h4>
+            <p>Pickups • Drop-offs</p>
+          </figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-cat="places">
+          <img src="Images/aeropuerto.jpg" alt="Landing" loading="lazy">
+          <figcaption>
+            <span class="tag">Places</span>
+            <h4>Air Port Pick Up</h4>
+            <p>Pickups • Drop-offs</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+      <img id="lightboxImg" alt="Gallery preview">
+      <p class="lightboxCaption" id="lightboxCaption"></p>
     </div>
 
-    <div class="service-card">
-      <h3>Zone 2 – 🚢 Puerto Los Cabos / Laguna 🏗️</h3>
-      <p>One Way: <strong>$85</strong> • Round Trip: <strong>$150</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$85</span>
-        <a href="booking.html?service=zone2" class="mini-btn">Book</a>
+    <section class="section">
+      <h2 class="section-title">City Open Services</h2>
+      <p class="section-subtitle">For dinners, bar hopping, shopping, golf days, and flexible transportation.</p>
+
+      <div class="services-grid">
+        <article class="service-card">
+          <h3>Open Service – 4 Hours</h3>
+          <p>Base Price: <strong>$140</strong> • Extra Hour: <strong>$20</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$140 USD</span>
+            <a href="booking.html?service=city4" class="mini-btn">Book</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <h3>Open Service – 6 Hours</h3>
+          <p>Base Price: <strong>$160</strong> • Extra Hour: <strong>$20</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$160 USD</span>
+            <a href="booking.html?service=city6" class="mini-btn">Book</a>
+          </div>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <div class="service-card">
-      <h3>Zone 3 – 🌴 Palmilla to Cabo del Sol 🔆</h3>
-      <p>One Way: <strong>$95</strong> • Round Trip: <strong>$170</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$95</span>
-        <a href="booking.html?service=zone3a" class="mini-btn">Book</a>
+    <section class="section">
+      <h2 class="section-title">Activities & Dinner Tours</h2>
+      <p class="section-subtitle">Private transportation for tours and dining experiences across Baja Sur.</p>
+
+      <div class="services-grid">
+        <article class="service-card">
+          <h3>Migriño Tour</h3>
+          <p>4–8 hours • <strong>$350 USD</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$350 USD</span>
+            <a href="booking.html?service=migrino" class="mini-btn">Book</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <h3>Todos Santos Tour</h3>
+          <p>4–8 hours • <strong>$400 USD</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$400 USD</span>
+            <a href="booking.html?service=todosSantos" class="mini-btn">Book</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <h3>La Ribera / Los Barriles Tour</h3>
+          <p>4–8 hours • <strong>$400 USD</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$400 USD</span>
+            <a href="booking.html?service=barriles" class="mini-btn">Book</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <h3>La Paz Tour</h3>
+          <p>4–8 hours • <strong>$600 USD</strong></p>
+          <div class="service-footer">
+            <span class="service-price">$600 USD</span>
+            <a href="booking.html?service=laPaz" class="mini-btn">Book</a>
+          </div>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <div class="service-card">
-      <h3>Zone 3 – 🐳 Punta Ballena / Solmar 🌞🌊</h3>
-      <p>One Way: <strong>$105</strong> • Round Trip: <strong>$180</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$105</span>
-        <a href="booking.html?service=zone3b" class="mini-btn">Book</a>
-      </div>
-    </div>
+  </main>
 
-    <div class="service-card">
-      <h3>Zone 5 – ⚜️ Pedregal / Diamante 💎</h3>
-      <p>One Way: <strong>$110</strong> • Round Trip: <strong>$200</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$110</span>
-        <a href="booking.html?service=zone5" class="mini-btn">Book</a>
-      </div>
-    </div>
+  <footer class="site-footer">
+    © 2026 Ride W Me Cabo — Luxury Transportation in Los Cabos
+  </footer>
 
-  </div>
-</section>
+  <script>
+    const openBtn = document.getElementById("openMenu");
+    const closeBtn = document.getElementById("closeMenu");
+    const menu = document.getElementById("sideMenu");
+    const backdrop = document.getElementById("menuBackdrop");
 
-  <!-- ================== GALLERY SECTION ================== -->
-<section class="section gallery-section" id="gallery">
-  <h2 class="section-title"> Look into our services </h2>
-  <p class="section-subtitle">Real rides, real moments — Los Cabos in style.</p>
+    if (openBtn && closeBtn && menu && backdrop) {
+      openBtn.onclick = () => {
+        menu.classList.add("open");
+        backdrop.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
 
-  <!-- Tabs -->
-  <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
-  </div>
+      closeBtn.onclick = () => {
+        menu.classList.remove("open");
+        backdrop.classList.remove("show");
+        document.body.style.overflow = "auto";
+      };
 
-  <!-- Grid -->
-  <div class="gallery-grid fancy-gallery" id="galleryGrid">
-    <!-- PLACES -->
-    <figure class="gallery-item" data-cat="places">
-      <img src="Images/gallery/nobu.jpg" alt="Los Cabos Hotel" loading="lazy">
-      <figcaption>
-        <span class="tag">Places</span>
-        <h4>Nobu Hotel</h4>
-        <p>Los Cabos • Pick Up</p>
-      </figcaption>
-    </figure>
-
-    <figure class="gallery-item" data-cat="places">
-      <img src="Images/expeditionavion.jpg" alt="Expedition Avion" loading="lazy">
-      <figcaption>
-        <span class="tag">Places</span>
-        <h4>Exclusive Service</h4>
-        <p>Pickups • Drop-offs</p>
-      </figcaption>
-    </figure>
-
-     <figure class="gallery-item" data-cat="places">
-      <img src="Images/aeropuerto.jpg" alt="Landing" loading="lazy">
-      <figcaption>
-        <span class="tag">Places</span>
-        <h4>Air Port Pick Up</h4>
-        <p>Pickups • Drop-offs</p>
-      </figcaption>
-    </figure>
-
-   
-  </div>
-</section>
-
-<!-- Lightbox (una sola vez por página) -->
-<div class="lightbox" id="lightbox" aria-hidden="true">
-  <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
-  <img id="lightboxImg" alt="Gallery preview">
-  <p class="lightboxCaption" id="lightboxCaption"></p>
-</div>
-
-  </section>
-
-
-<!-- ============================
-     OPEN SERVICES
-============================ -->
-<section class="section">
-  <h2 class="section-title">City Open Services</h2>
-  <p class="section-subtitle">For dinners, bar hopping, shopping, golf days, and flexible transportation.</p>
-
-  <div class="services-grid">
-
-    <div class="service-card">
-      <h3>Open Service – 4 Hours</h3>
-      <p>Base Price: <strong>$140</strong> • Extra Hour: <strong>$20</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$140</span>
-        <a href="booking.html?service=city4" class="mini-btn">Book</a>
-      </div>
-    </div>
-
-    <div class="service-card">
-      <h3>Open Service – 6 Hours</h3>
-      <p>Base Price: <strong>$160</strong> • Extra Hour: <strong>$20</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$160</span>
-        <a href="booking.html?service=city6" class="mini-btn">Book</a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ============================
-     ACTIVITIES / TOURS
-============================ -->
-<section class="section">
-  <h2 class="section-title">Activities & Dinner Tours</h2>
-  <p class="section-subtitle">Private transportation for tours and dining experiences across Baja Sur.</p>
-
-  <div class="services-grid">
-
-    <div class="service-card">
-      <h3>Migriño Tour</h3>
-      <p>4–8 hours • <strong>$350 USD</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$350</span>
-        <a href="booking.html?service=migrino" class="mini-btn">Book</a>
-      </div>
-    </div>
-
-    <div class="service-card">
-      <h3>Todos Santos Tour</h3>
-      <p>4–8 hours • <strong>$400 USD</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$400</span>
-        <a href="booking.html?service=todosSantos" class="mini-btn">Book</a>
-      </div>
-    </div>
-
-    <div class="service-card">
-      <h3>La Ribera / Los Barriles Tour</h3>
-      <p>4–8 hours • <strong>$400 USD</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$400</span>
-        <a href="booking.html?service=barriles" class="mini-btn">Book</a>
-      </div>
-    </div>
-
-    <div class="service-card">
-      <h3>La Paz Tour</h3>
-      <p>4–8 hours • <strong>$600 USD</strong></p>
-      <div class="service-footer">
-        <span class="service-price">$600</span>
-        <a href="booking.html?service=laPaz" class="mini-btn">Book</a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-</main>
-
-<footer class="site-footer">
-  © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
-</footer>
- </script>
-  
-     <script src="scripts/gallery.js"></script>
+      backdrop.onclick = closeBtn.onclick;
+    }
+  </script>
+  <script src="scripts/gallery.js"></script>
 
 </body>
 </html>
