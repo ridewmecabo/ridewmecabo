@@ -1,5 +1,5 @@
 /* ============================================================
-   BOOKING.JS – Ride W Me Cabo (FINAL & STABLE)
+   BOOKING.JS – Ride W Me Cabo (FINAL & PAYPAL INTEGRATED)
 ============================================================ */
 
 // ================= EMAILJS =================
@@ -31,8 +31,8 @@ const hoursWrapper = document.getElementById("hoursWrapper");
 // UI Summary
 const uiName = document.getElementById("selectedServiceName");
 const uiPrice = document.getElementById("selectedServicePrice");
-
-
+// Busca el span del depósito si lo agregaste al HTML, si no, no interrumpe el código
+const depositDisplay = document.getElementById('depositAmount'); 
 
 // ================= SERVICES =================
 const SERVICES = {
@@ -53,7 +53,6 @@ const SERVICES = {
 
 // ================= DESTINOS (AUTOCOMPLETE) =================
 const DESTINOS = [
-  // HOTELS
   "Nobu Hotel Los Cabos","Hard Rock Hotel Los Cabos","Waldorf Astoria Pedregal",
   "Garza Blanca Resort","Grand Velas Los Cabos","Esperanza Auberge",
   "One&Only Palmilla","Montage Los Cabos","The Cape, a Thompson Hotel",
@@ -63,28 +62,18 @@ const DESTINOS = [
   "Grand Fiesta Americana","Dreams Los Cabos","Barceló Gran Faro",
   "Marina Fiesta Resort","Cabo Azul Resort","Sheraton Grand Los Cabos",
   "Chileno Bay Resort","Las Ventanas al Paraíso",
-
-  // RESTAURANTS
   "Edith’s","The Office on the Beach","Sunset Monalisa","Lorenzillo’s",
   "Rosa Negra","Funky Geisha","Taboo Cabo","Mamazzita","Animalón",
   "El Farallon","Acre Restaurant","Flora Farms","Jazmin’s Restaurant",
   "Tacos Gardenias","La Lupita Tacos","Carbón Cabrón",
-
-  // BEACH CLUBS
   "Mango Deck","SUR Beach House","OMNIA Los Cabos","Blue Marlin Ibiza",
   "Veleros Beach Club",
-
-  // LANDMARKS
   "Cabo San Lucas Downtown","San José del Cabo Downtown","El Arco",
   "Marina Cabo San Lucas","Puerto Paraíso Mall","Luxury Avenue",
   "Medano Beach","Palmilla Golf","Diamante Golf","Costco CSL",
   "Fresko CSL","Walmart San Lucas","Home Depot CSL",
-
-  // AIRPORT / PRIVATE
   "Los Cabos International Airport (SJD)",
   "FBO Private Terminal (SJD Private Jets)",
-
-  // CUSTOM
   "Airbnb (Custom)","Private Villa (Custom)","H+ Hospital"
 ];
 
@@ -110,7 +99,6 @@ function setupAutocomplete(input, dropdown) {
       });
   });
 
-  // Close dropdown when clicking outside input OR dropdown
   document.addEventListener("click", (e) => {
     if (!input.contains(e.target) && !dropdown.contains(e.target)) {
       dropdown.innerHTML = "";
@@ -126,7 +114,6 @@ function toggleReturnFields() {
   const sv = serviceTypeEl.value;
   const info = SERVICES[sv];
 
-  // Solo aplica retorno para airport transfers (zones)
   if (info && info.oneWay && tripTypeEl.value === "roundtrip") {
     returnDateWrapper.style.display = "block";
     returnTimeWrapper.style.display = "block";
@@ -140,27 +127,36 @@ function toggleReturnFields() {
 
 tripTypeEl.addEventListener("change", () => {
   toggleReturnFields();
-  updateServiceUI(); // actualiza summary
+  updateServiceUI(); 
+});
+
+hoursEl?.addEventListener("change", () => {
+  updateServiceUI();
 });
 
 // ================= UI UPDATE =================
 function updateServiceUI() {
   const info = SERVICES[serviceTypeEl.value];
+  const pricing = calculatePrice(); // Llamamos al cálculo para obtener el total actual
 
   if (!info) {
     uiName.textContent = "Select a service";
     uiPrice.textContent = "—";
+    if (depositDisplay) depositDisplay.textContent = "$0.00 USD";
     hoursWrapper.style.display = "none";
     toggleReturnFields();
     return;
   }
 
   uiName.textContent = info.label;
-
-  // Default wrappers
   hoursWrapper.style.display = "none";
 
-  // Airport transfers (zones)
+  // Mostrar Depósito si existe en el HTML
+  if (depositDisplay && pricing.total > 0) {
+      let deposit = (pricing.total * 0.20).toFixed(2);
+      depositDisplay.textContent = `$${deposit} USD`;
+  }
+
   if (info.oneWay) {
     uiPrice.innerHTML = `
       <strong>One Way:</strong> $${info.oneWay} USD<br>
@@ -170,14 +166,12 @@ function updateServiceUI() {
     return;
   }
 
-  // Open service
   if (info.extraHour) {
     uiPrice.innerHTML = `
       <strong>Base:</strong> $${info.base} USD<br>
       <strong>Extra Hour:</strong> $${info.extraHour} USD
     `;
     hoursWrapper.style.display = "block";
-    // No return fields for open services
     returnDateWrapper.style.display = "none";
     returnTimeWrapper.style.display = "none";
     returnDateEl.value = "";
@@ -185,9 +179,7 @@ function updateServiceUI() {
     return;
   }
 
-  // Tours
   uiPrice.innerHTML = `<strong>Price:</strong> $${info.base} USD`;
-  // No return fields for tours
   returnDateWrapper.style.display = "none";
   returnTimeWrapper.style.display = "none";
   returnDateEl.value = "";
@@ -198,7 +190,6 @@ serviceTypeEl.addEventListener("change", () => {
   updateServiceUI();
 });
 
-// Default
 if (tripTypeEl) tripTypeEl.value = "oneway";
 updateServiceUI();
 
@@ -215,7 +206,6 @@ function calculatePrice() {
   let roundTripPrice = 0;
   let extraHours = 0;
 
-  // Airport transfers
   if (info.oneWay) {
     if (tripTypeEl.value === "roundtrip") {
       basePrice = info.roundTrip;
@@ -231,7 +221,6 @@ function calculatePrice() {
     return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
   }
 
-  // Open service
   if (info.extraHour) {
     extraHours = Number(hoursEl.value || 0);
     basePrice = info.base;
@@ -241,7 +230,6 @@ function calculatePrice() {
     return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
   }
 
-  // Tours
   basePrice = info.base;
   total = info.base;
   tripTypeText = "Tour";
@@ -269,12 +257,9 @@ function sendWhatsApp(res) {
   if (res.extra_hours && Number(res.extra_hours) > 0) msg += `*Extra Hours:* ${res.extra_hours}\n`;
 
   msg += `\n💵 *Payment Summary*\n`;
-  msg += `Base Price: $${res.base_price} USD\n`;
-  if (res.round_trip_price_msg) msg += `Round Trip Price: $${res.base_price} USD\n`;
-  if (res.extra_hours_total && Number(res.extra_hours_total) > 0) {
-    msg += `Extra Hours Total: $${res.extra_hours_total} USD\n`;
-  }
-  msg += `Total: $${res.total_price} USD\n\n`;
+  msg += `Total Service Price: $${res.total_price} USD\n`;
+  msg += `*Deposit Paid (20%):* $${res.deposit_paid} USD\n`;
+  msg += `*Balance Due:* $${res.balance_due} USD\n\n`;
   msg += `Thank you for choosing *Ride W Me Cabo* ✨`;
 
   window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank");
@@ -289,105 +274,143 @@ function saveReservation(data) {
   localStorage.setItem("reservations", JSON.stringify(existing));
 }
 
+// ================= PAYPAL & SUBMIT LOGIC =================
 
-// ================= SUBMIT =================
+// Evitamos que el formulario haga un submit tradicional si alguien presiona "Enter"
 document.getElementById("bookingForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const info = SERVICES[serviceTypeEl.value];
-  if (!info) {
-    alert("Please select a service.");
-    return;
-  }
-
-  const pricing = calculatePrice();
-
-  // Basic validations
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const email = document.getElementById("email").value.trim();
-
-  if (!name || !phone || !email || !passengersEl.value || !pickupEl.value.trim() || !destinationEl.value.trim() || !dateEl.value || !timeEl.value) {
-    alert("Please complete all required fields.");
-    return;
-  }
-
-  // If roundtrip selected for zones -> require return fields
-  if (info.oneWay && tripTypeEl.value === "roundtrip") {
-    if (!returnDateEl.value || !returnTimeEl.value) {
-      alert("Please select return date and time for Round Trip.");
-      return;
-    }
-  }
-
-  // ✅ MENSAJES LISTOS PARA TU TEMPLATE (tal cual lo tienes)
-  const returnDateMsg =
-    (info.oneWay && tripTypeEl.value === "roundtrip")
-      ? `• Return: ${returnDateEl.value} at ${returnTimeEl.value}`
-      : "";
-
-  const extraHoursMsg =
-    (info.extraHour && pricing.extraHours > 0)
-      ? `• Extra Hours: ${pricing.extraHours}`
-      : "";
-
-  const roundTripPriceMsg =
-    (info.oneWay && tripTypeEl.value === "roundtrip")
-      ? `Round Trip Price: $${info.roundTrip} USD`
-      : "";
-
-  const extraHoursTotalMsg =
-    (info.extraHour && pricing.extraHoursTotal > 0)
-      ? `Extra Hours Total: $${pricing.extraHoursTotal} USD`
-      : "";
-
-  const payload = {
-    name,
-    phone,
-    email,
-
-    service_label: info.label,
-    trip_type: pricing.tripTypeText,
-
-    passengers: passengersEl.value,
-    pickup: pickupEl.value.trim(),
-    destination: destinationEl.value.trim(),
-
-    date: dateEl.value,
-    time: timeEl.value,
-
-    return_date: (info.oneWay && tripTypeEl.value === "roundtrip") ? returnDateEl.value : "",
-    return_time: (info.oneWay && tripTypeEl.value === "roundtrip") ? returnTimeEl.value : "",
-
-    extra_hours: info.extraHour ? (hoursEl.value || "") : "",
-    notes: notesEl.value.trim(),
-
-    base_price: pricing.basePrice,
-    total_price: pricing.total,
-
-    // ✅ Estos son los que tu template imprime:
-    return_date_msg: returnDateMsg,
-    extra_hours_msg: extraHoursMsg,
-    round_trip_price_msg: roundTripPriceMsg,
-    extra_hours_total_msg: extraHoursTotalMsg
-  };
-
- sendEmail(payload)
-  .then(() => {
-
-    // ✅ GUARDAR RESERVA
-    saveReservation(payload);
-
-    // 📲 WhatsApp
-    sendWhatsApp(payload);
-
-    alert("Your reservation has been sent successfully!");
-    document.getElementById("bookingForm").reset();
-    tripTypeEl.value = "oneway";
-    updateServiceUI();
-  })
-    .catch((err) => {
-      console.error(err);
-      alert("Error sending reservation. Please try again.");
-    });
+    e.preventDefault();
 });
+
+// Configuración de los botones de PayPal
+paypal.Buttons({
+    // 1. VALIDACIÓN ANTES DE PAGAR
+    onClick: function(data, actions) {
+        const form = document.getElementById("bookingForm");
+        
+        // Verificamos si los campos requeridos de HTML están llenos
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return actions.reject(); // Detiene PayPal
+        }
+
+        const phoneVal = document.getElementById("phone").value.replace(/\D/g, ''); // Quita espacios y símbolos
+        const info = SERVICES[serviceTypeEl.value];
+
+        // Validación estricta del teléfono (Mínimo 10 dígitos)
+        if (phoneVal.length < 10) {
+            alert("⚠️ Por favor, ingresa un número de teléfono o WhatsApp válido (mínimo 10 dígitos) para poder contactarte.");
+            document.getElementById("phone").focus();
+            return actions.reject(); 
+        }
+
+        // Validación de retorno si es viaje redondo
+        if (info.oneWay && tripTypeEl.value === "roundtrip") {
+            if (!returnDateEl.value || !returnTimeEl.value) {
+                alert("Please select return date and time for Round Trip.");
+                return actions.reject();
+            }
+        }
+
+        return actions.resolve(); // Todo en orden, permite abrir PayPal
+    },
+
+    // 2. CREAR LA ORDEN CON EL 20% DE ANTICIPO
+    createOrder: function(data, actions) {
+        const pricing = calculatePrice();
+        const deposit = (pricing.total * 0.20).toFixed(2);
+
+        return actions.order.create({
+            purchase_units: [{
+                amount: {
+                    value: deposit.toString()
+                },
+                description: `20% Reservation Deposit - ${uiName.textContent}`
+            }]
+        });
+    },
+
+    // 3. ACCIÓN AL APROBAR EL PAGO
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+            const pricing = calculatePrice();
+            const depositPaid = (pricing.total * 0.20).toFixed(2);
+            const balanceDue = (pricing.total - depositPaid).toFixed(2);
+            
+            alert('¡Pago exitoso! Procesando tu reservación, ' + details.payer.name.given_name);
+            
+            // Llamamos a nuestra función maestra para procesar todo
+            executeCompleteReservation(details.id, depositPaid, balanceDue, pricing);
+        });
+    },
+
+    onError: function(err) {
+        console.error('PayPal Error:', err);
+        alert('Hubo un error al procesar el pago con PayPal. Por favor, intenta de nuevo.');
+    }
+}).render('#paypal-button-container');
+
+
+// ================= FUNCIÓN MAESTRA DE RESERVACIÓN =================
+function executeCompleteReservation(transactionId, depositPaid, balanceDue, pricing) {
+    const info = SERVICES[serviceTypeEl.value];
+    
+    // Variables de UI
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    // Mensajes para el template
+    const returnDateMsg = (info.oneWay && tripTypeEl.value === "roundtrip")
+        ? `• Return: ${returnDateEl.value} at ${returnTimeEl.value}` : "";
+    const extraHoursMsg = (info.extraHour && pricing.extraHours > 0)
+        ? `• Extra Hours: ${pricing.extraHours}` : "";
+    const roundTripPriceMsg = (info.oneWay && tripTypeEl.value === "roundtrip")
+        ? `Round Trip Price: $${info.roundTrip} USD` : "";
+    const extraHoursTotalMsg = (info.extraHour && pricing.extraHoursTotal > 0)
+        ? `Extra Hours Total: $${pricing.extraHoursTotal} USD` : "";
+
+    const payload = {
+        name,
+        phone,
+        email,
+        service_label: info.label,
+        trip_type: pricing.tripTypeText,
+        passengers: passengersEl.value,
+        pickup: pickupEl.value.trim(),
+        destination: destinationEl.value.trim(),
+        date: dateEl.value,
+        time: timeEl.value,
+        return_date: (info.oneWay && tripTypeEl.value === "roundtrip") ? returnDateEl.value : "",
+        return_time: (info.oneWay && tripTypeEl.value === "roundtrip") ? returnTimeEl.value : "",
+        extra_hours: info.extraHour ? (hoursEl.value || "") : "",
+        notes: notesEl.value.trim(),
+        
+        // Precios
+        base_price: pricing.basePrice,
+        total_price: pricing.total,
+        deposit_paid: depositPaid,
+        balance_due: balanceDue,
+        paypal_transaction_id: transactionId,
+
+        // Mensajes Template
+        return_date_msg: returnDateMsg,
+        extra_hours_msg: extraHoursMsg,
+        round_trip_price_msg: roundTripPriceMsg,
+        extra_hours_total_msg: extraHoursTotalMsg
+    };
+
+    sendEmail(payload)
+    .then(() => {
+        saveReservation(payload);
+        sendWhatsApp(payload);
+        
+        alert("Your reservation has been confirmed and sent successfully!");
+        document.getElementById("bookingForm").reset();
+        tripTypeEl.value = "oneway";
+        updateServiceUI();
+    })
+    .catch((err) => {
+        console.error(err);
+        alert("El pago se realizó, pero hubo un error enviando el correo de confirmación. Nos contactaremos contigo.");
+    });
+}
