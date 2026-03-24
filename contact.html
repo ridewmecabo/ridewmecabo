@@ -12,13 +12,12 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="new-header inner-header">
     <div class="header-overlay"></div>
     <img src="Images/expeditionavion.jpg" alt="Luxury SUV" class="header-expedition">
 
     <div class="header-top">
-      <div class="logo-text">¡RIDE W ME! 🐳</div>
+      <div class="logo-text">RIDE W ME 🐳</div>
       <div class="menu-icon" id="openMenu">☰</div>
     </div>
 
@@ -28,7 +27,6 @@
     </div>
   </header>
 
-  <!-- SIDE MENU -->
   <div id="sideMenu" class="side-menu">
     <div class="close-btn" id="closeMenu">×</div>
     <nav class="side-menu-links">
@@ -41,70 +39,69 @@
   </div>
   <div id="menuBackdrop" class="menu-backdrop"></div>
 
-  <!-- CONTENT -->
-  <div class="contact-wrapper">
+  <main>
+    <section class="section">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>📱 WhatsApp</h3>
+          <p>Fastest way to contact us</p>
+          <a href="https://wa.me/526242666166" target="_blank">Chat Now</a>
+        </div>
 
-    <div class="contact-grid">
-      <div class="contact-card">
-        <h3>📱 WhatsApp</h3>
-        <p>Fastest way to contact us</p>
-        <a href="https://wa.me/526242666166" target="_blank">Chat Now</a>
+        <div class="contact-card">
+          <h3>📞 Phone</h3>
+          <p>Call us anytime</p>
+          <a href="tel:+526242666166">+52 624 266 6166</a>
+        </div>
+
+        <div class="contact-card">
+          <h3>📧 Email</h3>
+          <p>We respond within minutes</p>
+          <a href="mailto:ridewmecabo@gmail.com">ridewmecabo@gmail.com</a>
+        </div>
       </div>
 
-      <div class="contact-card">
-        <h3>📞 Phone</h3>
-        <p>Call us anytime</p>
-        <a href="tel:+526242666166">+52 624 266 6166</a>
+      <div class="contact-form">
+        <h2 class="section-title" style="margin-bottom: 25px;">Send Us a Message</h2>
+
+        <form id="contactForm" class="booking-form">
+          <label for="cname">Your Name</label>
+          <input type="text" id="cname" required placeholder="Enter your full name">
+
+          <label for="cemail">Your Email</label>
+          <input type="email" id="cemail" required placeholder="email@example.com">
+
+          <label for="cmessage">Your Message</label>
+          <textarea id="cmessage" required placeholder="How can we help you?"></textarea>
+
+          <button type="submit" class="hero-btn primary" style="width: 100%; border: none; margin-top: 15px;">Send Message</button>
+
+          <div id="contactSuccess" class="contact-success" style="display: none; margin-top: 15px; padding: 12px; border-radius: 10px; background: rgba(0, 193, 110, 0.2); color: #00e37a; text-align: center; border: 1px solid var(--green-soft);">
+            🎉 Your message has been sent successfully! We will get back to you soon.
+          </div>
+        </form>
       </div>
 
-      <div class="contact-card">
-        <h3>📧 Email</h3>
-        <p>We respond within minutes</p>
-        <a href="mailto:ridewmecabo@gmail.com">ridewmecabo@gmail.com</a>
+      <div class="map-container" style="margin-top: 50px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <iframe 
+          src="https://www.google.com/maps?q=Los+Cabos+Baja+California+Sur&output=embed"
+          width="100%"
+          height="400"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
       </div>
-    </div>
-
-    <div class="contact-form">
-      <h2>Send Us a Message</h2>
-
-      <form id="contactForm">
-        <label>Your Name</label>
-        <input type="text" id="cname" required>
-
-        <label>Your Email</label>
-        <input type="email" id="cemail" required>
-
-        <label>Your Message</label>
-        <textarea id="cmessage" required></textarea>
-
-        <button type="submit">Send Message</button>
-
-        <div id="contactSuccess" class="contact-success">🎉 Your message has been sent!</div>
-      </form>
-    </div>
-
-    <div class="map-container">
-      <iframe 
-        src="https://www.google.com/maps?q=Los+Cabos+Baja+California+Sur&output=embed"
-        width="100%"
-        height="350"
-        style="border:0;"
-        allowfullscreen=""
-        loading="lazy">
-      </iframe>
-    </div>
-
-  </div>
+    </section>
+  </main>
 
   <footer class="site-footer">
-    © 2025 Ride W Me Cabo — Luxury Transportation in Los Cabos
+    © 2026 Ride W Me Cabo — Luxury Transportation in Los Cabos
   </footer>
 
-  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
   <script>
-    // MENU
+    // MENU LOGIC
     const openBtn = document.getElementById("openMenu");
     const closeBtn = document.getElementById("closeMenu");
     const menu = document.getElementById("sideMenu");
@@ -124,7 +121,7 @@
       backdrop.onclick = closeBtn.onclick;
     }
 
-    // CONTACT FORM
+    // CONTACT FORM LOGIC
     emailjs.init("Ed5Qh2Qk81A6fHcRR");
 
     const form = document.getElementById("contactForm");
@@ -139,14 +136,15 @@
         cmessage: document.getElementById("cmessage").value
       };
 
+      // Ensure your EmailJS template "template_contact" expects {{cname}}, {{cemail}}, and {{cmessage}}
       emailjs.send("service_8zcytcr", "template_contact", data)
         .then(() => {
           successMsg.style.display = "block";
           form.reset();
-          setTimeout(() => successMsg.style.display = "none", 3000);
+          setTimeout(() => successMsg.style.display = "none", 4000);
         })
         .catch(() => {
-          alert("❌ Error sending your message. Try again.");
+          alert("❌ Error sending your message. Please try again or contact us via WhatsApp.");
         });
     });
   </script>
