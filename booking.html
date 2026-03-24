@@ -104,7 +104,7 @@
           </select>
         </div>
 
-        <div class="booking-grid-full">
+        <div>
           <label for="tripType">Trip Type</label>
           <select id="tripType">
             <option value="oneway">One Way</option>
@@ -125,10 +125,13 @@
         <div class="input-wrapper">
           <label for="pickupPreset">Pickup Location *</label>
           <input id="pickupPreset" required autocomplete="off" type="text" placeholder="Hotel, airport, villa...">
+          <div id="pickupDropdown" class="autocomplete-dropdown"></div>
         </div>
+
         <div class="input-wrapper">
           <label for="destinationPreset">Destination *</label>
           <input id="destinationPreset" required autocomplete="off" type="text" placeholder="Hotel, airport, restaurant...">
+          <div id="destinationDropdown" class="autocomplete-dropdown"></div>
         </div>
 
         <div>
@@ -140,6 +143,25 @@
           <input type="time" id="time" required>
         </div>
 
+        <div id="returnDateWrapper" style="display:none;">
+          <label for="returnDate">Return Date</label>
+          <input type="date" id="returnDate">
+        </div>
+        <div id="returnTimeWrapper" style="display:none;">
+          <label for="returnTime">Return Time</label>
+          <input type="time" id="returnTime">
+        </div>
+
+        <div id="hoursWrapper" style="display:none;">
+          <label for="hours">Extra Hours</label>
+          <select id="hours">
+            <option value="">None</option>
+            <option value="1">+1 hour</option>
+            <option value="2">+2 hours</option>
+            <option value="3">+3 hours</option>
+            <option value="4">+4 hours</option>
+          </select>
+        </div>
         <div class="booking-grid-full">
           <label for="notes">Notes (Optional)</label>
           <textarea id="notes" placeholder="Flight number, special request, etc."></textarea>
@@ -173,7 +195,7 @@
   © 2026 Ride W Me Cabo — Luxury Transportation in Los Cabos
 </footer>
 
-<script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=USD"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script src="scripts/booking.js"></script>
 
