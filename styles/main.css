@@ -304,21 +304,21 @@ body {
   font-size: 0.98rem;
   margin: 0;
 }
-
-/* SERVICES GRID */
+/* SERVICES GRID (Aesthetic & Compact) */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 40px;
+  /* Reducimos el ancho de 340px a 270px para que las tarjetas sean más esbeltas */
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 30px; /* Un poco menos de espacio entre ellas para mantener proporción */
 }
 
 .service-card {
   background: var(--glass);
   backdrop-filter: blur(15px);
-  padding: 40px 35px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+  padding: 30px 25px; /* Reducimos el relleno para hacerlas más compactas */
+  border-radius: 16px; /* Borde sutilmente más cerrado */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25); /* Sombra más suave y elegante */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -326,36 +326,41 @@ body {
 }
 
 .service-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-8px); /* Elevación un poco más sutil */
   border-color: rgba(0, 193, 110, 0.3);
 }
 
 .service-card h3 {
   margin-top: 0;
-  font-weight: 400; /* Títulos limpios */
-  font-size: 1.3rem;
+  font-weight: 300; /* Título más fino y ligero */
+  font-size: 1.15rem; /* Letra un poco más chica */
   color: #fff;
-  margin-bottom: 12px;
-  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  letter-spacing: 0.8px;
 }
 
 .service-card p {
   color: #999;
-  font-size: 0.98rem;
+  font-size: 0.88rem; /* Texto descriptivo más delicado */
+  line-height: 1.6;
 }
 
 .service-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 25px; 
   gap: 12px;
+  /* Detalle premium: una línea súper fina arriba del precio */
+  border-top: 1px solid rgba(255,255,255,0.06); 
+  padding-top: 18px; 
 }
 
 .service-price {
   color: var(--green-soft);
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 400; /* Precio elegante, no tan grueso */
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
 }
 
 .mini-btn {
