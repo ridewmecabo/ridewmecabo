@@ -12,18 +12,19 @@
 </head>
 <body>
 
-  <header class="new-header services-header-conceptual" style="background: var(--bg); height: 65vh; min-height: 400px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
-    <div class="header-overlay" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%); z-index: 2;"></div>
-    
-    <img src="Images/gallery/servicescabo.png" alt="Ride W Me Cabo Services Conceptual Banner Blue Clean Top" class="header-expedition" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
-  
+  <header class="new-header inner-header">
+    <div class="header-overlay"></div>
+    <img src="Images/expeditionavion.jpg" alt="Luxury SUV at Airport" class="header-expedition" style="object-position: center 70%;">
+
     <div class="header-top">
       <div class="logo-text">RIDE W ME 🐳</div>
-      <div class="menu-icon" id="openMenu" style="position: relative; z-index: 10;">☰</div>
+      <div class="menu-icon" id="openMenu">☰</div>
     </div>
-  
-    <div class="header-content" style="position: relative; z-index: 3; text-align: center; color: white; padding-top: 80px;">
-      </div>
+
+    <div class="header-content" style="margin-bottom: 70px;">
+      <h1>Curated Services</h1>
+      <p>Select a category to explore our private transportation options.</p>
+    </div>
   </header>
 
   <div id="sideMenu" class="side-menu">
@@ -39,172 +40,139 @@
   <div id="menuBackdrop" class="menu-backdrop"></div>
 
   <main>
-
-    <section class="section">
-      <h2 class="section-title">Airport Transfers</h2>
-      <p class="section-subtitle">Private SUV transportation from SJD Airport directly to your destination.</p>
-
-      <div class="services-grid">
-
-        <article class="service-card">
-          <h3>Zone 1: Palmilla</h3>
-          <p>San José del Cabo & Palmilla Area</p>
-          <div class="service-footer">
-            <span class="service-price">$75 OW / $130 RT</span>
-            <a href="booking.html?service=zone1" class="mini-btn">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>Zone 2: Puerto Los Cabos</h3>
-          <p>Puerto Los Cabos & Laguna Area</p>
-          <div class="service-footer">
-            <span class="service-price">$85 OW / $150 RT</span>
-            <a href="booking.html?service=zone2" class="mini-btn">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>Zone 3: Cabo del Sol</h3>
-          <p>Palmilla to Cabo del Sol Corridor</p>
-          <div class="service-footer">
-            <span class="service-price">$95 OW / $170 RT</span>
-            <a href="booking.html?service=zone3a" class="mini-btn">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>Zone 4: Punta Ballena</h3>
-          <p>Punta Ballena to Solmar</p>
-          <div class="service-footer">
-            <span class="service-price">$105 OW / $180 RT</span>
-            <a href="booking.html?service=zone3b" class="mini-btn">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>Zone 5: Diamante</h3>
-          <p>Pedregal & Diamante Cabo San Lucas</p>
-          <div class="service-footer">
-            <span class="service-price">$110 OW / $200 RT</span>
-            <a href="booking.html?service=zone5" class="mini-btn">Select</a>
-          </div>
-        </article>
-
+    <section class="section" style="margin-top: 60px;">
+      
+      <div class="service-tabs-container">
+        <button class="service-tab-btn active" onclick="showCategory('airport')">✈️ Airport Transfers</button>
+        <button class="service-tab-btn" onclick="showCategory('open')">⏱️ City Open Services</button>
+        <button class="service-tab-btn" onclick="showCategory('tours')">🌵 Activities & Tours</button>
       </div>
+
+      <div id="airport" class="service-category-content active">
+        <div class="services-grid">
+          <article class="service-card">
+            <h3>Zone 1: Palmilla</h3>
+            <p>San José del Cabo & Palmilla Area</p>
+            <div class="service-footer">
+              <span class="service-price">$75 OW / $130 RT</span>
+              <a href="booking.html?service=zone1" class="mini-btn">Select</a>
+            </div>
+          </article>
+          <article class="service-card">
+            <h3>Zone 2: Puerto Los Cabos</h3>
+            <p>Puerto Los Cabos & Laguna Area</p>
+            <div class="service-footer">
+              <span class="service-price">$85 OW / $150 RT</span>
+              <a href="booking.html?service=zone2" class="mini-btn">Select</a>
+            </div>
+          </article>
+          <article class="service-card">
+            <h3>Zone 3: Cabo del Sol</h3>
+            <p>Palmilla to Cabo del Sol Corridor</p>
+            <div class="service-footer">
+              <span class="service-price">$95 OW / $170 RT</span>
+              <a href="booking.html?service=zone3a" class="mini-btn">Select</a>
+            </div>
+          </article>
+          <article class="service-card">
+            <h3>Zone 4: Punta Ballena</h3>
+            <p>Punta Ballena to Solmar</p>
+            <div class="service-footer">
+              <span class="service-price">$105 OW / $180 RT</span>
+              <a href="booking.html?service=zone3b" class="mini-btn">Select</a>
+            </div>
+          </article>
+          <article class="service-card">
+            <h3>Zone 5: Diamante</h3>
+            <p>Pedregal & Diamante Cabo San Lucas</p>
+            <div class="service-footer">
+              <span class="service-price">$110 OW / $200 RT</span>
+              <a href="booking.html?service=zone5" class="mini-btn">Select</a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div id="open" class="service-category-content">
+        <div class="services-grid">
+          <article class="service-card">
+            <h3>Half Day: 4 Hours</h3>
+            <p>Dedicated driver for dinners and shopping.</p>
+            <div class="service-footer">
+              <span class="service-price">$140 Base</span>
+              <a href="booking.html?service=city4" class="mini-btn">Select</a>
+            </div>
+          </article>
+          <article class="service-card">
+            <h3>Full Experience: 6 Hours</h3>
+            <p>Extended standby for multiple locations.</p>
+            <div class="service-footer">
+              <span class="service-price">$160 Base</span>
+              <a href="booking.html?service=city6" class="mini-btn">Select</a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div id="tours" class="service-category-content">
+        <div class="services-grid">
+          <article class="service-card">
+            <h3>Migriño Beach Tour</h3>
+            <p>Up to 8 hours of private transportation.</p>
+            <div class="service-footer">
+              <span class="service-price">$350 USD</span>
+              <a href="booking.html?service=migrino" class="mini-btn">Select</a>
+            </div>
+          </article>
+          <article class="service-card">
+            <h3>Todos Santos</h3>
+            <p>Up to 8 hours of private transportation.</p>
+            <div class="service-footer">
+              <span class="service-price">$400 USD</span>
+              <a href="booking.html?service=todosSantos" class="mini-btn">Select</a>
+            </div>
+          </article>
+          <article class="service-card">
+            <h3>La Paz Day Trip</h3>
+            <p>Up to 8 hours of private transportation.</p>
+            <div class="service-footer">
+              <span class="service-price">$600 USD</span>
+              <a href="booking.html?service=laPaz" class="mini-btn">Select</a>
+            </div>
+          </article>
+        </div>
+      </div>
+
     </section>
 
-    <section class="section">
-      <h2 class="section-title">City Open Services</h2>
-      <p class="section-subtitle">Flexible chauffeur service for dinners, shopping, or golf days.</p>
-
-      <div class="services-grid">
-        <article class="service-card">
-          <h3>Half Day: 4 Hours</h3>
-          <p>Includes dedicated driver and vehicle standby.</p>
-          <div class="service-footer">
-            <span class="service-price">$140 Base / $20 Extra Hr</span>
-            <a href="booking.html?service=city4" class="mini-btn outline">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>Full Experience: 6 Hours</h3>
-          <p>Extended standby for multiple stops and locations.</p>
-          <div class="service-footer">
-            <span class="service-price">$160 Base / $20 Extra Hr</span>
-            <a href="booking.html?service=city6" class="mini-btn outline">Select</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Activities & Expeditions</h2>
-      <p class="section-subtitle">Curated transportation for day trips across Baja California Sur.</p>
-
-      <div class="services-grid">
-        <article class="service-card">
-          <h3>Migriño Beach Tour</h3>
-          <p>Up to 8 hours of private transportation.</p>
-          <div class="service-footer">
-            <span class="service-price">$350 USD</span>
-            <a href="booking.html?service=migrino" class="mini-btn">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>Todos Santos</h3>
-          <p>Up to 8 hours of private transportation.</p>
-          <div class="service-footer">
-            <span class="service-price">$400 USD</span>
-            <a href="booking.html?service=todosSantos" class="mini-btn">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>Los Barriles / La Ribera</h3>
-          <p>Up to 8 hours of private transportation.</p>
-          <div class="service-footer">
-            <span class="service-price">$400 USD</span>
-            <a href="booking.html?service=barriles" class="mini-btn">Select</a>
-          </div>
-        </article>
-
-        <article class="service-card">
-          <h3>La Paz Day Trip</h3>
-          <p>Up to 8 hours of private transportation.</p>
-          <div class="service-footer">
-            <span class="service-price">$600 USD</span>
-            <a href="booking.html?service=laPaz" class="mini-btn">Select</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section gallery-section" id="gallery">
+    <section class="section gallery-section" id="gallery" style="margin-top: 20px;">
       <h2 class="section-title">The Experience</h2>
       <p class="section-subtitle">Real moments and exclusive destinations in style.</p>
 
-      <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
-        </div>
-
       <div class="gallery-grid fancy-gallery" id="galleryGrid">
-        <figure class="gallery-item" data-cat="places">
+        <figure class="gallery-item">
           <img src="Images/gallery/nobu.jpg" alt="Los Cabos Hotel" loading="lazy">
           <figcaption>
             <span class="tag">Destinations</span>
             <h4>Nobu Hotel</h4>
-            <p>Exclusive Pick Ups</p>
           </figcaption>
         </figure>
-
-        <figure class="gallery-item" data-cat="fleet">
+        <figure class="gallery-item">
           <img src="Images/expeditionavion.jpg" alt="Expedition Avion" loading="lazy">
           <figcaption>
             <span class="tag">Fleet</span>
             <h4>Private Aviation</h4>
-            <p>Tarmac Services</p>
           </figcaption>
         </figure>
-
-        <figure class="gallery-item" data-cat="places">
+        <figure class="gallery-item">
           <img src="Images/aeropuerto.jpg" alt="Landing" loading="lazy">
           <figcaption>
             <span class="tag">Arrivals</span>
             <h4>SJD Airport</h4>
-            <p>Meet & Greet</p>
           </figcaption>
         </figure>
       </div>
     </section>
-
-    <div class="lightbox" id="lightbox" aria-hidden="true">
-      <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
-      <img id="lightboxImg" alt="Gallery preview">
-      <p class="lightboxCaption" id="lightboxCaption"></p>
-    </div>
-
   </main>
 
   <footer class="site-footer">
@@ -212,6 +180,7 @@
   </footer>
 
   <script>
+    // Lógica del menú lateral
     const openBtn = document.getElementById("openMenu");
     const closeBtn = document.getElementById("closeMenu");
     const menu = document.getElementById("sideMenu");
@@ -223,17 +192,31 @@
         backdrop.classList.add("show");
         document.body.style.overflow = "hidden";
       };
-
       closeBtn.onclick = () => {
         menu.classList.remove("open");
         backdrop.classList.remove("show");
         document.body.style.overflow = "auto";
       };
-
       backdrop.onclick = closeBtn.onclick;
     }
+
+    // LÓGICA DE LAS PESTAÑAS (TABS) DIDÁCTICAS
+    function showCategory(categoryId) {
+      // 1. Quitar la clase "active" de todos los botones
+      const buttons = document.querySelectorAll('.service-tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // 2. Ocultar todos los contenidos
+      const contents = document.querySelectorAll('.service-category-content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      // 3. Activar el botón presionado (el evento event.currentTarget nos dice cuál fue)
+      event.currentTarget.classList.add('active');
+
+      // 4. Mostrar el contenido correspondiente
+      document.getElementById(categoryId).classList.add('active');
+    }
   </script>
-  <script src="scripts/gallery.js"></script>
 
 </body>
 </html>
