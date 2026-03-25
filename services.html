@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
 
   <style>
-    /* Estilos para los iconos minimalistas de lujo */
+    /* Estilos para los iconos minimalistas de lujo en las tarjetas */
     .card-icon {
       color: var(--green-soft);
       width: 42px;
@@ -64,9 +64,9 @@
     <section class="section" style="margin-top: 60px; margin-bottom: 40px;">
       
       <div class="service-tabs-container">
-        <button class="service-tab-btn active" onclick="showCategory('airport')">Airport Transfers</button>
-        <button class="service-tab-btn" onclick="showCategory('open')">City Open Services</button>
-        <button class="service-tab-btn" onclick="showCategory('tours')">Activities & Tours</button>
+        <button class="service-tab-btn active" onclick="showCategory('airport')">✈️ Airport Transfers</button>
+        <button class="service-tab-btn" onclick="showCategory('open')">⏱️ City Open Services</button>
+        <button class="service-tab-btn" onclick="showCategory('tours')">🌵 Activities & Tours</button>
       </div>
 
       <div id="airport" class="service-category-content active">
@@ -214,29 +214,41 @@
       <p class="section-subtitle" style="margin-bottom: 30px;">Real moments and exclusive destinations in style.</p>
 
       <div class="gallery-grid fancy-gallery" id="galleryGrid">
-        <figure class="gallery-item">
+        <figure class="gallery-item" data-cat="places">
           <img src="Images/gallery/nobu.jpg" alt="Los Cabos Hotel" loading="lazy">
           <figcaption>
             <span class="tag">Destinations</span>
             <h4>Nobu Hotel</h4>
+            <p>Exclusive Pick Ups</p>
           </figcaption>
         </figure>
-        <figure class="gallery-item">
+
+        <figure class="gallery-item" data-cat="fleet">
           <img src="Images/expeditionavion.jpg" alt="Expedition Avion" loading="lazy">
           <figcaption>
             <span class="tag">Fleet</span>
             <h4>Private Aviation</h4>
+            <p>Tarmac Services</p>
           </figcaption>
         </figure>
-        <figure class="gallery-item">
+
+        <figure class="gallery-item" data-cat="places">
           <img src="Images/aeropuerto.jpg" alt="Landing" loading="lazy">
           <figcaption>
             <span class="tag">Arrivals</span>
             <h4>SJD Airport</h4>
+            <p>Meet & Greet</p>
           </figcaption>
         </figure>
       </div>
     </section>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+      <img id="lightboxImg" alt="Gallery preview">
+      <p class="lightboxCaption" id="lightboxCaption"></p>
+    </div>
+
   </main>
 
   <footer class="site-footer">
@@ -281,6 +293,7 @@
       document.getElementById(categoryId).classList.add('active');
     }
   </script>
+  <script src="scripts/gallery.js"></script>
 
 </body>
 </html>
