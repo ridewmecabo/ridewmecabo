@@ -1,5 +1,5 @@
 /* ============================================================
-   BOOKING.JS – Ride W Me Cabo (FIXED & SECURE)
+   BOOKING.JS – Ride W Me Cabo (FIXED & SECURE WITH AUTO-SELECT)
 ============================================================ */
 
 // ================= EMAILJS =================
@@ -190,8 +190,24 @@ serviceTypeEl?.addEventListener("change", () => {
   updateServiceUI();
 });
 
-if (tripTypeEl) tripTypeEl.value = "oneway";
-updateServiceUI();
+// ================= AUTO-SELECT SERVICE FROM URL =================
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Leemos la URL
+  const params = new URLSearchParams(window.location.search);
+  const serviceToSelect = params.get('service');
+
+  // 2. Si venimos de services.html con un servicio seleccionado
+  if (serviceToSelect && serviceTypeEl) {
+    serviceTypeEl.value = serviceToSelect;
+    
+    // Forzamos la actualización de la UI
+    updateServiceUI();
+  } else {
+    // 3. Comportamiento por defecto (si entran directo a booking.html)
+    if (tripTypeEl) tripTypeEl.value = "oneway";
+    updateServiceUI();
+  }
+});
 
 // ================= PRICE CALC =================
 function calculatePrice() {
