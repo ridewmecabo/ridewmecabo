@@ -9,6 +9,27 @@
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/mobile.css">
   <link rel="icon" type="image/png" href="Images/ridewmelogo.png">
+
+  <style>
+    /* Estilos para los iconos minimalistas de lujo */
+    .card-icon {
+      color: var(--green-soft);
+      width: 42px;
+      height: 42px;
+      margin-bottom: 18px;
+      background: rgba(0, 193, 110, 0.08);
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0, 193, 110, 0.15);
+    }
+    .card-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
 <body>
 
@@ -40,17 +61,21 @@
   <div id="menuBackdrop" class="menu-backdrop"></div>
 
   <main>
-    <section class="section" style="margin-top: 60px;">
+    <section class="section" style="margin-top: 60px; margin-bottom: 40px;">
       
       <div class="service-tabs-container">
-        <button class="service-tab-btn active" onclick="showCategory('airport')">✈️ Airport Transfers</button>
-        <button class="service-tab-btn" onclick="showCategory('open')">⏱️ City Open Services</button>
-        <button class="service-tab-btn" onclick="showCategory('tours')">🌵 Activities & Tours</button>
+        <button class="service-tab-btn active" onclick="showCategory('airport')">Airport Transfers</button>
+        <button class="service-tab-btn" onclick="showCategory('open')">City Open Services</button>
+        <button class="service-tab-btn" onclick="showCategory('tours')">Activities & Tours</button>
       </div>
 
       <div id="airport" class="service-category-content active">
         <div class="services-grid">
+          
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            </div>
             <h3>Zone 1: Palmilla</h3>
             <p>San José del Cabo & Palmilla Area</p>
             <div class="service-footer">
@@ -58,7 +83,11 @@
               <a href="booking.html?service=zone1" class="mini-btn">Select</a>
             </div>
           </article>
+
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            </div>
             <h3>Zone 2: Puerto Los Cabos</h3>
             <p>Puerto Los Cabos & Laguna Area</p>
             <div class="service-footer">
@@ -66,7 +95,11 @@
               <a href="booking.html?service=zone2" class="mini-btn">Select</a>
             </div>
           </article>
+
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            </div>
             <h3>Zone 3: Cabo del Sol</h3>
             <p>Palmilla to Cabo del Sol Corridor</p>
             <div class="service-footer">
@@ -74,7 +107,11 @@
               <a href="booking.html?service=zone3a" class="mini-btn">Select</a>
             </div>
           </article>
+
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            </div>
             <h3>Zone 4: Punta Ballena</h3>
             <p>Punta Ballena to Solmar</p>
             <div class="service-footer">
@@ -82,7 +119,11 @@
               <a href="booking.html?service=zone3b" class="mini-btn">Select</a>
             </div>
           </article>
+
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            </div>
             <h3>Zone 5: Diamante</h3>
             <p>Pedregal & Diamante Cabo San Lucas</p>
             <div class="service-footer">
@@ -90,12 +131,17 @@
               <a href="booking.html?service=zone5" class="mini-btn">Select</a>
             </div>
           </article>
+
         </div>
       </div>
 
       <div id="open" class="service-category-content">
         <div class="services-grid">
+          
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+            </div>
             <h3>Half Day: 4 Hours</h3>
             <p>Dedicated driver for dinners and shopping.</p>
             <div class="service-footer">
@@ -103,7 +149,11 @@
               <a href="booking.html?service=city4" class="mini-btn">Select</a>
             </div>
           </article>
+
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+            </div>
             <h3>Full Experience: 6 Hours</h3>
             <p>Extended standby for multiple locations.</p>
             <div class="service-footer">
@@ -111,12 +161,17 @@
               <a href="booking.html?service=city6" class="mini-btn">Select</a>
             </div>
           </article>
+
         </div>
       </div>
 
       <div id="tours" class="service-category-content">
         <div class="services-grid">
+          
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
             <h3>Migriño Beach Tour</h3>
             <p>Up to 8 hours of private transportation.</p>
             <div class="service-footer">
@@ -124,7 +179,11 @@
               <a href="booking.html?service=migrino" class="mini-btn">Select</a>
             </div>
           </article>
+
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
             <h3>Todos Santos</h3>
             <p>Up to 8 hours of private transportation.</p>
             <div class="service-footer">
@@ -132,7 +191,11 @@
               <a href="booking.html?service=todosSantos" class="mini-btn">Select</a>
             </div>
           </article>
+
           <article class="service-card">
+            <div class="card-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
             <h3>La Paz Day Trip</h3>
             <p>Up to 8 hours of private transportation.</p>
             <div class="service-footer">
@@ -140,14 +203,15 @@
               <a href="booking.html?service=laPaz" class="mini-btn">Select</a>
             </div>
           </article>
+
         </div>
       </div>
 
     </section>
 
-    <section class="section gallery-section" id="gallery" style="margin-top: 20px;">
+    <section class="section gallery-section" id="gallery" style="margin-top: 0; padding-top: 0;">
       <h2 class="section-title">The Experience</h2>
-      <p class="section-subtitle">Real moments and exclusive destinations in style.</p>
+      <p class="section-subtitle" style="margin-bottom: 30px;">Real moments and exclusive destinations in style.</p>
 
       <div class="gallery-grid fancy-gallery" id="galleryGrid">
         <figure class="gallery-item">
@@ -210,7 +274,7 @@
       const contents = document.querySelectorAll('.service-category-content');
       contents.forEach(content => content.classList.remove('active'));
 
-      // 3. Activar el botón presionado (el evento event.currentTarget nos dice cuál fue)
+      // 3. Activar el botón presionado
       event.currentTarget.classList.add('active');
 
       // 4. Mostrar el contenido correspondiente
