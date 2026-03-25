@@ -1001,3 +1001,51 @@ body {
   max-width: 700px;
   line-height: 1.6;
 }
+/* ================== INTERACTIVE SERVICE TABS ================== */
+.service-tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.service-tab-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #aaa;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  cursor: pointer;
+  letter-spacing: 0.8px;
+  transition: all 0.3s ease;
+}
+
+.service-tab-btn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.service-tab-btn.active {
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border-color: #fff;
+  box-shadow: 0 4px 15px rgba(255,255,255,0.2);
+}
+
+.service-category-content {
+  display: none; /* Oculta todas las categorías por defecto */
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.service-category-content.active {
+  display: block; /* Solo muestra la categoría activa */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
