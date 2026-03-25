@@ -122,4 +122,27 @@
   .lightboxCaption {
     font-size: 0.85rem;
   }
+   /* ============================================================
+     MOBILE TABS TWEAKS (Pestañas de Servicios en Celular)
+  ============================================================ */
+  
+  .service-tabs-container {
+    gap: 8px; /* Juntamos un poco más los botones */
+    margin-bottom: 30px; 
+  }
+
+  .service-tab-btn {
+    padding: 10px 15px; /* Hacemos el botón un poco más compacto */
+    font-size: 0.85rem; /* Letra un poquito más chica para que quepan mejor */
+    flex-grow: 1; /* MAGIA: Esto hace que los botones se estiren para rellenar el ancho de la pantalla de forma pareja */
+    text-align: center;
+  }
+
+  /* Reducimos un poquito el tamaño del icono verde en celular para ahorrar espacio */
+  .card-icon {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 15px;
+    padding: 8px;
+  }
 }
