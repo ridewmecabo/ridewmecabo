@@ -269,40 +269,43 @@ body {
   display: block;
 }
 
-/* FEATURES HOME (Why Ride W Me) */
+/* FEATURES HOME (Why Ride W Me - Aesthetic & Consistent) */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 35px;
+  /* Aplicamos el mismo ancho reducido de 270px para consistencia total */
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 30px; /* Gap compacto, igual que en servicios */
 }
 
 .feature-card {
   background: var(--glass);
   backdrop-filter: blur(15px);
-  padding: 40px 30px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+  padding: 30px 25px; /* Relleno reducido y compacto */
+  border-radius: 16px; /* Borde sutilmente más cerrado */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25); /* Sombra suave y elegante */
   transition: transform 0.4s ease, border-color 0.4s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-8px); /* Elevación sutil */
   border-color: rgba(0, 193, 110, 0.3);
 }
 
 .feature-card h3 {
   margin-top: 0;
-  margin-bottom: 15px;
-  font-weight: 600;
-  font-size: 1.25rem;
-  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  font-weight: 300; /* Título fino y sofisticado */
+  font-size: 1.15rem; /* Tamaño de fuente reducido */
+  letter-spacing: 0.8px;
+  color: #fff;
 }
 
 .feature-card p {
   color: #aaa;
-  font-size: 0.98rem;
+  font-size: 0.88rem; /* Texto descriptivo más delicado */
   margin: 0;
+  line-height: 1.6;
 }
 /* SERVICES GRID (Aesthetic & Compact) */
 .services-grid {
