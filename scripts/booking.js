@@ -1,5 +1,5 @@
 /* ============================================================
-   BOOKING.JS – Ride W Me Cabo (FIXED & SECURE WITH AUTO-SELECT)
+   BOOKING.JS – Ride W Me Cabo (FIXED & SECURE WITH HIACE + AUTO-SELECT)
 ============================================================ */
 
 // ================= EMAILJS =================
@@ -11,6 +11,7 @@ const WHATSAPP = "526241598793";
 // ================= ELEMENTS =================
 const tripTypeEl = document.getElementById("tripType");
 const serviceTypeEl = document.getElementById("serviceType");
+const vehicleTypeEl = document.getElementById("vehicleType"); // NUEVO ELEMENTO
 const passengersEl = document.getElementById("passengers");
 
 const pickupEl = document.getElementById("pickupPreset");
@@ -135,6 +136,11 @@ hoursEl?.addEventListener("change", () => {
   updateServiceUI();
 });
 
+// NUEVO: Escuchar cambios en el selector de vehículo para actualizar precio
+vehicleTypeEl?.addEventListener("change", () => {
+  updateServiceUI();
+});
+
 // ================= UI UPDATE =================
 function updateServiceUI() {
   const info = SERVICES[serviceTypeEl.value];
@@ -149,7 +155,10 @@ function updateServiceUI() {
     return;
   }
 
-  uiName.textContent = info.label;
+  // Agregamos la etiqueta del vehículo seleccionado a la interfaz
+  let vName = (vehicleTypeEl && vehicleTypeEl.value === "Hiace") ? " (Hiace)" : "";
+  uiName.textContent = info.label + vName;
+  
   if (hoursWrapper) hoursWrapper.style.display = "none";
 
   if (depositDisplay && pricing.total > 0) {
@@ -157,10 +166,13 @@ function updateServiceUI() {
       depositDisplay.textContent = `$${deposit} USD`;
   }
 
+  // Calculamos el extra visualmente para mostrarlo en el resumen
+  let vehicleExtra = (vehicleTypeEl && vehicleTypeEl.value === "Hiace") ? 10 : 0;
+
   if (info.oneWay) {
     uiPrice.innerHTML = `
-      <strong>One Way:</strong> $${info.oneWay} USD<br>
-      <strong>Round Trip:</strong> $${info.roundTrip} USD
+      <strong>One Way:</strong> $${info.oneWay + vehicleExtra} USD<br>
+      <strong>Round Trip:</strong> $${info.roundTrip + (vehicleExtra * 2)} USD
     `;
     toggleReturnFields();
     return;
@@ -168,7 +180,7 @@ function updateServiceUI() {
 
   if (info.extraHour) {
     uiPrice.innerHTML = `
-      <strong>Base:</strong> $${info.base} USD<br>
+      <strong>Base:</strong> $${info.base + vehicleExtra} USD<br>
       <strong>Extra Hour:</strong> $${info.extraHour} USD
     `;
     if (hoursWrapper) hoursWrapper.style.display = "block";
@@ -179,7 +191,7 @@ function updateServiceUI() {
     return;
   }
 
-  uiPrice.innerHTML = `<strong>Price:</strong> $${info.base} USD`;
+  uiPrice.innerHTML = `<strong>Price:</strong> $${info.base + vehicleExtra} USD`;
   if (returnDateWrapper) returnDateWrapper.style.display = "none";
   if (returnTimeWrapper) returnTimeWrapper.style.display = "none";
   if (returnDateEl) returnDateEl.value = "";
@@ -192,18 +204,13 @@ serviceTypeEl?.addEventListener("change", () => {
 
 // ================= AUTO-SELECT SERVICE FROM URL =================
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Leemos la URL
   const params = new URLSearchParams(window.location.search);
   const serviceToSelect = params.get('service');
 
-  // 2. Si venimos de services.html con un servicio seleccionado
   if (serviceToSelect && serviceTypeEl) {
     serviceTypeEl.value = serviceToSelect;
-    
-    // Forzamos la actualización de la UI
     updateServiceUI();
   } else {
-    // 3. Comportamiento por defecto (si entran directo a booking.html)
     if (tripTypeEl) tripTypeEl.value = "oneway";
     updateServiceUI();
   }
@@ -217,16 +224,19 @@ function calculatePrice() {
 
   let total = 0, basePrice = 0, extraHoursTotal = 0, roundTripPrice = 0, extraHours = 0;
   let tripTypeText = "";
+  
+  // LOGICA PARA SUMAR $10 USD si es Hiace
+  let vehicleExtra = (vehicleTypeEl && vehicleTypeEl.value === "Hiace") ? 10 : 0;
 
   if (info.oneWay) {
     if (tripTypeEl.value === "roundtrip") {
-      basePrice = info.roundTrip;
-      total = info.roundTrip;
+      basePrice = info.roundTrip + (vehicleExtra * 2); // $10 por viaje de ida, $10 por regreso
+      total = info.roundTrip + (vehicleExtra * 2);
       tripTypeText = "Round Trip";
-      roundTripPrice = info.roundTrip;
+      roundTripPrice = info.roundTrip + (vehicleExtra * 2);
     } else {
-      basePrice = info.oneWay;
-      total = info.oneWay;
+      basePrice = info.oneWay + vehicleExtra;
+      total = info.oneWay + vehicleExtra;
       tripTypeText = "One Way";
     }
     return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
@@ -234,15 +244,15 @@ function calculatePrice() {
 
   if (info.extraHour) {
     extraHours = Number(hoursEl.value || 0);
-    basePrice = info.base;
+    basePrice = info.base + vehicleExtra; // $10 flat extra al servicio base
     extraHoursTotal = extraHours * info.extraHour;
     total = basePrice + extraHoursTotal;
     tripTypeText = "Open Service";
     return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
   }
 
-  basePrice = info.base;
-  total = info.base;
+  basePrice = info.base + vehicleExtra; // $10 flat extra para tours
+  total = info.base + vehicleExtra;
   tripTypeText = "Tour";
   return { total, tripTypeText, basePrice, extraHoursTotal, roundTripPrice, extraHours };
 }
@@ -253,7 +263,7 @@ function sendEmail(payload) {
 }
 
 function sendWhatsApp(res) {
-  let msg = `🚗 *Ride W Me Cabo – Reservation Confirmed*\n\nHi ${res.name} 👋\n\n*Service:* ${res.service_label}\n*Trip Type:* ${res.trip_type}\n*Passengers:* ${res.passengers}\n\n*Pickup:* ${res.pickup}\n*Destination:* ${res.destination}\n\n*Departure:* ${res.date} at ${res.time}\n`;
+  let msg = `🚗 *Ride W Me Cabo – Reservation Confirmed*\n\nHi ${res.name} 👋\n\n*Service:* ${res.service_label}\n*Vehicle:* ${res.vehicle_type}\n*Trip Type:* ${res.trip_type}\n*Passengers:* ${res.passengers}\n\n*Pickup:* ${res.pickup}\n*Destination:* ${res.destination}\n\n*Departure:* ${res.date} at ${res.time}\n`;
   if (res.return_date) msg += `*Return:* ${res.return_date} at ${res.return_time}\n`;
   if (res.extra_hours && Number(res.extra_hours) > 0) msg += `*Extra Hours:* ${res.extra_hours}\n`;
   msg += `\n💵 *Payment Summary*\nTotal Service Price: $${res.total_price} USD\n*Deposit Paid (20%):* $${res.deposit_paid} USD\n*Balance Due:* $${res.balance_due} USD\n\nThank you for choosing *Ride W Me Cabo* ✨`;
@@ -302,7 +312,7 @@ if (typeof paypal !== 'undefined') {
             return actions.order.create({
                 purchase_units: [{
                     amount: { value: deposit.toString() },
-                    description: `20% Reservation Deposit - ${uiName.textContent}`
+                    description: `20% Deposit - ${uiName.textContent}`
                 }]
             });
         },
@@ -334,6 +344,7 @@ function executeCompleteReservation(transactionId, depositPaid, balanceDue, pric
         phone: document.getElementById("phone").value.trim(),
         email: document.getElementById("email").value.trim(),
         service_label: info.label,
+        vehicle_type: vehicleTypeEl ? vehicleTypeEl.options[vehicleTypeEl.selectedIndex].text : "Expedition", // Extrae el nombre del vehículo
         trip_type: pricing.tripTypeText,
         passengers: passengersEl.value,
         pickup: pickupEl.value.trim(),
@@ -351,16 +362,18 @@ function executeCompleteReservation(transactionId, depositPaid, balanceDue, pric
         paypal_transaction_id: transactionId,
         return_date_msg: (info.oneWay && tripTypeEl.value === "roundtrip") ? `• Return: ${returnDateEl.value} at ${returnTimeEl.value}` : "",
         extra_hours_msg: (info.extraHour && pricing.extraHours > 0) ? `• Extra Hours: ${pricing.extraHours}` : "",
-        round_trip_price_msg: (info.oneWay && tripTypeEl.value === "roundtrip") ? `Round Trip Price: $${info.roundTrip} USD` : "",
+        round_trip_price_msg: (info.oneWay && tripTypeEl.value === "roundtrip") ? `Round Trip Price: $${info.roundTrip + ((vehicleTypeEl && vehicleTypeEl.value === "Hiace") ? 20 : 0)} USD` : "",
         extra_hours_total_msg: (info.extraHour && pricing.extraHoursTotal > 0) ? `Extra Hours Total: $${pricing.extraHoursTotal} USD` : ""
     };
 
+    // Ojo: Asegúrate de que en EmailJS agregues la variable {{vehicle_type}} para que te llegue el dato.
     sendEmail(payload).then(() => {
         saveReservation(payload);
         sendWhatsApp(payload);
         alert("Your reservation has been confirmed!");
         document.getElementById("bookingForm").reset();
         tripTypeEl.value = "oneway";
+        if(vehicleTypeEl) vehicleTypeEl.value = "Expedition";
         updateServiceUI();
     }).catch((err) => {
         console.error(err);
