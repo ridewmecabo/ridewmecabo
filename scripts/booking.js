@@ -202,18 +202,27 @@ serviceTypeEl?.addEventListener("change", () => {
   updateServiceUI();
 });
 
-// ================= AUTO-SELECT SERVICE FROM URL =================
+// ================= AUTO-SELECT FROM URL =================
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const serviceToSelect = params.get('service');
+  const vehicleToSelect = params.get('vehicle'); // Leemos si trae un vehículo
 
+  // 1. Auto-selecciona el servicio si viene en el enlace
   if (serviceToSelect && serviceTypeEl) {
     serviceTypeEl.value = serviceToSelect;
-    updateServiceUI();
   } else {
+    // Por defecto lo ponemos en "oneway" si no viene servicio
     if (tripTypeEl) tripTypeEl.value = "oneway";
-    updateServiceUI();
   }
+
+  // 2. Auto-selecciona el vehículo si viene en el enlace
+  if (vehicleToSelect && vehicleTypeEl) {
+    vehicleTypeEl.value = vehicleToSelect;
+  }
+
+  // 3. Actualizamos toda la pantalla de precios al final
+  updateServiceUI();
 });
 
 // ================= PRICE CALC =================
